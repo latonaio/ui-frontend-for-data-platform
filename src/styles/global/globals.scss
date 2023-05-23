@@ -1,0 +1,24 @@
+@import './reset';
+@import './fonts';
+@import "~tailwindcss/base";
+@import "~tailwindcss/components";
+@import "~tailwindcss/utilities";
+.clearfix {
+  display: block;
+
+  &:after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+
+  &:before {
+    content: "";
+    display: block;
+    clear: both;
+  }
+}
+
+.dis-flex {
+  display: flex !important;
+}

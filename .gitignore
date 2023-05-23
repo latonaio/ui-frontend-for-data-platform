@@ -1,0 +1,6 @@
+.next
+node_modules
+storybook-static
+.env
+env.local.json5
+env.aws.json5
