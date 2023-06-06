@@ -2,6 +2,7 @@ import axios, { AxiosPromise, AxiosRequestConfig, Method } from 'axios';
 import { methods } from '@/constants/enums';
 import { getCookie } from '@/helpers/common';
 import { errorInterceptor, responseInterceptor } from './interceptors';
+import { useDispatch } from 'react-redux';
 
 const instance = axios.create();
 instance.interceptors.response.use(responseInterceptor, errorInterceptor);
@@ -48,4 +49,36 @@ const apiCall = (
   return instance.request(config);
 };
 
-export default apiCall;
+const multiPartFormApiCall = (
+  method: Method,
+  endpointUrl = '',
+  data: FormData,
+  options?: AxiosRequestConfig,
+  overrideBaseUrl?: string,
+): any => {
+  const API_URL = `${process.env.NESTJS_DATA_CONNECTION_REQUEST_CONTROL_MANAGER_HOST}:` +
+    `${process.env.NESTJS_DATA_CONNECTION_REQUEST_CONTROL_MANAGER_PORT}`;
+
+  const accessToken = getCookie('accessToken');
+
+  return instance.post(
+    endpointUrl,
+    data,
+    {
+      ...options,
+      baseURL: overrideBaseUrl || API_URL,
+      method,
+      url: endpointUrl,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${accessToken}`,
+        ...(options && options.headers ? options.headers : {}),
+      },
+    },
+  );
+}
+
+export {
+  apiCall,
+  multiPartFormApiCall,
+};

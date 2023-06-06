@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { rem } from "polished";
+import { rem } from 'polished';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
 
 export const Main = styled.div`
   display: block;
-  width: 1400px;
+  width: 1200px;
   margin: 0 auto ${rem(5)};
   padding: 0;
 `;

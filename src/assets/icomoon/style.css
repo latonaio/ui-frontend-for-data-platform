@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?cmy445');
-  src:  url('fonts/icomoon.eot?cmy445#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?cmy445') format('truetype'),
-    url('fonts/icomoon.woff?cmy445') format('woff'),
-    url('fonts/icomoon.svg?cmy445#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?zkuwi');
+  src:  url('fonts/icomoon.eot?zkuwi#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?zkuwi') format('truetype'),
+    url('fonts/icomoon.woff?zkuwi') format('woff'),
+    url('fonts/icomoon.svg?zkuwi#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,12 +25,48 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-refresh:before {
+  content: "\e907";
+}
 .icon-search:before {
+  content: "\e986";
+}
+.icon-cancel-circle:before {
+  content: "\ea0d";
+}
+.icon-checkmark:before {
+  content: "\ea10";
+}
+.icon-invoice:before {
+  content: "\e903";
+}
+.icon-clipboard-list:before {
+  content: "\e905";
+}
+.icon-documents:before {
+  content: "\e904";
+}
+.icon-inbox-download:before {
+  content: "\e906";
+}
+.icon-retweet:before {
+  content: "\e908";
+}
+.icon-lot:before {
+  content: "\e902";
+}
+.icon-calendar:before {
   content: "\e900";
+}
+.icon-date:before {
+  content: "\e900";
+}
+.icon-schedule:before {
+  content: "\e900";
+}
+.icon-truck:before {
+  content: "\e901";
 }
 .icon-calendar-check-o:before {
   content: "\ca";
-}
-.icon-search1:before {
-  content: "\e986";
 }

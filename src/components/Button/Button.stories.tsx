@@ -1,17 +1,17 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button } from './Button';
+import { BackButton } from './Button';
 
 export default {
   title: 'components/Button',
-  component: Button,
+  component: BackButton,
   parameters: {
     layout: 'fullscreen',
   },
-} as ComponentMeta<typeof Button>;
+} as ComponentMeta<typeof BackButton>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof BackButton> = (args) => <BackButton {...args} />;
 
 export const Normal = Template.bind({});
 Normal.args = {

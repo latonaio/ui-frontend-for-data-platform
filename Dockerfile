@@ -8,6 +8,9 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+ARG ENV_TARGET
+ENV ENV_TARGET ${ENV_TARGET}
 
-CMD ["npm", "run", "dev"]
+RUN npm run build:${ENV_TARGET}
+
+CMD ["npm", "run", "start"]

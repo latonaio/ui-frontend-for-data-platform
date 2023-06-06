@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setAuth } from '@/store/authSlice';
+import { setAuth } from '@/store/slices/auth';
 import {
   LoginForm as Root,
   LoginFormBorder,
@@ -18,10 +18,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import {
+  AuthedUser,
   form,
   message,
 } from '@/constants';
-import { postAuthenticator } from '@/api/authenticator';
+import { postAuthenticate } from '@/api/authenticator';
+import { CacheDatabase } from '@/services/cacheDatabase';
+import { getLocalStorage } from '@/helpers/common';
+import { clearState } from '@/store/slices/orders/detail';
+import * as paginationState from '@/store/slices/orders/pagination';
 
 interface LoginFormProps {
   className?: string;
@@ -59,13 +64,23 @@ export const LoginForm = ({ className }: LoginFormProps) => {
   const { errors } = formState;
 
   const onSubmit = async (params: FormState) => {
-    const result = await postAuthenticator({
+    const result = await postAuthenticate({
       emailAddress: params.emailAddress,
       password: params.password,
     });
 
     try {
+      const localStorageData = getLocalStorage('auth');
+      const { emailAddress }: AuthedUser = localStorageData ? localStorageData : {};
+
+      if (emailAddress !== result.user.emailAddress) {
+        await new CacheDatabase().cacheAllClear();
+        dispatch(clearState());
+        dispatch(paginationState.paginationSlice.actions.clearState());
+      }
+
       setCookie('accessToken', result.accessToken);
+
       dispatch(setAuth({
         emailAddress: result.user.emailAddress,
         businessPartner: result.user.businessPartner,
@@ -80,7 +95,7 @@ export const LoginForm = ({ className }: LoginFormProps) => {
       removeLocalStorage('auth');
     }
 
-    await router.push('/');
+    window.location.href = '/';
   };
 
   return (

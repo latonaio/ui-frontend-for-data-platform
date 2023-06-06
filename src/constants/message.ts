@@ -1,3 +1,10 @@
+export const texts = {
+  button: {
+    cancel: 'CL',
+    delete: 'DL',
+  }
+}
+
 export const message = {
   emailAddress: {
     required: 'メールアドレスは必須項目です',

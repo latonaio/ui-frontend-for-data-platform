@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { rem } from "polished";
+import { rem } from 'polished';
 import { style } from "@/constants";
 
 export const HeaderWrapper = styled.header`

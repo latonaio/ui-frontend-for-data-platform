@@ -6,7 +6,7 @@ import {
 import { Header } from '@/components/Header';
 import { ContentsTop } from '@/components/ContentsTop';
 import { Footer } from '@/components/Footer';
-import Link from 'next/link';
+import { GlobalMenu } from '@/components/Navi';
 
 const Home: React.FC = () => {
   return (
@@ -17,16 +17,14 @@ const Home: React.FC = () => {
       />
       <Main className={'Main'}>
         <ContentsTop
+          title={''}
           className={'ContentsTopNav'}
+          isSearchHidden={true}
+          isIconHidden={true}
         ></ContentsTop>
-        <div>
-          <Link href="/orders/list">オーダーリスト</Link>
-        </div>
-        <div>
-          <Link href="/orders/detail/A3750">オーダー詳細 A3750</Link>
-        </div>
+        <GlobalMenu></GlobalMenu>
       </Main>
-      <Footer></Footer>
+      <Footer isHidden={true}></Footer>
     </Wrapper>
   )
 }

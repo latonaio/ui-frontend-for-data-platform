@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import UnauthorizedError from '@/errors/Unauthorized';
+import { UnauthorizedError } from '@/errors';
 
 export const responseInterceptor = <T>(response: AxiosResponse<T>) => {
   return {
@@ -15,10 +15,10 @@ export const errorInterceptor = (err: AxiosError): Promise<never> => {
     const { status, statusText } = response;
 
     if (status === 401 && statusText === 'Unauthorized') {
-      throw new UnauthorizedError(401);
+      window.location.href = '/login';
     }
   } else {
-    throw new Error('Something wrong happened');
+    throw new Error('Error Interceptor: No response');
   }
 
   return Promise.reject(err);

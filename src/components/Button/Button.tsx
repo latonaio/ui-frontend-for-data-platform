@@ -1,20 +1,104 @@
 import { clsx } from 'clsx';
-import { Button as ButtonElement } from './Button.style';
+import {
+  Button as ButtonElement,
+  GreenButton as GreenButtonElement,
+  WhiteButton as WhiteButtonElement,
+  BlueButton as BlueButtonElement,
+} from './Button.style';
 import { useRouter } from 'next/router';
+import React, { ReactNode } from 'react';
 
 interface ButtonProps {
+  hrefPath?: string | undefined;
+  children?: ReactNode,
   className?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export const Button = ({ className }: ButtonProps) => {
+interface GreenButtonProps extends ButtonProps {
+  isFinished?: boolean;
+}
+
+interface WhiteButtonProps extends ButtonProps {
+}
+
+export const BackButton = (
+  {
+    hrefPath,
+    children,
+    className,
+  }: ButtonProps
+) => {
   const router = useRouter();
 
   return (
     <ButtonElement className={clsx(
       'text-2xl font-bold text-white',
       className
-    )} onClick={async () => { await router.push('/'); }}>
-      戻る
+    )} onClick={async () => {
+      await router.push(hrefPath === 'undefined' ? '/' : hrefPath === undefined ? '/' : hrefPath);
+    }}>
+      {children}
     </ButtonElement>
-  )
+  );
 };
+
+export const GreenButton = (
+  {
+    isFinished,
+    children,
+    className,
+    onClick,
+  }: GreenButtonProps
+) => {
+  return (
+    <GreenButtonElement
+      className={clsx(
+        `${isFinished ? 'deep' : ''}`,
+        className
+      )}
+      onClick={(e) => onClick && onClick(e)}
+    >
+      {children}
+    </GreenButtonElement>
+  );
+};
+
+export const BlueButton = (
+  {
+    isFinished,
+    children,
+    className,
+    onClick,
+  }: GreenButtonProps
+) => {
+  return (
+    <BlueButtonElement
+      className={clsx(
+        `${isFinished ? 'deep' : ''}`,
+        className
+      )}
+      onClick={(e) => onClick && onClick(e)}
+    >
+      {children}
+    </BlueButtonElement>
+  );
+};
+
+export const WhiteButton = (
+  {
+    children,
+    className,
+  }: WhiteButtonProps
+) => {
+  return (
+    <WhiteButtonElement className={clsx(
+      '',
+      className
+    )}>
+      {children}
+    </WhiteButtonElement>
+  );
+}
+
+

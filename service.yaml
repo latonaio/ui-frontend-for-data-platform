@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: ui-frontend-for-data-platform
+  name: ui-frontend-for-data-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ui-frontend-for-data-platform
+  strategy:
+    rollingUpdate:
+  template:
+    metadata:
+      labels:
+        run: ui-frontend-for-data-platform
+    spec:
+      nodeName: worker
+      hostname: ui-frontend-for-data-platform
+      containers:
+        - name: ui-frontend-for-data-platform
+          image: latonaio/ui-frontend-for-data-platform:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: env-config
+            - secretRef:
+                name: env-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: ui-frontend-for-data-platform
+  name: ui-frontend-for-data-platform
+spec:
+  selector:
+    run: ui-frontend-for-data-platform
+  type: NodePort
+  ports:
+    - port: 3000
+      protocol: TCP
+      targetPort: 3000
+      nodePort: 30030
+---

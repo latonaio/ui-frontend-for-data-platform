@@ -1,17 +1,21 @@
 import { clsx } from 'clsx';
 import { FooterWrapper } from './Footer.style';
-import { Button } from '@/components/Button';
+import { BackButton } from '@/components/Button';
 
 interface FooterProps {
   className?: string;
+  hrefPath?: string;
+  isHidden?: boolean;
 }
 
-export const Footer = ({ className }: FooterProps) => {
+export const Footer = ({ className, hrefPath, isHidden }: FooterProps) => {
   return (
     <FooterWrapper className={clsx(
       className
     )}>
-      <Button className={'text-base'}></Button>
+      <BackButton
+        className={`text-base ${isHidden ? 'hidden' : ''}`}
+        hrefPath={`${hrefPath}`}>戻る</BackButton>
     </FooterWrapper>
   )
 };

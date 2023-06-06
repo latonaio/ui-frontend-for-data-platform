@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { rem } from "polished";
+import { rem } from 'polished';
 import { style } from '@/constants';
 
 const borderColor = '#d9d9d9';
