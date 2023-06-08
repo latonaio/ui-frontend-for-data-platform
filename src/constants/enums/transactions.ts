@@ -91,3 +91,17 @@ export enum BillOfMaterialTablesEnum {
 export enum OperationsTablesEnum {
   operationsListOwnerBusinessPartnerItem = 'operationsListOwnerBusinessPartnerItem',
 }
+
+export enum SupplyChainRelationshipTablesEnum {
+  supplyChainRelationshipListBuyerItem = 'supplyChainRelationshipListBuyerItem', // 受注オーダー
+  supplyChainRelationshipListSellerItem = 'supplyChainRelationshipListSellerItem', // 発注オーダー
+  supplyChainRelationshipDetailListBuyerItem = 'supplyChainRelationshipDetailListBuyerItem',
+  supplyChainRelationshipDetailListSellerItem = 'supplyChainRelationshipDetailListSellerItem',
+  supplyChainRelationshipDetailList = 'supplyChainRelationshipDetailList',
+  supplyChainRelationshipDetailHeader = 'supplyChainRelationshipDetailHeader',
+  supplyChainRelationshipDetail = 'supplyChainRelationshipDetail',
+}
+
+export enum WorkCenterTablesEnum {
+	workCenterListBusinessPartnerItem = 'workCenterListBusinessPartnerItem',
+}

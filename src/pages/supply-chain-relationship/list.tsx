@@ -5,13 +5,13 @@ import { Header } from '@/components/Header';
 import { ContentsTop } from '@/components/ContentsTop';
 import { Footer } from '@/components/Footer';
 import { SupplyChainRelationshipList as Content } from '@/components/Content';
-import { AuthedUser, BuyerItem, OrdersTablesEnum, SellerItem, UserTypeEnum } from '@/constants';
+import { AuthedUser, SupplyChainRelationshipBuyerItem, SupplyChainRelationshipTablesEnum, SupplyChainRelationshipSellerItem, UserTypeEnum } from '@/constants';
 import { getLocalStorage, toLowerCase } from '@/helpers/common';
-import { ordersCache } from '@/services/cacheDatabase/orders';
+import { supplyChainRelationshipCache } from '@/services/cacheDatabase/supplyChainRelationship';
 import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpers/pages';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
-import { cancels, deletes } from '@/api/orders';
+import { cancels, deletes } from '@/api/supplyChainRelationship';
 import { TextFieldProps } from '@/components/Form';
 import { rem } from 'polished';
 
@@ -19,43 +19,43 @@ interface PageProps {
 }
 
 interface editList {
-  [OrdersTablesEnum.ordersListBuyerItem]: TextFieldProps[];
-  [OrdersTablesEnum.ordersListSellerItem]: TextFieldProps[];
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem]: TextFieldProps[];
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]: TextFieldProps[];
 }
 
 export interface formData {
-  [OrdersTablesEnum.ordersListBuyerItem]: BuyerItem[];
-  [OrdersTablesEnum.ordersListSellerItem]: SellerItem[];
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem]: SupplyChainRelationshipBuyerItem[];
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]: SupplyChainRelationshipSellerItem[];
   editList: editList;
 }
 
-const OrdersList: React.FC<PageProps> = (data) => {
-  const [searchTextDescription, setSearchTextDescription] = useState(OrdersTablesEnum.ordersListBuyerItem);
+const SupplyChainRelationshipList: React.FC<PageProps> = (data) => {
+  const [searchTextDescription, setSearchTextDescription] = useState(SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem);
   const [formData, setFormData] = useState<formData | any>({});
   const [displayData, setDisplayData] = useState(UserTypeEnum.Buyer);
 
   const dispatch = useDispatch();
 
   const setFormDataForPage = async () => {
-    const list = await ordersCache.getOrdersList();
+    const list = await supplyChainRelationshipCache.getSupplyChainRelationshipList();
 
     setFormData({
       editList: {
         ...createFormDataForEditingArray(
-          list[OrdersTablesEnum.ordersListBuyerItem],
+          list[SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem],
           [
-            { keyName: OrdersTablesEnum.ordersListBuyerItem },
+            { keyName: SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem },
           ]
         ),
         ...createFormDataForEditingArray(
-          list[OrdersTablesEnum.ordersListSellerItem],
+          list[SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem],
           [
-            { keyName: OrdersTablesEnum.ordersListSellerItem },
+            { keyName: SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem },
           ]
         ),
       },
-      [OrdersTablesEnum.ordersListBuyerItem]: list[OrdersTablesEnum.ordersListBuyerItem],
-      [OrdersTablesEnum.ordersListSellerItem]: list[OrdersTablesEnum.ordersListSellerItem],
+      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem]: list[SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem],
+      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]: list[SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem],
     });
   }
 
@@ -72,7 +72,7 @@ const OrdersList: React.FC<PageProps> = (data) => {
 
     await Promise.all([
       (async () => {
-        await ordersCache.updateOrdersList({
+        await supplyChainRelationshipCache.updateSupplyChainRelationshipList({
           language,
           businessPartner,
           emailAddress,
@@ -80,7 +80,7 @@ const OrdersList: React.FC<PageProps> = (data) => {
         });
       })(),
       (async () => {
-        await ordersCache.updateOrdersList({
+        await supplyChainRelationshipCache.updateSupplyChainRelationshipList({
           language,
           businessPartner,
           emailAddress,
@@ -136,29 +136,29 @@ const OrdersList: React.FC<PageProps> = (data) => {
       });
     }
 
-    ordersCache.updateOrdersList({
+    supplyChainRelationshipCache.updateSupplyChainRelationshipList({
       language,
       businessPartner,
       emailAddress,
       userType: toLowerCase(UserTypeEnum.Buyer),
     });
 
-    ordersCache.updateOrdersList({
+    supplyChainRelationshipCache.updateSupplyChainRelationshipList({
       language,
       businessPartner,
       emailAddress,
       userType: toLowerCase(UserTypeEnum.Seller),
     });
 
-    ordersCache.updateOrdersDetailList({
-      orderId: params.Orders.OrderID,
-      userType: displayData,
-      language,
-      businessPartner,
-      emailAddress,
-    });
+    // supplyChainRelationshipCache.updateSupplyChainRelationshipDetailList({
+    //   orderId: params.SupplyChainRelationship.OrderID,
+    //   userType: displayData,
+    //   language,
+    //   businessPartner,
+    //   emailAddress,
+    // });
 
-    const itemIdentification = params.Orders.OrderID;
+    const itemIdentification = params.SupplyChainRelationship.OrderID;
 
     const updateData = {
       ...formData,
@@ -204,8 +204,8 @@ const OrdersList: React.FC<PageProps> = (data) => {
           searchTextDescription={getSearchTextDescription(
             searchTextDescription,
             {
-              [OrdersTablesEnum.ordersListBuyerItem]: UserTypeEnum.Buyer,
-              [OrdersTablesEnum.ordersListSellerItem]: UserTypeEnum.Seller,
+              [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem]: UserTypeEnum.Buyer,
+              [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]: UserTypeEnum.Seller,
             }
           )}
         />
@@ -237,7 +237,7 @@ const OrdersList: React.FC<PageProps> = (data) => {
 
                 await Promise.all([
                   (async () => {
-                    await ordersCache.updateOrdersList({
+                    await supplyChainRelationshipCache.updateSupplyChainRelationshipList({
                       language,
                       businessPartner,
                       emailAddress,
@@ -245,7 +245,7 @@ const OrdersList: React.FC<PageProps> = (data) => {
                     });
                   })(),
                   (async () => {
-                    await ordersCache.updateOrdersList({
+                    await supplyChainRelationshipCache.updateSupplyChainRelationshipList({
                       language,
                       businessPartner,
                       emailAddress,
@@ -282,9 +282,9 @@ const OrdersList: React.FC<PageProps> = (data) => {
         {formData &&
           <Content
             formData={formData}
-            onClickHandler={(toggleDisplayEnum: OrdersTablesEnum) => {
+            onClickHandler={(toggleDisplayEnum: SupplyChainRelationshipTablesEnum) => {
               setSearchTextDescription(toggleDisplayEnum);
-              toggleDisplayEnum === OrdersTablesEnum.ordersListBuyerItem ?
+              toggleDisplayEnum === SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem ?
                 setDisplayData(UserTypeEnum.Buyer) : setDisplayData(UserTypeEnum.Seller);
             }}
             onCancelItem={onCancelItem}
@@ -302,4 +302,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default OrdersList;
+export default SupplyChainRelationshipList;

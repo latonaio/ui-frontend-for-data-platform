@@ -4,7 +4,7 @@ import {
   } from './model';
   import { apiCall } from '@/api/axios';
   import { methods } from '@/constants';
-  
+
   const reads = async (
     params: params,
   ): Promise<response> => {
@@ -17,8 +17,7 @@ import {
     });
     return { ...response.data };
   }
-  
+
   export {
     reads,
   };
-  

@@ -10,7 +10,9 @@ import {
   EquipmentTablesEnum,
   PriceMasterTablesEnum,
   BillOfMaterialTablesEnum,
-  OperationsTablesEnum
+  OperationsTablesEnum,
+  SupplyChainRelationshipTablesEnum,
+  WorkCenterTablesEnum,
 } from '@/constants';
 
 export class CacheDatabase extends Tables {
@@ -50,7 +52,11 @@ export class CacheDatabase extends Tables {
       [PriceMasterTablesEnum.priceMasterDetailListBuyerItem]: '[SupplyChainRelationshipID+OrderItem]',
       [PriceMasterTablesEnum.priceMasterDetailListSellerItem]: '[SupplyChainRelationshipID+OrderItem]',
       [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]: '++id',
-      [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: 'Operations',
+      [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: 'SupplyChainRelationship',
+      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem ]: '++id, SupplyChainRelationship, BuyerName, SellerName, DeliveryStatus',
+      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem ]: '++id, SupplyChainRelationship, BuyerName, SellerName, DeliveryStatus',
+	  [WorkCenterTablesEnum.workCenterListBusinessPartnerItem]: '++id',
+	  
     });
   }
 
