@@ -28,7 +28,8 @@ import {
   BusinessPartnerTablesEnum,
   BusinessPartnerItem,
   EquipmentTablesEnum,
-  EquipmentItem, DeliveryDocumentListEditForCache,
+  EquipmentItem,
+  DeliveryDocumentListEditForCache,
   PriceMasterTablesEnum,
   PriceMasterBuyerItem,
   PriceMasterSellerItem,
@@ -40,7 +41,9 @@ import {
   SupplyChainRelationshipBuyerItem,
   SupplyChainRelationshipSellerItem,
   WorkCenterTablesEnum,
-  WorkCenterItem
+  WorkCenterItem,
+  ProductionVersionTablesEnum,
+  ProductionVersionListItem,
 } from '@/constants';
 
 export class Tables extends Dexie {
@@ -83,4 +86,5 @@ export class Tables extends Dexie {
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem]!: Table<SupplyChainRelationshipBuyerItem>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]!: Table<SupplyChainRelationshipSellerItem>;
   [WorkCenterTablesEnum.workCenterListBusinessPartnerItem]!: Table<WorkCenterItem>;
+  [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]!: Table<ProductionVersionListItem>;
 }

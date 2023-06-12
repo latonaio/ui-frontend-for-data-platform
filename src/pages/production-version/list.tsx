@@ -10,12 +10,12 @@ import { Footer } from '@/components/Footer';
 import { ProductionVersionList as Content } from '@/components/Content';
 import {
   AuthedUser,
-  ProductionOrderItem,
-  ProductionOrderTablesEnum,
+  ProductionVersionListItem,
+  ProductionVersionTablesEnum,
   UserTypeEnum,
 } from '@/constants';
 import { getLocalStorage, toLowerCase } from '@/helpers/common';
-import { productionOrderCache } from '@/services/cacheDatabase/productionOrder';
+import { productionVersionCache } from '@/services/cacheDatabase/productionVersion';
 import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpers/pages';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
@@ -25,28 +25,30 @@ interface PageProps {
 }
 
 export interface editList {
-  [ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem]: TextFieldProps[];
+  [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]: TextFieldProps[];
 }
 
 export interface formData {
-  [ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem]: ProductionOrderItem[];
+  [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]: ProductionVersionListItem[];
   editList: editList;
 }
 
-const ProductionOrderList: React.FC<PageProps> = (data) => {
+const productionVersionList: React.FC<PageProps> = (data) => {
   const [searchTextDescription, setSearchTextDescription] = useState(
-    ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem
+    ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem
   );
   const [formData, setFormData] = useState<formData | any>({});
 
   const dispatch = useDispatch();
 
   const setFormDataForPage = async () => {
-    const list = await productionOrderCache.getProductionOrderList();
+    const list = await productionVersionCache.getProductionVersionList();
+
+    console.log(list[ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem])
 
     setFormData({
-      [ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem]:
-        list[ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem],
+      [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]:
+        list[ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem],
     });
   }
 
@@ -61,7 +63,7 @@ const ProductionOrderList: React.FC<PageProps> = (data) => {
 
     dispatch(setLoading({ isOpen: true }));
 
-    await productionOrderCache.updateProductionOrderList({
+    await productionVersionCache.updateProductionVersionList({
       language,
       businessPartner,
       emailAddress,
@@ -87,8 +89,8 @@ const ProductionOrderList: React.FC<PageProps> = (data) => {
           searchTextDescription={getSearchTextDescription(
             searchTextDescription,
             {
-              [ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem]:
-              UserTypeEnum.OwnerProductionPlantBusinessPartner,
+              [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]:
+              UserTypeEnum.OwnerBusinessPartner,
             }
           )}
         />
@@ -110,4 +112,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default ProductionOrderList;
+export default productionVersionList;

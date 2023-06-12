@@ -1,5 +1,5 @@
 import { UIKeyGeneral } from '@/constants';
-import { ProductionOrderItem } from '@/constants';
+import { ProductionVersionListItem } from '@/constants';
 
 export interface params extends UIKeyGeneral {
   headerIsMarkedForDeletion: boolean;
@@ -7,5 +7,5 @@ export interface params extends UIKeyGeneral {
 }
 
 export interface response {
-  productionOrderList: ProductionOrderItem[]
+  productionVersionList: ProductionVersionListItem[]
 }

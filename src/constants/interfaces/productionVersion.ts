@@ -1,21 +1,22 @@
 interface ProductionVersionImage {
-    ProductionVersion: number;
+    BusinessPartnerID: number;
     DocID: string;
     FileExtension: string;
 }
 
-interface ProductionVersionListItem{
+interface ProductionVersionListItem {
     Product: string;
     ProductionVersion: number;
     ProductDescription: string;
     OwnerPlant: string;
     BillOfMaterial: number;
+    Operations: number;
     IsMarkedForDeletion: boolean;
     OwnerProductionPlantBusinessPartner: number;
     Images: {
         DocID: {};
-        Product: ProductionVersionImage;
-      };
+        ProductionVersion: ProductionVersionImage;
+    };
 }
 
 export type{

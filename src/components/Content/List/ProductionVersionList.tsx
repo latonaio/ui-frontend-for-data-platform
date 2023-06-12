@@ -56,7 +56,7 @@ const DetailListTableElement = ({
                                   // onCancelItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
-  const listType = ProductionVersionTablesEnum.ProductionVersionListOwnerProductionPlantBusinessPartnerItem;
+  const listType = ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem;
   const dispatch = useDispatch();
 
   const renderList = (list: ProductionVersionListItem[]) => {
@@ -72,31 +72,32 @@ const DetailListTableElement = ({
             );
           }}>
             <td>
-              {item.Images?.Product && (
+              {item.Images?.ProductionVersion && (
                 <img
                   className={'m-auto'}
                   style={{
                     width: rem(60),
                   }}
-                  // src={item.Images && generateImageEquipmentUrl(
-                  //   item.Images?.Product?.ProductionVersion ?
-                  //     item.Images?.Product?.ProductionVersion.toString() : null, item.Images?.ProductionVersion || {}
-                  // )}
+                  src={item.Images && generateImageEquipmentUrl(
+                    item.Images?.ProductionVersion ?
+                      item.Images?.ProductionVersion.BusinessPartnerID.toString() : null, item.Images?.ProductionVersion || {}
+                  )}
                   alt={`${item.ProductDescription}`}
                 />
               )}
-              {!item.Images?.Product && (
+              {!item.Images?.ProductionVersion && (
                 <NoImage>
                   <div>No</div>
                   <div>Image</div>
                 </NoImage>
               )}
             </td>
+            <td>{item.Product}</td>
             <td>{item.ProductionVersion}</td>
-            <td>{item.Product}/{item.ProductDescription}</td>
-            <td>{item.OwnerProductionPlantBusinessPartner}</td>
+            <td>{item.ProductDescription}</td>
             <td>{item.OwnerPlant}</td>
-            <td>{item.IsMarkedForDeletion}</td>
+            <td>{item.BillOfMaterial}</td>
+            <td>{item.Operations}</td>
             <td>
               <div className={'w-full inline-flex justify-evenly items-center'}>
               <BlueButton
@@ -136,12 +137,8 @@ const DetailListTableElement = ({
                 >
                   {texts.button.delete}
                 </BlueButton>
-                {/*<i*/}
-                {/*  className="icon-schedule"*/}
-                {/*  style={{*/}
-                {/*    fontSize: rem(32),*/}
-                {/*  }}*/}
-                {/*/>*/}
+                <i className="text-3xl icon-file"></i>
+                <i className="text-3xl icon-cogs"></i>
               </div>
             </td>
           </tr>
@@ -175,7 +172,7 @@ export const ProductionVersionList = ({
                                       // onCancelItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<ProductionVersionTablesEnum>(
-    ProductionVersionTablesEnum.ProductionVersionListOwnerProductionPlantBusinessPartnerItem,
+    ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem,
   );
   const summary = [
     '品目画像',
@@ -184,6 +181,7 @@ export const ProductionVersionList = ({
     '品目名',
     'プラント',
     '部品表',
+    '作業手順',
     '',
   ];
 
@@ -194,9 +192,9 @@ export const ProductionVersionList = ({
     )}>
       <DetailListTableElement
         summary={summary}
-        type={ProductionVersionTablesEnum.ProductionVersionListOwnerProductionPlantBusinessPartnerItem}
+        type={ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem}
         display={display}
-        list={[]}
+        list={formData[ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem] || []}
         // onCancelItem={onCancelItem}
       />
     </ListElement>

@@ -44,6 +44,16 @@ const PriceMasterList: React.FC<PageProps> = (data) => {
 
   const setFormDataForPage = async () => {
     const list = await priceMasterCache.getPriceMasterList();
+    
+    const map = new Map(list[PriceMasterTablesEnum.priceMasterListBuyerItem].map(o => [o.SupplyChainRelationshipID, o]));
+
+    // console.log(Array.from(map.values()));
+	const buyer = Array.from(map.values());
+
+	const map_1 = new Map(list[PriceMasterTablesEnum.priceMasterListSellerItem].map(o => [o.SupplyChainRelationshipID, o]));
+
+    // console.log(Array.from(map.values()));
+	const seller = Array.from(map.values());
 
     setFormData({
       editList: {
@@ -51,17 +61,17 @@ const PriceMasterList: React.FC<PageProps> = (data) => {
           list[PriceMasterTablesEnum.priceMasterListBuyerItem],
           [
             { keyName: PriceMasterTablesEnum.priceMasterListBuyerItem },
-          ]
+          ],
         ),
         ...createFormDataForEditingArray(
           list[PriceMasterTablesEnum.priceMasterListSellerItem],
           [
             { keyName: PriceMasterTablesEnum.priceMasterListSellerItem },
-          ]
+          ],
         ),
       },
-      [PriceMasterTablesEnum.priceMasterListBuyerItem]: list[PriceMasterTablesEnum.priceMasterListBuyerItem],
-      [PriceMasterTablesEnum.priceMasterListSellerItem]: list[PriceMasterTablesEnum.priceMasterListSellerItem],
+      [PriceMasterTablesEnum.priceMasterListBuyerItem]: buyer,
+      [PriceMasterTablesEnum.priceMasterListSellerItem]: seller,
     });
   }
 

@@ -69,10 +69,12 @@ export enum EquipmentTablesEnum {
 }
 
 
-
-
 export enum ProductionVersionTablesEnum {
-  ProductionVersionListOwnerProductionPlantBusinessPartnerItem = 'ProductionVersionListOwnerProductionPlantBusinessPartnerItem',
+  productionVersionListOwnerBusinessPartnerItem = 'productionVersionListOwnerBusinessPartnerItem',
+  productionVersionDetailList = 'productionVersionDetailList',
+  productionVersionDetailHeader = 'productionVersionDetailHeader',
+  productionVersionDetail = 'productionVersionDetail',
+  ProductionVersionTablesEnum = "ProductionVersionTablesEnum"
 }
 
 export enum PriceMasterTablesEnum {
@@ -105,3 +107,4 @@ export enum SupplyChainRelationshipTablesEnum {
 export enum WorkCenterTablesEnum {
 	workCenterListBusinessPartnerItem = 'workCenterListBusinessPartnerItem',
 }
+
