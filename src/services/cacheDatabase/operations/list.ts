@@ -12,11 +12,11 @@ import { OperationsUserType } from './index';
 export class List extends CacheDatabase {
   async getOperationsList(): Promise<
     {
-      [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: OperationsItem[];
+      [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]: OperationsItem[];
     }> {
     return {
-      [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: [
-        ...await this.operationsListOwnerBusinessPartnerItem
+      [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]: [
+        ...await this.operationsListOwnerProductionPlantBusinessPartnerItem
           .toArray(),
       ]
     }
@@ -38,9 +38,11 @@ export class List extends CacheDatabase {
       userId: params.emailAddress,
     })
 
-    if (params.userType === toLowerCase(UserTypeEnum.OwnerBusinessPartner)) {
-      await this.operationsListOwnerBusinessPartnerItem.clear();
-      await this.operationsListOwnerBusinessPartnerItem.bulkAdd(response.operationsList || []);
+    if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {
+      await this.operationsListOwnerProductionPlantBusinessPartnerItem.clear();
+      await this.operationsListOwnerProductionPlantBusinessPartnerItem.bulkAdd(response.operationsList || []);
     }
   }
 }
+
+  

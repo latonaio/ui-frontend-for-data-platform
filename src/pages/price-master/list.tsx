@@ -44,16 +44,14 @@ const PriceMasterList: React.FC<PageProps> = (data) => {
 
   const setFormDataForPage = async () => {
     const list = await priceMasterCache.getPriceMasterList();
-    
-    const map = new Map(list[PriceMasterTablesEnum.priceMasterListBuyerItem].map(o => [o.SupplyChainRelationshipID, o]));
 
-    // console.log(Array.from(map.values()));
-	const buyer = Array.from(map.values());
+    const buyerMap = new Map(list[PriceMasterTablesEnum.priceMasterListBuyerItem]
+      .map(o => [o.SupplyChainRelationshipID, o]));
+    const filteredBuyer = Array.from(buyerMap.values());
 
-	const map_1 = new Map(list[PriceMasterTablesEnum.priceMasterListSellerItem].map(o => [o.SupplyChainRelationshipID, o]));
-
-    // console.log(Array.from(map.values()));
-	const seller = Array.from(map.values());
+    const sellerMap = new Map(list[PriceMasterTablesEnum.priceMasterListSellerItem]
+      .map(o => [o.SupplyChainRelationshipID, o]));
+    const filteredSeller = Array.from(sellerMap.values());
 
     setFormData({
       editList: {
@@ -70,10 +68,10 @@ const PriceMasterList: React.FC<PageProps> = (data) => {
           ],
         ),
       },
-      [PriceMasterTablesEnum.priceMasterListBuyerItem]: buyer,
-      [PriceMasterTablesEnum.priceMasterListSellerItem]: seller,
+      [PriceMasterTablesEnum.priceMasterListBuyerItem]: filteredBuyer,
+      [PriceMasterTablesEnum.priceMasterListSellerItem]: filteredSeller,
     });
-  }
+  };
 
   const initLoadTabData = async () => {
     const {
@@ -212,7 +210,7 @@ const PriceMasterList: React.FC<PageProps> = (data) => {
 
   return (
     <Wrapper className={'Wrapper'}>
-      <Header title={'価格マスタ一覧'} className={'text-2xl'} />
+      <Header title={'データ連携基盤 価格マスタ一覧'} className={'text-2xl'} />
       <Main className={'Main'}>
         <ContentsTop
           className={'ContentsTopNav'}

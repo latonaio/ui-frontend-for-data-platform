@@ -1,5 +1,3 @@
-import { BuyerItem, OrdersDetailListItem, SellerItem } from '@/constants';
-
 export enum UserTypeEnum {
   Buyer = 'Buyer',
   Seller = 'Seller',
@@ -59,8 +57,6 @@ export enum ProductTablesEnum {
 
 export enum BusinessPartnerTablesEnum {
   businessPartnerListBusinessPartnerItem = 'businessPartnerListBusinessPartnerItem',
-  businessPartnerDetailExconfList = 'businessPartnerDetailExconfList',
-  businessPartnerDetailExconfListHeader = 'businessPartnerDetailExconfListHeader',
 
 }
 
@@ -72,39 +68,41 @@ export enum EquipmentTablesEnum {
 export enum ProductionVersionTablesEnum {
   productionVersionListOwnerBusinessPartnerItem = 'productionVersionListOwnerBusinessPartnerItem',
   productionVersionDetailList = 'productionVersionDetailList',
-  productionVersionDetailHeader = 'productionVersionDetailHeader',
-  productionVersionDetail = 'productionVersionDetail',
-  ProductionVersionTablesEnum = "ProductionVersionTablesEnum"
+  productionVersionDetailListHeader = 'productionVersionDetailListHeader',
+  productionVersionDetailListOwnerBusinessPartnerItem = "productionVersionDetailListOwnerBusinessPartnerItem",
 }
 
 export enum PriceMasterTablesEnum {
-  priceMasterListBuyerItem = 'priceMasterListBuyerItem', // 受注オーダー
-  priceMasterListSellerItem = 'priceMasterListSellerItem', // 発注オーダー
-  priceMasterDetailListBuyerItem = 'priceMasterDetailListBuyerItem',
-  priceMasterDetailListSellerItem = 'priceMasterDetailListSellerItem',
+  priceMasterListBuyerItem = 'priceMasterListBuyerItem',
+  priceMasterListSellerItem = 'priceMasterListSellerItem',
+  priceMasterDetailListItem = 'priceMasterDetailListItem',
   priceMasterDetailHeader = 'priceMasterDetailHeader',
   priceMasterDetail = 'priceMasterDetail',
+  priceMasterDetailList = 'priceMasterDetailList',
 }
 
 export enum BillOfMaterialTablesEnum {
-  billOfMaterialListOwnerBusinessPartnerItem = 'billOfMaterialListOwnerBusinessPartnerItem',
+  billOfMaterialListOwnerProductionPlantBusinessPartnerItem = 'billOfMaterialListOwnerProductionPlantBusinessPartnerItem',
+  billOfMaterialDetailList = 'billOfMaterialDetailList',
+  billOfMaterialDetailListOwnerProductionPlantBusinessPartnerItem = 'billOfMaterialDetailListOwnerProductionPlantBusinessPartnerItem',
+  billOfMaterialDetailHeader = 'billOfMaterialDetailHeader',
 }
 
 export enum OperationsTablesEnum {
+  operationsListOwnerProductionPlantBusinessPartnerItem = 'operationsListOwnerProductionPlantBusinessPartnerItem',
   operationsListOwnerBusinessPartnerItem = 'operationsListOwnerBusinessPartnerItem',
+  operationsDetailListOwnerProductionPlantBusinessPartnerItem = 'operationsDetailListOwnerProductionPlantBusinessPartnerItem',
+  operationsDetailList = 'operationsDetailList',
+  operationsDetailHeader = 'operationsDetailHeader',
 }
 
 export enum SupplyChainRelationshipTablesEnum {
-  supplyChainRelationshipListBuyerItem = 'supplyChainRelationshipListBuyerItem', // 受注オーダー
-  supplyChainRelationshipListSellerItem = 'supplyChainRelationshipListSellerItem', // 発注オーダー
-  supplyChainRelationshipDetailListBuyerItem = 'supplyChainRelationshipDetailListBuyerItem',
-  supplyChainRelationshipDetailListSellerItem = 'supplyChainRelationshipDetailListSellerItem',
-  supplyChainRelationshipDetailList = 'supplyChainRelationshipDetailList',
-  supplyChainRelationshipDetailHeader = 'supplyChainRelationshipDetailHeader',
-  supplyChainRelationshipDetail = 'supplyChainRelationshipDetail',
+  supplyChainRelationshipListBuyerItem = 'supplyChainRelationshipListBuyerItem',
+  supplyChainRelationshipListSellerItem = 'supplyChainRelationshipListSellerItem',
+  supplyChainRelationshipDetailExconfList = 'supplyChainRelationshipDetailExconfList',
+  supplyChainRelationshipDetailExconfListHeader = 'supplyChainRelationshipDetailExconfListHeader',
 }
 
 export enum WorkCenterTablesEnum {
 	workCenterListBusinessPartnerItem = 'workCenterListBusinessPartnerItem',
 }
-

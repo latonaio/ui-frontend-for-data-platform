@@ -1,306 +1,198 @@
 import { clsx } from 'clsx';
-import {
-  Column,
-  OrderInfo,
-  ProductDetail,
-  ProductDetailTop,
-  ProductDetailInternalCapacityListTable,
-} from './Detail.style';
-import { generateImageProductUrl } from '@/helpers/common';
+//エラーが起こって動かなくなるためコメントアウト
+// import {
+//   Column,
+//   SupplyChainRelationshipInfo,
+//   Detail,
+//   SupplyChainRelationshipDetailTop,
+// } from './Detail.style';
+import { generateImageProductUrl, toLowerCase, toUpperCase } from '@/helpers/common';
 import React, { useState } from 'react';
-import { Detail } from '@/components/Content/Detail/Detail';
+// import { Detail } from '@/components/Content/Detail/Detail';
 import {
-  AuthedUser,
+  AuthedUser, EquipmentItem, EquipmentTablesEnum,
   ProductImage,
-  ProductTablesEnum,
+  SupplyChainRelationshipTablesEnum,
+  texts,
+  UserTypeEnum,
 } from '@/constants';
 import { ProductImageLabel } from '@/components/Label';
 import { rem } from 'polished';
-import { DisplayData } from '@/pages/supply-chain-relationship/detail/[userType]/[content]/[supplyChainRelationship]';
+import { DisplayData } from '@/pages/supply-chain-relationship/detail/[userType]/[content]/[supplyChainRelationshipId]';
 import {
   ExConfsHeader,
   ExConfsHeaderImage,
-  ExConfsHeaderInfo, ExConfsHeaderInfoBottom, ExConfsHeaderInfoTop,
+  ExConfsHeaderInfo,
+  ExConfsHeaderInfoBottom,
+  ExConfsHeaderInfoTop,
   ExConfsHeaderWrapper
-} from '@/components/Content/Detail/SupplyChainRelationshipExconfList.style';
+} from '@/components/Content/Detail/SupplyChainRelationshipDetailExconfList.style';
+import {
+  List as ListElement,
+  HeadTab,
+  DetailList,
+  DetailListTable,
+  ListHeaderInfo,
+  ListHeaderInfoTop,
+  ListHeaderInfoBottom,
+  NoImage,
+} from '@/components/Content/List/List.style';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { summaryHead } from '@/components/Content/List/List';
+import { BlueButton } from '@/components/Button';
 
-interface BasicInfoElement {
-  [key: string]: any;
-}
-
-interface ProductDetailTopElement {
-  [key: string]: any;
-}
-
-interface ProductDetailBottomElement {
-}
-
-const BasicInfoElement = (data: Partial<BasicInfoElement>) => {
+const DeliveryListElement = (
+  indexNumber: number,
+  item: any,
+) => {
   return (
-    <>
-      <OrderInfo>
-        <ProductImageLabel
-          style={{
-            marginTop: rem(3),
-            marginBottom: rem(20),
-          }}
-        >
-          {data.content}
-        </ProductImageLabel>
-      </OrderInfo>
-      <div>
-        <img
-          src={data.productImage &&
-            generateImageProductUrl(
-              data.productImage.BusinessPartnerID ?
-                data.productImage.BusinessPartnerID.toString() :
-                null,
-              data.productImage
-            )}
-          alt={`${data.productName}`}
-        />
-      </div>
-    </>
+    <tr key={indexNumber} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`}>
+      <td>{item.SupplyChainRelationshipDeliveryID}</td>
+      <td>{item.DeliverToPartyName}</td>
+      <td>{item.DeliverFromPartyName}</td>
+      <td>
+        <div>
+          <BlueButton
+            isFinished={item.IsMarkedForDeletion}
+            className={'size-relative'}
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              e.preventDefault();
+            }}
+          >
+            {texts.button.delete}
+          </BlueButton>
+        </div>
+      </td>
+    </tr>
   )
 }
 
-const ProductDetailTopElement = ({
-                                   params,
-                                   content,
-                                 }: Partial<ProductDetailTopElement>) => {
+const DeliveryPlantListElement = (
+	indexNumber: number,
+	item: any,
+  ) => {
+	return (
+	  <tr key={indexNumber} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`}>
+		<td>{item.SupplyChainRelationshipDeliveryID}</td>
+		<td>{item.SupplyChainRelationshipDeliveryPlantID}</td>
+		<td>{item.DeliverToParty}</td>
+		<td>{item.DeliverFromParty}</td>
+		<td>{item.DeliverToPlant}</td>
+		<td>{item.DeliverFromPlant}</td>
+		<td>
+		  <div>
+			<BlueButton
+			  isFinished={item.IsMarkedForDeletion}
+			  className={'size-relative'}
+			  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+				e.stopPropagation();
+				e.preventDefault();
+			  }}
+			>
+			  {texts.button.delete}
+			</BlueButton>
+		  </div>
+		</td>
+	  </tr>
+	)
+  }
+
+  const BillingListElement = (
+	indexNumber: number,
+	item: any,
+  ) => {
+	return (
+	  <tr key={indexNumber} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`}>
+		<td>{item.SupplyChainRelationshipBillingID}</td>
+		<td>{item.BlllToParty}</td>
+		<td>{item.BillFromParty}</td>
+		<td>
+		  <div>
+			<BlueButton
+			  isFinished={item.IsMarkedForDeletion}
+			  className={'size-relative'}
+			  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+				e.stopPropagation();
+				e.preventDefault();
+			  }}
+			>
+			  {texts.button.delete}
+			</BlueButton>
+		  </div>
+		</td>
+	  </tr>
+	)
+  }
+
+  const PaymentListElement = (
+	indexNumber: number,
+	item: any,
+  ) => {
+	return (
+	  <tr key={indexNumber} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`}>
+		<td>{item.SupplyChainRelationshipPaymentID}</td>
+		<td>{item.Payer}</td>
+		<td>{item.Payee}</td>
+		<td>
+		  <div>
+			<BlueButton
+			  isFinished={item.IsMarkedForDeletion}
+			  className={'size-relative'}
+			  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+				e.stopPropagation();
+				e.preventDefault();
+			  }}
+			>
+			  {texts.button.delete}
+			</BlueButton>
+		  </div>
+		</td>
+	  </tr>
+	)
+  }
+
+
+const ListTableElement = ({
+                                  summary,
+                                  display,
+                                  list,
+                                  onUpdateItem,
+                                }: any) => {
+  const dispatch = useDispatch();
+  const colSpan = 4;
+
+  const renderList = (list: any[], display: DisplayData) => {
+    if (list && list.length > 0) {
+      return list.map((item, index) => {
+        if (display?.content === 'delivery') { return (DeliveryListElement(index, item)) }
+        if (display?.content === 'deliveryPlant') { return (DeliveryPlantListElement(index, item)) }
+        if (display?.content === 'billing') { return (BillingListElement(index, item)) }
+        if (display?.content === 'payment') { return (PaymentListElement(index, item)) }
+      });
+    }
+
+    return (
+      <tr className={'record'}>
+        <td colSpan={colSpan}>テーブルに対象のレコードが存在しません。</td>
+      </tr>
+    );
+  }
+
   return (
-    <>
-      <ProductDetailTop className={'mb-4'}>
-        {/* BPPlant */}
-        {content === 'BPPlant' && (
-          <div>
-            <div
-              className={'flex justify-start items-center'}
-              style={{
-                marginLeft: rem(10),
-                marginBottom: rem(26),
-              }}
-            >
-              <div style={{
-                fontSize: rem(18),
-              }}>ビジネスパートナ: </div>
-              <ProductImageLabel
-                className={'blue small'}
-                style={{
-                  marginLeft: rem(20),
-                  width: rem(300),
-                }}
-              >{params.BusinessPartner}</ProductImageLabel>
-            </div>
-            <div
-              className={'flex justify-start items-center'}
-              style={{
-                marginLeft: rem(10),
-                marginBottom: rem(26),
-              }}
-            >
-              <div style={{
-                fontSize: rem(18),
-              }}>プラント: </div>
-              <ProductImageLabel
-                className={'brown small'}
-                style={{
-                  marginLeft: rem(92),
-                  width: rem(300),
-                }}
-              >{params.Plant}</ProductImageLabel>
-            </div>
-            <div>
-              <ProductDetailInternalCapacityListTable>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>利用可能在庫確認タイプ: {params.AvailabilityCheckType}</div>
-                    <div className={'w-2/4'}>標準入出荷ロットサイズ数量: {params.StandardDeliveryLotSizeQuantityInBaseUnit}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>MRPタイプ: {params.AvailabilityCheckType}</div>
-                    <div className={'w-2/4'}>入出荷ロットサイズ丸め数量: {params.DeliveryLotSizeRoundingQuantityInBaseUnit}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>MRP管理者: {params.MRPController}</div>
-                    <div className={'w-2/4'}>最大入出荷ロットサイズ数量: {params.MaximumDeliveryLotSizeQuantityInBaseUnit}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>発注点数量: {params.ReorderThresholdQuantity}</div>
-                    <div className={'w-2/4'}>最大入出荷数量: {params.MinimumDeliveryQuantityInBaseUnit}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>計画タイムフェンス: {params.PlanningTimeFence}</div>
-                    <div className={'w-2/4'}>入出荷ロットサイズ固定フラグ: {params.DeliveryLotSizeIsFixed}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>MRP計画カレンダー: {params.MRPPlanningCalendar}</div>
-                    <div className={'w-2/4'}>標準入出荷日数: {params.StandardDeliveryDurationInDays}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>安全在庫数量: {params.SafetyStockQuantityInBaseUnit}</div>
-                    <div className={'w-2/4'}>ロット管理必須: {params.IsBatchManagementRequired.toString()}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>安全在庫日数: {params.SafetyDuration}</div>
-                    <div className={'w-2/4'}>ロット管理方針: {params.BatchManagementPolicy}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>最大在庫数量: {params.MaximumStockQuantityInBaseUnit}</div>
-                    <div className={'w-2/4'}>在庫数量単位: {params.InventoryUnit}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>最小入出荷数量: {params.MinimumDeliveryQuantityInBaseUnit}</div>
-                    <div className={'w-2/4'}>利益センタ: {params.ProfitCenter}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>最小入出荷ロットサイズ数量: {params.AvailabilityCheckType}</div>
-                    <div className={'w-2/4'}>削除フラグ: {params.StandardDeliveryLotSizeQuantityInBaseUnit}</div>
-                  </div>
-                </li>
-              </ProductDetailInternalCapacityListTable>
-            </div>
-          </div>
-        )}
-        {/* BP */}
-        {content === 'BP' && (
-          <div>
-            <div
-              className={'flex justify-start items-center'}
-              style={{
-                marginLeft: rem(10),
-                marginBottom: rem(26),
-              }}
-            >
-              <div style={{
-                fontSize: rem(18),
-              }}>ビジネスパートナ: </div>
-              <ProductImageLabel
-                className={'blue small'}
-                style={{
-                  marginLeft: rem(20),
-                  width: rem(300),
-                }}
-              >{params.BusinessPartner}</ProductImageLabel>
-            </div>
-            <div>
-              <ProductDetailInternalCapacityListTable>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>有効終了日付: {params.ValidityEndDate}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>有効開始日付: {params.ValidityStartDate}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>ビジネスパートナ品目: {params.BusinessPartnerProduct}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className={'flex justify-start items-center'}>
-                    <div className={'w-2/4'}>削除フラグ: {params.IsMarkedForDeletion?.toString()}</div>
-                  </div>
-                </li>
-              </ProductDetailInternalCapacityListTable>
-            </div>
-          </div>
-        )}
-
-        {/* General */}
-        {content === 'General' && (
-          <div>
-            <ProductDetailInternalCapacityListTable>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>品目タイプ: {params.ProductType}</div>
-                  <div className={'w-2/4'}>明細カテゴリ: {params.ItemCategory}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>総重量: {params.GrossWeight}</div>
-                  <div className={'w-2/4'}>原産国: {params.CountryOfOrigin}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>正味重量: {params.NetWeight}</div>
-                  <div className={'w-2/4'}>原産国言語: {params.CountryOfOriginLanguage}</div>
-                </div>
-              </li>
-
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>重量単位: {params.WeightUnit}</div>
-                  <div className={'w-2/4'}>バーコードタイプ: {params.BarcodeType}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>内容量: {params.InternalCapacityQuantity}</div>
-                  <div className={'w-2/4'}>品目勘定設定グループ: {params.ProductAccountAssignmentGroup}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>内容量単位: {params.InternalCapacityQuantityUnit}</div>
-                  <div className={'w-2/4'}>登録日付: {params.CreationDate}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>サイズ/寸法: {params.SizeOrDimensionText}</div>
-                  <div className={'w-2/4'}>最終更新日付: {params.LastChangeDate}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>国際商品コード: {params.ProductStandardID}</div>
-                  <div className={'w-2/4'}>削除フラグ: {params.IsMarkedForDeletion.toString()}</div>
-                </div>
-              </li>
-              <li>
-                <div className={'flex justify-start items-center'}>
-                  <div className={'w-2/4'}>国際商品名称: {params.IndustryStandardName}</div>
-                </div>
-              </li>
-            </ProductDetailInternalCapacityListTable>
-          </div>
-        )}
-      </ProductDetailTop>
-    </>
-  )
-}
-
-const ProductDetailBottomElement = ({}: Partial<ProductDetailBottomElement>) => {
-  return (
-    <div>
-    </div>
-  )
+    <DetailList
+      // className={`${type === display ? '' : 'hidden'}`}
+      className={``}
+    >
+      <DetailListTable className={''}>
+        <tbody>
+        {summaryHead(summary)}
+        {renderList(list, display)}
+        </tbody>
+      </DetailListTable>
+    </DetailList>
+  );
 }
 
 export const SupplyChainRelationshipDetailContent= ({
@@ -312,15 +204,59 @@ export const SupplyChainRelationshipDetailContent= ({
 }) => {
   const contentDisplayData = {
     images: data &&
-      data[ProductTablesEnum.productDetailExconfListHeader]?.Images,
+      data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]?.Images,
     params: data &&
-      data[ProductTablesEnum.productDetailExconfList]
+      data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]
         ?.Existences.find(
-          (item) => item.Content === data.content)
-        ?.Param[0],
+          (item) => item.Content === toUpperCase(data.content))
+        ?.Param,
   }
 
-  const productDetailExconfListHeader = data && data[ProductTablesEnum.productDetailExconfListHeader];
+  const supplyChainRelationshipDetailExconfListHeader = data && data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader];
+
+  const summary = [
+    {
+      content: 'delivery',
+      data: [
+        'サプライチェーンリレーションシップ入出荷コード',
+        '入出荷先',
+        '入出荷元',
+        '',
+      ],
+    },
+    {
+      content: 'deliveryPlant',
+      data: [
+        'サプライチェーンリレーションシップ入出荷コード',
+        'サプライチェーンリレーションシップ入出荷プラントコード',
+        '入出荷先',
+        '入出荷元',
+        '入出荷先プラント',
+        '入出荷元プラント',
+        '',
+      ],
+    },
+    {
+      content: 'billing',
+      data: [
+        'サプライチェーンリレーションシップ請求コード',
+        '請求元',
+        '請求先',
+        '',
+      ],
+    },
+    {
+      content: 'payment',
+      data: [
+        'サプライチェーンリレーションシップ支払コード',
+        '支払人',
+        '受取人',
+        '',
+      ],
+    },
+  ];
+
+  const summaryList = summary.find((item) => item.content === data?.content)?.data;
 
   return (
     <>
@@ -332,60 +268,62 @@ export const SupplyChainRelationshipDetailContent= ({
             marginLeft: rem(40),
           }}
         >
-          <ExConfsHeaderImage>
-            <img
-              src={productDetailExconfListHeader?.Images &&
-                generateImageProductUrl(
-                  productDetailExconfListHeader.Images?.Product?.BusinessPartnerID ?
-                    productDetailExconfListHeader.Images.Product.BusinessPartnerID.toString() : null,
-                  productDetailExconfListHeader.Images?.Product
-                )}
-              alt={`${productDetailExconfListHeader?.ProductGroup}`}
-              width={100}
-            />
-          </ExConfsHeaderImage>
           <div
             className={'flex justify-start items-center'}
           >
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>品目コード: {productDetailExconfListHeader?.Product}</ExConfsHeaderInfoTop>
-              <ExConfsHeaderInfoBottom>基本数量単位: {productDetailExconfListHeader?.BaseUnit}</ExConfsHeaderInfoBottom>
+              <ExConfsHeaderInfoTop>SCR: {supplyChainRelationshipDetailExconfListHeader?.SupplyChainRelationshipID}</ExConfsHeaderInfoTop>
             </ExConfsHeaderInfo>
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>品目名: {productDetailExconfListHeader?.ProductDescription}</ExConfsHeaderInfoTop>
-              <ExConfsHeaderInfoBottom>有効開始日付: {productDetailExconfListHeader?.ValidityStartDate}</ExConfsHeaderInfoBottom>
+              <ExConfsHeaderInfoTop>Buyer: {supplyChainRelationshipDetailExconfListHeader?.BuyerName}</ExConfsHeaderInfoTop>
             </ExConfsHeaderInfo>
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>品目グループ: {productDetailExconfListHeader?.ProductGroup}</ExConfsHeaderInfoTop>
-              <ExConfsHeaderInfoBottom>　</ExConfsHeaderInfoBottom>
+              <ExConfsHeaderInfoTop>Seller: {supplyChainRelationshipDetailExconfListHeader?.SellerName}</ExConfsHeaderInfoTop>
             </ExConfsHeaderInfo>
           </div>
         </ExConfsHeaderWrapper>
       </ExConfsHeader>
-      <Detail className={clsx(
-        `ContainerWrapper relative`,
-        className
-      )}
-        // prevPage={prevPagePath()}
-        // nextPage={nextPagePath()}
-      >
-        <Column className={'Column1'}>
-          <BasicInfoElement
-            content={data && data.content}
-            productImage={contentDisplayData.images?.Product as unknown as ProductImage}
+
+      {
+        data?.content === 'delivery' && (
+          <ListTableElement
+            summary={summaryList}
+            display={data}
+            list={contentDisplayData.params || []}
+            // onUpdateItem={onUpdateItem}
           />
-        </Column>
-        <Column className={'Column2'}>
-          <ProductDetail>
-            <ProductDetailTopElement
-              params={contentDisplayData.params}
-              content={data && data.content}
-            />
-            <ProductDetailBottomElement
-            />
-          </ProductDetail>
-        </Column>
-      </Detail>
+        )
+      }
+      {
+        data?.content === 'deliveryPlant' && (
+          <ListTableElement
+            summary={summaryList}
+            display={data}
+            list={contentDisplayData.params || []}
+            // onUpdateItem={onUpdateItem}
+          />
+        )
+      }
+      {
+        data?.content === 'billing' && (
+          <ListTableElement
+            summary={summaryList}
+            display={data}
+            list={contentDisplayData.params || []}
+            // onUpdateItem={onUpdateItem}
+          />
+        )
+      }
+      {
+        data?.content === 'payment' && (
+          <ListTableElement
+            summary={summaryList}
+            display={data}
+            list={contentDisplayData.params || []}
+            // onUpdateItem={onUpdateItem}
+          />
+        )
+      }
     </>
   );
 };

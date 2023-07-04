@@ -55,10 +55,10 @@ const DetailListTableElement = ({
       return list.map((item, index) => {
         return (
           <tr key={index} className={`record`} onClick={() => {
-            // clickHandler(
-            //   `/price-master/detail/list/${display === PriceMasterTablesEnum.priceMasterListBuyerItem ? 'buyer' : 'seller'}/${item.SupplyChainRelationshipID}`,
-            //   router,
-            // );
+            clickHandler(
+              `/price-master/detail/list/${display === PriceMasterTablesEnum.priceMasterListBuyerItem ? 'buyer' : 'seller'}/${item.SupplyChainRelationshipID}`,
+              router,
+            );
           }}>
             <td>{item.SupplyChainRelationshipID}</td>
             <td>{item.BuyerName}</td>

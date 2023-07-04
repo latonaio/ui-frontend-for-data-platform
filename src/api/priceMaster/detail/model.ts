@@ -4,10 +4,6 @@ import {
   UIKeyGeneral,
   PriceMasterDetailProps,
   Pagination,
-  PaymentTerms,
-  PaymentMethod,
-  Currency,
-  QuantityUnit,
 } from '@/constants';
 
 export interface ReadsDetailParams extends UIKeyGeneral {
@@ -35,19 +31,11 @@ export interface ReadsPaginationResponse {
 
 export interface ReadsDetailListParams extends UIKeyGeneral {
   userType: string;
-  orderId: number;
-  itemCompleteDeliveryIsDefined: boolean;
-  // itemDeliveryStatus: boolean;
-  itemDeliveryBlockStatus: boolean;
-  // isCancelled: boolean;
+  supplyChainRelationshipId: number;
   // isMarkedForDeletion: boolean;
 }
 
 export interface ReadsDetailListResponse extends Pagination {
   priceMasterDetailList: PriceMasterDetailListItem[];
   priceMasterDetailHeader: PriceMasterDetailHeader;
-  paymentTerms: PaymentTerms[];
-  paymentMethod: PaymentMethod[];
-  currency: Currency[];
-  quantityUnit: QuantityUnit[];
 }

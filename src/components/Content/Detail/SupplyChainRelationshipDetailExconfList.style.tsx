@@ -16,7 +16,7 @@ export const ExConfsHeaderImage = styled.div`
 
 export const ExConfsHeaderInfo = styled.div`
   margin-left: ${rem(30)};
-
+  
   &:first-child {
     margin-left: ${rem(20)};
   }
@@ -40,7 +40,7 @@ export const ExConfsContent = styled.ul`
       }
     }
 
-
+    
   }
 `;
 

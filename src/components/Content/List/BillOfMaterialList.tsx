@@ -2,30 +2,22 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
-  ListHeaderInfo,
-  ListHeaderInfoTop,
-  ListHeaderInfoBottom,
   NoImage,
 } from './List.style';
 import {
-	BillOfMaterialTablesEnum,
-	BillOfMaterialListItem,
-    UserTypeEnum,
+  BillOfMaterialTablesEnum,
+  BillOfMaterialListItem,
+  UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { PublicImage } from '@/components/Image';
-import { Checkbox, BlueButton } from '@/components/Button';
-import { dialogState, setDialog } from '@/store/slices/dialog';
+import { BlueButton } from '@/components/Button';
+import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
 import { formData, onUpdateItem } from '@/pages/bill-of-material/list';
-import { generateImageEquipmentUrl, generateImageProductUrl, toLowerCase } from '@/helpers/common';
+import { generateImageProductUrl } from '@/helpers/common';
 import { rem } from 'polished';
 import { Template as cancelDialogTemplate } from '@/components/Dialog';
 import { texts } from '@/constants/message';
@@ -41,6 +33,7 @@ interface DetailListTableElementProps {
   type: BillOfMaterialTablesEnum;
   display: BillOfMaterialTablesEnum;
   list: BillOfMaterialListItem[];
+  userType: UserTypeEnum;
   onUpdateItem: onUpdateItem;
 }
 
@@ -49,10 +42,11 @@ const DetailListTableElement = ({
                                   type,
                                   display,
                                   list,
+                                  userType,
                                   onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
-  const listType = BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem;
+  const listType = BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem;
   const dispatch = useDispatch();
 
   const renderList = (list: BillOfMaterialListItem[]) => {
@@ -61,7 +55,7 @@ const DetailListTableElement = ({
         return (
           <tr key={index} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`} onClick={() => {
             clickHandler(
-              `/equipment/detail/${toLowerCase(UserTypeEnum.BusinessPartner)}/${item.BillOfMaterial}`,
+              `/bill-of-material/detail/list/${userType}/${item.BillOfMaterial}`,
               router,
             );
           }}>
@@ -88,7 +82,7 @@ const DetailListTableElement = ({
             <td>{item.BillOfMaterial}</td>
             <td>{item.Product}</td>
             <td>{item.ProductDescription}</td>
-            <td>{item.OwnerPlantName}</td>
+            <td>{item.OwnerProductionPlantName}</td>
             <td>{item.ValidityStartDate}</td>
             <td>
               <div>
@@ -165,14 +159,14 @@ export const BillOfMaterialList = ({
                                       onUpdateItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<BillOfMaterialTablesEnum>(
-    BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem
+    BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem
   );
   const summary = [
     '品目画像',
     '部品表',
     '品目コード',
     '品目名',
-    'プラント',
+    'オーナー製造プラント',
     '有効開始日付',
     '',
   ];
@@ -184,9 +178,10 @@ export const BillOfMaterialList = ({
     )}>
       <DetailListTableElement
         summary={summary}
-        type={BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem}
+        type={BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem}
         display={display}
-        list={formData[BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem] || []}
+        userType={UserTypeEnum.OwnerProductionPlantBusinessPartner}
+        list={formData[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem] || []}
         onUpdateItem={onUpdateItem}
       />
     </ListElement>

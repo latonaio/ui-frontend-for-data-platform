@@ -65,10 +65,12 @@ const DetailListTableElement = ({
       return list.map((item, index) => {
         return (
           <tr key={index} className={`record`} onClick={() => {
-            // clickHandler(
-            //   `/supply-chain-relationship/detail/list/${display === SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem ? 'buyer' : 'seller'}/${item.OrderID}`,
-            //   router,
-            // );
+            clickHandler(
+              `/supply-chain-relationship/detail/exconf/list/${
+                display === SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem ? 'buyer' : 'seller'
+              }/${item.SupplyChainRelationshipID}`,
+              router,
+            );
           }}>
             <td>{item.SupplyChainRelationshipID}</td>
             <td>{item.BuyerName}</td>
@@ -89,15 +91,15 @@ const DetailListTableElement = ({
                         children: (
                           cancelDialogTemplate(
                             dispatch,
-                            item.IsMarkedForDeletion ? 'オーダーの削除を取り消しますか？' : 'オーダーを削除しますか？',
+                            item.IsMarkedForDeletion ? 'SCRマスタの削除を取り消しますか？' : 'SCRマスタを削除しますか？',
                             () => {
                               onCancelItem(
                                 !item.IsMarkedForDeletion,
                                 index,
                                 'IsMarkedForDeletion',
                                 {
-                                  Orders: {
-                                    OrderID: item.SupplyChainRelationshipID,
+                                  SupplyChainRelationship: {
+                                    SupplyChainRelationshipID: item.SupplyChainRelationshipID,
                                     IsMarkedForDeletion: !item.IsMarkedForDeletion,
                                   }
                                 },

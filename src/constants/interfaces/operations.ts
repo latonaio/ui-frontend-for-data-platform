@@ -1,22 +1,58 @@
+import { ProductImage } from './product';
+
+interface OperationsImage extends ProductImage {
+}
+
 interface OperationsItem {
-  Operations: number;
+  Operations: string;
   Product: string;
   ProductDescription: string;
-  PlantName: string;
+  OwnerProductionPlantName: string;
   ValidityStartDate: string;
   IsMarkedForDeletion: boolean;
   Images: {
     Operations: OperationsImage;
   };
+  OwnerProductionPlantBusinessPartner: number;
+  OwnerProductionPlant: number;
 }
 
-interface OperationsImage {
-  BusinessPartnerID: number;
-  DocID: string;
-  FileExtension: string;
+interface OperationsDetailListItem {
+  Operations: number;
+  OperationsItem: number;
+  OperationsText: string;
+  ProductionPlantName: string;
+  StandardLotSizeQuantity: string;
+  OperationsUnit: string,
+  ValidityStartDate: string;
+  IsMarkedForDeletion: boolean;
+  OwnerProductionPlantBusinessPartner: number;
+  OwnerProductionPlant: number;
+}
+
+interface OperationsDetailHeader {
+  Operations: number;
+  Product: string;
+  OwnerBusinessPartner: number;
+  OwnerPlant: string;
+  OperationsText: string;
+  OperationsStatus: string;
+  ResponsiblePlannerGroup: string;
+  ValidityStartDate: string;
+  ValidityEndDate: string;
+  CreationDate: string;
+  LastChangeDate: string;
+  PlainLongText: string;
+  IsMarkedForDeletion: boolean;
 }
 
 export type {
+  OperationsDetailListItem,
+  OperationsDetailHeader,
   OperationsItem,
-  OperationsImage,
-}
+};
+
+
+
+
+

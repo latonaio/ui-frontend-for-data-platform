@@ -53,16 +53,16 @@ const DetailListTableElement = ({
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const listType = OperationsTablesEnum.operationsListOwnerBusinessPartnerItem;
+  const listType = OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem;
   const renderList = (list: OperationsItem[]) => {
     if (list && list.length > 0) {
       return list.map((item, index) => {
         return (
           <tr key={index} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`} onClick={() => {
-            // clickHandler(
-            //   `/operations/detail/exconf/list/${toLowerCase(UserTypeEnum.BusinessPartner)}/${item.Operations}`,
-            //   router,
-            // );
+            clickHandler(
+              `/operations/detail/list/${toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)}/${item.Operations}`,
+              router,
+            );
           }}>
             <td>
               {item.Images?.Operations && (
@@ -88,7 +88,7 @@ const DetailListTableElement = ({
             <td>{item.Operations}</td>
             <td>{item.Product}</td>
             <td>{item.ProductDescription}</td>
-            <td>{item.PlantName}</td>
+            <td>{item.OwnerProductionPlantName}</td>
             <td>{item.ValidityStartDate}</td>
             <td>
               <div>
@@ -165,14 +165,14 @@ export const OperationsList = ({
                                       onUpdateItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<OperationsTablesEnum>(
-    OperationsTablesEnum.operationsListOwnerBusinessPartnerItem,
+    OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem,
   );
   const summary = [
     '品目画像',
     '作業手順',
     '品目コード',
     '品目名',
-    'プラント',
+    'オーナー製造プラント',
     '有効開始日付',
     '',
   ];
@@ -184,9 +184,9 @@ export const OperationsList = ({
     )}>
       <DetailListTableElement
         summary={summary}
-        type={OperationsTablesEnum.operationsListOwnerBusinessPartnerItem}
+        type={OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem}
         display={display}
-        list={formData[OperationsTablesEnum.operationsListOwnerBusinessPartnerItem] || []}
+        list={formData[OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem] || []}
         onUpdateItem={onUpdateItem}
       />
     </ListElement>

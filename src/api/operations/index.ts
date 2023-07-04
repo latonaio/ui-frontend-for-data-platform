@@ -1,4 +1,6 @@
-import { DeleteParams } from './model';
+import { DeleteParams,
+	     params,
+         response, } from './model';
 import { apiCall } from '@/api/axios';
 import { methods } from '@/constants';
 

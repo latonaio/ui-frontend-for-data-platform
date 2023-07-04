@@ -26,6 +26,7 @@ export class CacheDatabase extends Tables {
       [OrdersTablesEnum.ordersDetailListSellerItem]: '[OrderID+OrderItem]',
       [OrdersTablesEnum.ordersDetailHeader]: 'OrderID',
       [OrdersTablesEnum.ordersDetail]: '[OrderID+OrderItem+Product]',
+      
       [DeliveryDocumentTablesEnum.deliveryDocumentListEditDeliverToPartyItem]: 'SupplyChainRelationshipID',
       [DeliveryDocumentTablesEnum.deliveryDocumentListEditDeliverFromPartyItem]: 'SupplyChainRelationshipID',
       [DeliveryDocumentTablesEnum.deliveryDocumentListDeliverToPartyItem]: '++id, DeliveryDocument, DeliverToParty, DeliverFromParty, HeaderDeliveryStatus, HeaderBillingStatus',
@@ -34,30 +35,52 @@ export class CacheDatabase extends Tables {
       [DeliveryDocumentTablesEnum.deliveryDocumentDetailListDeliverFromPartyItem]: '[DeliveryDocument+DeliveryDocumentItem]',
       [DeliveryDocumentTablesEnum.deliveryDocumentDetailHeader]: 'DeliveryDocument',
       [DeliveryDocumentTablesEnum.deliveryDocumentDetail]: '[DeliveryDocument+DeliveryDocumentItem+Product]',
+      
       [InvoiceDocumentTablesEnum.invoiceDocumentListBillToPartyItem]: '++id, InvoiceDocument, BillToParty, BillFromParty, HeaderPaymentBlockStatus',
       [InvoiceDocumentTablesEnum.invoiceDocumentListBillFromPartyItem]: '++id, InvoiceDocument, BillToParty, BillFromParty, HeaderPaymentBlockStatus',
       [InvoiceDocumentTablesEnum.invoiceDocumentDetailListBillToPartyItem]: '[InvoiceDocument+InvoiceDocumentItem]',
       [InvoiceDocumentTablesEnum.invoiceDocumentDetailListBillFromPartyItem]: '[InvoiceDocument+InvoiceDocumentItem]',
       [InvoiceDocumentTablesEnum.invoiceDocumentDetailHeader]: 'InvoiceDocument',
+      
       [ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem]: 'ProductionOrder',
       [ProductionOrderTablesEnum.productionOrderDetailListOwnerProductionPlantBusinessPartnerItem]: '[ProductionOrder+ProductionOrderItem]',
       [ProductionOrderTablesEnum.productionOrderDetailHeader]: 'ProductionOrder',
       [ProductionOrderTablesEnum.productionOrderDetail]: '[ProductionOrder+ProductionOrderItem+Product]',
+      
       [ProductTablesEnum.productListBusinessPartnerItem]: 'Product, ProductDescription, ProductGroup, BaseUnit, ValidityStartDate',
       [ProductTablesEnum.productDetailExconfListHeader]: 'Product',
       [ProductTablesEnum.productDetailExconfList]: 'Product',
+      
       [EquipmentTablesEnum.equipmentListBusinessPartnerItem]: 'Equipment, EquipmentDescription, EquipmentGroup, BaseUnit, ValidityStartDate',
+      
       [BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem]: '++id, BusinessPartner',
+      
       [PriceMasterTablesEnum.priceMasterListBuyerItem]: '++id',
       [PriceMasterTablesEnum.priceMasterListSellerItem]: '++id',
-      [PriceMasterTablesEnum.priceMasterDetailListBuyerItem]: '[SupplyChainRelationshipID+OrderItem]',
-      [PriceMasterTablesEnum.priceMasterDetailListSellerItem]: '[SupplyChainRelationshipID+OrderItem]',
-      [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]: '++id',
+      [PriceMasterTablesEnum.priceMasterDetailListItem]: '++id',
+      [PriceMasterTablesEnum.priceMasterDetailHeader]: 'SupplyChainRelationshipID',
+      
+      [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: '++id',
+      [BillOfMaterialTablesEnum.billOfMaterialDetailListOwnerProductionPlantBusinessPartnerItem]: '[BillOfMaterial+BillOfMaterialItem]',
+      [BillOfMaterialTablesEnum.billOfMaterialDetailHeader]: 'BillOfMaterial',
+      
+      [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]: 'Operations',
+      
+      [WorkCenterTablesEnum.workCenterListBusinessPartnerItem]: '++id',
+      
+      [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]: 'ProductionVersion',
+      
       [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: 'Operations',
+      [OperationsTablesEnum.operationsDetailListOwnerProductionPlantBusinessPartnerItem]: '[Operations+OperationsItem]',
+      [OperationsTablesEnum.operationsDetailHeader]: 'Operations',
+      
+      [ProductionVersionTablesEnum.productionVersionDetailListOwnerBusinessPartnerItem]: '[ProductionVersion+ProductionVersionItem]',
+      [ProductionVersionTablesEnum.productionVersionDetailListHeader]: 'ProductionVersion',
+      
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListBuyerItem]: '++id, SupplyChainRelationship, BuyerName, SellerName, DeliveryStatus',
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]: '++id, SupplyChainRelationship, BuyerName, SellerName, DeliveryStatus',
-      [WorkCenterTablesEnum.workCenterListBusinessPartnerItem]: '++id',
-      [ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem]: 'ProductionVersion',
+      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]: 'SupplyChainRelationshipID',
+      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]: 'SupplyChainRelationshipID',
     });
   }
 

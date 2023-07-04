@@ -67,7 +67,7 @@ const productionVersionList: React.FC<PageProps> = (data) => {
       language,
       businessPartner,
       emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
+      userType: toLowerCase(UserTypeEnum.OwnerBusinessPartner),
     });
 
     dispatch(setLoading({ isOpen: false }));

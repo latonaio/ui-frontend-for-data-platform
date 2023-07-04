@@ -3,17 +3,37 @@ import {
   AuthedUser,
 } from '@/constants';
 import { List } from './list';
+import { Detail } from './detail';
 
 export interface BillOfMaterialUserType {
-  ownerBusinessPartner: string;
+  ownerProductionPlantBusinessPartner: string;
 }
 
 class BillOfMaterialCache extends CacheDatabase implements List {
   private list: List;
+  private detail: Detail;
 
   constructor() {
     super();
     this.list = new List();
+    this.detail = new Detail();
+  }
+  async getBillOfMaterialDetailList(
+    billOfMaterial: number,
+    userType: BillOfMaterialUserType[keyof BillOfMaterialUserType],
+    ) {
+    return await this.detail.getBillOfMaterialDetailList(billOfMaterial, userType);
+  }
+
+  async updateBillOfMaterialDetailList(
+    params: {
+      billOfMaterial: number;
+      userType: BillOfMaterialUserType[keyof BillOfMaterialUserType];
+      language: string;
+      businessPartner: number;
+      emailAddress: string;
+    }): Promise<void> {
+    return await this.detail.updateBillOfMaterialDetailList(params);
   }
 
   async getBillOfMaterialList() {

@@ -96,14 +96,14 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
     <Wrapper className={'Wrapper'}>
       <Header title={'データ連携基盤 品目詳細'} className={'text-2xl'} />
       <Main className={'Main'}>
-      <ContentsTop
+        <ContentsTop
           className={'ContentsTopNav'}
           title={'品目詳細を選択してください'}
           searchTextDescription={getSearchTextDescription(
             toUpperCase(data.userType),
             {
               [UserTypeEnum.BusinessPartner]: UserTypeEnum.BusinessPartner,
-            }
+            },
           )}
         />
         {displayData &&

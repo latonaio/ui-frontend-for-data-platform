@@ -38,7 +38,7 @@ export class List extends CacheDatabase {
       userId: params.emailAddress,
     })
 
-    if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {
+    if (params.userType === toLowerCase(UserTypeEnum.OwnerBusinessPartner)) {
       await this.productionVersionListOwnerBusinessPartnerItem.clear();
       await this.productionVersionListOwnerBusinessPartnerItem.bulkAdd(response.productionVersionList || []);
     }

@@ -6,49 +6,51 @@ import {
 } from '@/styles/global/globals.style'
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { SupplyChainRelationshipDetailContent as Content } from '@/components/Content';
+import {
+  SupplyChainRelationshipDetailContent as Content,
+} from '@/components/Content';
 import { ContentsTop } from '@/components/ContentsTop';
 import { getSearchTextDescription } from '@/helpers/pages';
 import { getLocalStorage, toLowerCase, toUpperCase } from '@/helpers/common';
 import {
   AuthedUser,
-  ProductDetailExconfListHeader,
-  ProductDetailExconfList as ProductDetailExconfListType,
-  ProductTablesEnum,
+  SupplyChainRelationshipDetailExconfListHeader,
+  SupplyChainRelationshipDetailExconfList as SupplyChainRelationshipDetailExconfListType,
   UserTypeEnum,
+  SupplyChainRelationshipTablesEnum,
 } from '@/constants';
-import { productCache } from '@/services/cacheDatabase/product';
+import { supplyChainRelationshipCache } from '@/services/cacheDatabase/supplyChainRelationship';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 
 interface PageProps {
-  product: string;
+  supplyChainRelationshipId: number;
   content: string;
   userType: string;
 }
 
 export type DisplayData = {
   content: string;
-  [ProductTablesEnum.productDetailExconfList]: ProductDetailExconfListType | null;
-  [ProductTablesEnum.productDetailExconfListHeader]: ProductDetailExconfListHeader | null;
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]: SupplyChainRelationshipDetailExconfListType | null;
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]: SupplyChainRelationshipDetailExconfListHeader | null;
 } | null;
 
-const ProductDetailExconfList: React.FC<PageProps> = (data) => {
+const SupplyChainRelationshipDetailExconfList: React.FC<PageProps> = (data) => {
   const [displayData, setDisplayData] = useState<DisplayData>(null);
   const dispatch = useDispatch();
   const setFormDataForPage = async (
-    product: string,
+    supplyChainRelationshipId: number,
     content: string,
     userType: string,
   ) => {
-    const detail = await productCache.getProductDetailExconfList(
-      product,
-      UserTypeEnum.BusinessPartner,
+    const detail = await supplyChainRelationshipCache.getSupplyChainRelationshipDetailExconfList(
+      supplyChainRelationshipId,
+      '',
     );
 
     if (
-      detail[ProductTablesEnum.productDetailExconfList] &&
-      detail[ProductTablesEnum.productDetailExconfListHeader]
+      detail[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList] &&
+      detail[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]
     ) {
       setDisplayData({
         ...detail,
@@ -58,7 +60,7 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
   }
 
   const initLoadTabData = async (
-    product: string,
+    supplyChainRelationshipId: number,
     content: string,
     userType: string,
   ) => {
@@ -71,13 +73,13 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
     dispatch(setLoading({ isOpen: true }));
 
     await setFormDataForPage(
-      product,
+      supplyChainRelationshipId,
       content,
       userType,
     );
 
-    await productCache.updateProductDetailExconfList({
-      product,
+    await supplyChainRelationshipCache.updateSupplyChainRelationshipDetailExconfList({
+      supplyChainRelationshipId,
       language,
       businessPartner,
       emailAddress,
@@ -85,7 +87,7 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
     });
 
     await setFormDataForPage(
-      product,
+      supplyChainRelationshipId,
       content,
       userType,
     );
@@ -96,7 +98,7 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
 
   useEffect(() => {
     initLoadTabData(
-      data.product,
+      data.supplyChainRelationshipId,
       data.content,
       data.userType,
     );
@@ -104,15 +106,16 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
 
   return (
     <Wrapper className={'Wrapper'}>
-      <Header title={'データ連携基盤 品目詳細'} className={'text-2xl'} />
+      <Header title={'データ連携基盤 Supply Chain Relationship Master 一覧'} className={'text-2xl'} />
       <Main className={'Main'}>
-      <ContentsTop
+        <ContentsTop
           className={'ContentsTopNav'}
-          title={'品目詳細を照会しています'}
+          title={'サプライチェーンリレーションシップマスタ情報を確認しています'}
           searchTextDescription={getSearchTextDescription(
             toUpperCase(data.userType),
             {
-              [UserTypeEnum.BusinessPartner]: UserTypeEnum.BusinessPartner,
+              [UserTypeEnum.Buyer]: UserTypeEnum.Buyer,
+              [UserTypeEnum.Seller]: UserTypeEnum.Seller,
             }
           )}
         />
@@ -122,25 +125,25 @@ const ProductDetailExconfList: React.FC<PageProps> = (data) => {
           />
         }
       </Main>
-      <Footer hrefPath={`/product/detail/exconf/list/${UserTypeEnum.BusinessPartner}/${data.product}`}></Footer>
+      <Footer hrefPath={`/supply-chain-relationship/detail/exconf/list/${UserTypeEnum.BusinessPartner}/${data.supplyChainRelationshipId}`}></Footer>
     </Wrapper>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
-    product,
+    supplyChainRelationshipId,
     content,
     userType,
   } = context.query;
 
   return {
     props: {
-      product,
+      supplyChainRelationshipId: Number(supplyChainRelationshipId),
       content,
       userType,
     }
   }
 }
 
-export default ProductDetailExconfList;
+export default SupplyChainRelationshipDetailExconfList;

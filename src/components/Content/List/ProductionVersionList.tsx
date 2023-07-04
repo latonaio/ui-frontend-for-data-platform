@@ -67,7 +67,7 @@ const DetailListTableElement = ({
             e.preventDefault();
             e.stopPropagation();
             clickHandler(
-              `production-version/list/${item.ProductionVersion}`,
+              `detail/list/${toLowerCase(UserTypeEnum.OwnerBusinessPartner)}/${item.ProductionVersion}`,
               router
             );
           }}>
@@ -95,7 +95,7 @@ const DetailListTableElement = ({
             <td>{item.Product}</td>
             <td>{item.ProductionVersion}</td>
             <td>{item.ProductDescription}</td>
-            <td>{item.OwnerPlant}</td>
+            <td>{item.OwnerPlantName}</td>
             <td>{item.BillOfMaterial}</td>
             <td>{item.Operations}</td>
             <td>

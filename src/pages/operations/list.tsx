@@ -36,17 +36,17 @@ export type onUpdateItem = (
 ) => void;
 
 export interface editList {
-  [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: TextFieldProps[];
+  [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]: TextFieldProps[];
 }
 
 export interface formData {
-  [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]: OperationsItem[];
+  [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]: OperationsItem[];
   editList: editList;
 }
 
 const OperationsList: React.FC<PageProps> = (data) => {
   const [searchTextDescription, setSearchTextDescription] = useState(
-    OperationsTablesEnum.operationsListOwnerBusinessPartnerItem
+    OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem
   );
   const [formData, setFormData] = useState<formData | any>({});
 
@@ -58,15 +58,15 @@ const OperationsList: React.FC<PageProps> = (data) => {
     setFormData({
       editList: {
         ...createFormDataForEditingArray(
-          list[OperationsTablesEnum.operationsListOwnerBusinessPartnerItem],
+          list[OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem],
           [
-            { keyName: OperationsTablesEnum.operationsListOwnerBusinessPartnerItem },
+            { keyName: OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem },
           ]
         ),
       },
 
-      [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]:
-        list[OperationsTablesEnum.operationsListOwnerBusinessPartnerItem],
+      [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]:
+        list[OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem],
     });
   }
 
@@ -85,7 +85,7 @@ const OperationsList: React.FC<PageProps> = (data) => {
       language,
       businessPartner,
       emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerBusinessPartner),
+      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
     });
 
     await setFormDataForPage();
@@ -137,7 +137,7 @@ const OperationsList: React.FC<PageProps> = (data) => {
       language,
       businessPartner,
       emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerBusinessPartner),
+      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
     });
 
     const itemIdentification = params.OperationsMaster.Operations;
@@ -176,8 +176,8 @@ const OperationsList: React.FC<PageProps> = (data) => {
           searchTextDescription={getSearchTextDescription(
             searchTextDescription,
             {
-              [OperationsTablesEnum.operationsListOwnerBusinessPartnerItem]:
-              UserTypeEnum.OwnerBusinessPartner,
+              [OperationsTablesEnum.operationsListOwnerProductionPlantBusinessPartnerItem]:
+              UserTypeEnum.OwnerProductionPlantBusinessPartner,
             }
           )}
         />

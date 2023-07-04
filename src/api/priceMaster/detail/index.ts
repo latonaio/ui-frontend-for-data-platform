@@ -35,14 +35,10 @@ const readsPagination = async (
 const readsDetailList = async (
   params: ReadsDetailListParams,
 ): Promise<ReadsDetailListResponse> => {
-  const endpointUrl = `priceMaster/detail/list/${params.userType}`;
+  const endpointUrl = `price-master/detail/list/${params.userType}`;
   const response = await apiCall(methods.GET, endpointUrl, {
     userType: params.userType,
-    orderId: params.orderId,
-    itemCompleteDeliveryIsDefined: params.itemCompleteDeliveryIsDefined,
-    // itemDeliveryStatus: params.itemDeliveryStatus,
-    itemDeliveryBlockStatus: params.itemDeliveryBlockStatus,
-    // isCancelled: params.isCancelled,
+    supplyChainRelationshipId: params.supplyChainRelationshipId,
     // isMarkedForDeletion: params.isMarkedForDeletion,
     language: params.language,
     businessPartner: params.businessPartner,

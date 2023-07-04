@@ -13,19 +13,34 @@ interface PriceMasterSellerItem extends PriceMasterItem {
 }
 
 interface PriceMasterDetailListItem {
-  SupplyChainRelationshipID?: number;
-  OrderItem: number;
+  SupplyChainRelationshipID: number;
+  Buyer: number;
+  Seller: number;
+  ConditionRecord: number;
+  ConditionSequentialNumber: number;
+  ConditionValidityEndDate: string;
+  ConditionValidityStartDate: string;
+//   ConditionQuantityUnit: string;
   Product: string;
-  OrderItemTextByBuyer: string;
-  OrderItemTextBySeller: string;
-  OrderQuantityInDeliveryUnit: string;
-  DeliveryUnit: string;
-  ConditionRateValue: string;
-  RequestedDeliveryDate: string;
-  NetAmount: string;
-  IsCancelled: boolean;
-  IsMarkedForDeletion: boolean;
-  PricingProcedureCounter: number;
+  ProductDescription: string;
+  ConditionType: string;
+  CreationDate: string;
+  LastChangeDate: string;
+  ConditionRateValue: number;
+  ConditionRateValueUnit: string;
+  ConditionScaleQuantity: number;
+  ConditionRateRatio: number;
+  ConditionRateRatioUnit: string;
+  ConditionCurrency: string;
+  ConditionIsDeleted: boolean;
+}
+
+interface PriceMasterDetailHeader {
+  SupplyChainRelationshipID: number;
+  Buyer: number;
+  BuyerName: string;
+  Seller: number;
+  SellerName: string;
 }
 
 interface PriceMasterPaymentFormList {
@@ -33,22 +48,6 @@ interface PriceMasterPaymentFormList {
   PaymentMethodList: PriceMasterPaymentMethod[];
   CurrencyList: PriceMasterCurrency[];
   QuantityUnitList: PriceMasterQuantityUnit[];
-}
-
-interface PriceMasterDetailHeader extends PriceMasterPaymentFormList {
-  SupplyChainRelationshipID: number;
-  SellerName: string;
-  Seller: number;
-  BuyerName: string;
-  Buyer: number;
-  DeliveryStatus: string;
-  OrderDate: string;
-  PaymentTerms: string;
-  PaymentTermsName: string;
-  PaymentMethod: string;
-  PaymentMethodName: string;
-  TransactionCurrency: string;
-  OrderType: string;
 }
 
 interface PriceMasterPaymentTerms {
@@ -70,6 +69,7 @@ interface PriceMasterQuantityUnit {
   QuantityUnit: string;
   QuantityUnitName: string;
 }
+
 
 export type{
     PriceMasterItem,

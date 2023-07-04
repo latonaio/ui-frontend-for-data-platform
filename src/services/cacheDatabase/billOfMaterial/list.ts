@@ -12,11 +12,11 @@ import { BillOfMaterialUserType } from './index';
 export class List extends CacheDatabase {
   async getBillOfMaterialList(): Promise<
     {
-      [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]: BillOfMaterialListItem[];
+      [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: BillOfMaterialListItem[];
     }> {
     return {
-      [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]: [
-        ...await this.billOfMaterialListOwnerBusinessPartnerItem
+      [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: [
+        ...await this.billOfMaterialListOwnerProductionPlantBusinessPartnerItem
           .toArray(),
       ]
     }
@@ -38,9 +38,9 @@ export class List extends CacheDatabase {
       userId: params.emailAddress,
     })
 
-    if (params.userType === toLowerCase(UserTypeEnum.OwnerBusinessPartner)) {
-      await this.billOfMaterialListOwnerBusinessPartnerItem.clear();
-      await this.billOfMaterialListOwnerBusinessPartnerItem.bulkAdd(response.billOfMaterialList || []);
+    if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {
+      await this.billOfMaterialListOwnerProductionPlantBusinessPartnerItem.clear();
+      await this.billOfMaterialListOwnerProductionPlantBusinessPartnerItem.bulkAdd(response.billOfMaterialList || []);
     }
   }
 }

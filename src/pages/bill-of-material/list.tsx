@@ -37,17 +37,17 @@ export type onUpdateItem = (
 ) => void;
 
 export interface editList {
-  [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]: TextFieldProps[];
+  [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: TextFieldProps[];
 }
 
 export interface formData {
-  [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]: BillOfMaterialListItem[];
+  [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: BillOfMaterialListItem[];
   editList: editList;
 }
 
 const BillOfMaterialList: React.FC<PageProps> = (data) => {
   const [searchTextDescription, setSearchTextDescription] = useState(
-    BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem
+    BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem
   );
   const [formData, setFormData] = useState<formData | any>({});
 
@@ -59,15 +59,15 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
     setFormData({
       editList: {
         ...createFormDataForEditingArray(
-          list[BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem],
+          list[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem],
           [
-            { keyName: BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem },
+            { keyName: BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem },
           ]
         ),
       },
 
-      [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]:
-        list[BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem],
+      [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]:
+        list[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem],
     });
   }
 
@@ -85,7 +85,7 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
       language,
       businessPartner,
       emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerBusinessPartner),
+      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
     });
 
     await setFormDataForPage();
@@ -138,7 +138,7 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
       language,
       businessPartner,
       emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerBusinessPartner),
+      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
     });
 
     const itemIdentification = params.BillOfMaterialMaster.BillOfMaterial;
@@ -190,8 +190,8 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
           searchTextDescription={getSearchTextDescription(
             searchTextDescription,
             {
-              [BillOfMaterialTablesEnum.billOfMaterialListOwnerBusinessPartnerItem]:
-              UserTypeEnum.OwnerBusinessPartner,
+              [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]:
+              UserTypeEnum.OwnerProductionPlantBusinessPartner,
             }
           )}
         />
@@ -227,7 +227,7 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
                       language,
                       businessPartner,
                       emailAddress,
-                      userType: toLowerCase(UserTypeEnum.OwnerBusinessPartner),
+                      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
                     });
                   })(),
                 ]);

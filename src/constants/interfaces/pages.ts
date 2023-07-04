@@ -190,6 +190,49 @@ interface PriceMasterDetailProps extends ProductDetail {
   }
   BusinessPartner: AuthedUser['businessPartner'];
 }
+interface OperationsDetailProps {
+    Operations: number;
+    OperationsNumber: number;
+    Product: string;
+    OperationsText: string;
+    ProductionPlantName: string;
+    StandardLotSizeQuantity: string;
+    OperationsUnit:string,
+    ValidityStartDate: string;
+    IsMarkedForDeletion: boolean;
+    OwnerProductionPlantBusinessPartner: number;
+    OwnerProductionPlant: number;
+  }
+
+interface BillOfMaterialDetailProps extends ProductDetail {
+  BillOfMaterial: number;
+  // OrderItem: string;
+  // Product: string;
+  // Popup: {
+  //   RequestedDeliveryDate: string;
+  //   RequestedDeliveryTime: string;
+  //   ConfirmedDeliveryDate: string;
+  //   ConfirmedDeliveryTime: string;
+  //   OrderQuantityInBaseUnit: number;
+  //   BaseUnit: string;
+  //   OrderQuantityInDeliveryUnit: number;
+  //   DeliveryUnit: string;
+  //   ConfirmedOrderQuantityByPDTAvailCheckInBaseUnit: number;
+  //   DeliverToPlantBatch: string;
+  //   BatchMgmtPolicyInDeliverToPlant: string;
+  //   DeliverToPlantBatchValidityStartDate: string;
+  //   DeliverToPlantBatchValidityStartTime: string;
+  //   DeliverToPlantBatchValidityEndDate: string;
+  //   DeliverToPlantBatchValidityEndTime: string;
+  //   DeliverFromPlantBatch: string;
+  //   BatchMgmtPolicyInDeliverFromPlant: string;
+  //   DeliverFromPlantBatchValidityStartDate: string;
+  //   DeliverFromPlantBatchValidityStartTime: string;
+  //   DeliverFromPlantBatchValidityEndDate: string;
+  //   DeliverFromPlantBatchValidityEndTime: string;
+  // }
+  // BusinessPartner: AuthedUser['businessPartner'];
+}
 
 export type {
   OrdersProductDetailProps,
@@ -199,4 +242,6 @@ export type {
   ComponentItem,
   OperationItem,
   PriceMasterDetailProps,
+  BillOfMaterialDetailProps,
+  OperationsDetailProps,
 }
