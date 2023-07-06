@@ -24,22 +24,21 @@ import { texts } from '@/constants/message';
 import { rem } from 'polished';
 import { toLowerCase } from '@/helpers/common';
 
-interface onCancelItem {
-  (
-    value: any,
-    index: number,
-    itemType: string,
-    params: any,
-    listType: string,
-  ): void;
-}
+export type onUpdateItem = (
+	value: any,
+	index: number,
+	itemType: string,
+	params: any,
+	listType: string,
+	apiType?: string,
+  ) => void;
 
 
 interface ListProps {
   className?: string;
   formData: formData;
   onClickHandler: (type: BusinessPartnerTablesEnum) => void;
-  // onCancelItem: onCancelItem;
+  onUpdateItem: onUpdateItem;
 }
 
 interface DetailListTableElementProps {
@@ -47,7 +46,7 @@ interface DetailListTableElementProps {
   type: BusinessPartnerTablesEnum;
   display: BusinessPartnerTablesEnum;
   list: BusinessPartnerItem[];
-  // onCancelItem: onCancelItem;
+  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -55,7 +54,7 @@ const DetailListTableElement = ({
                                   type,
                                   display,
                                   list,
-                                  // onCancelItem,
+                                  onUpdateItem,
 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem;
@@ -80,37 +79,37 @@ const DetailListTableElement = ({
                 <BlueButton
                   className={'size-relative'}
                   isFinished={item.IsMarkedForDeletion}
-                  // onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                  //   e.stopPropagation();
-                  //   e.preventDefault();
-                  //
-                  //   dispatch(setDialog({
-                  //     type: 'consent',
-                  //     consent: {
-                  //       isOpen: true,
-                  //       children: (
-                  //         cancelDialogTemplate(
-                  //           dispatch,
-                  //           item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
-                  //           () => {
-                  //             onCancelItem(
-                  //               !item.IsMarkedForDeletion,
-                  //               index,
-                  //               'IsMarkedForDeletion',
-                  //               {
-                  //                 BusinessPartner: {
-                  //                   BusinessPartner: item.BusinessPartner,
-                  //                   IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                  //                 }
-                  //               },
-                  //               listType,
-                  //             );
-                  //           },
-                  //         )
-                  //       ),
-                  //     }
-                  //   }));
-                  // }}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                  
+                    dispatch(setDialog({
+                      type: 'consent',
+                      consent: {
+                        isOpen: true,
+                        children: (
+                          cancelDialogTemplate(
+                            dispatch,
+                            item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
+                            () => {
+							onUpdateItem(
+                                !item.IsMarkedForDeletion,
+                                index,
+                                'IsMarkedForDeletion',
+                                {
+                                  BusinessPartner: {
+                                    BusinessPartner: item.BusinessPartner,
+                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                                  }
+                                },
+                                listType,
+                              );
+                            },
+                          )
+                        ),
+                      }
+                    }));
+                  }}
                 >
                   {texts.button.delete}
                 </BlueButton>
@@ -146,7 +145,7 @@ export const BusinessPartnerList = ({
                              formData,
                              onClickHandler,
                              className,
-                             // onCancelItem,
+                             onUpdateItem,
                            }: ListProps) => {
   const summaryData = {
     [BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem]: [
@@ -180,7 +179,7 @@ export const BusinessPartnerList = ({
         type={BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem}
         display={display}
         list={formData[BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem] || []}
-        // onCancelItem={onCancelItem}
+        onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

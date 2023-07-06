@@ -1,11 +1,13 @@
 import { CacheDatabase } from '..';
 import {
   AuthedUser,
+  BillOfMaterialDetailProps,
   BillOfMaterialTablesEnum,
   UserTypeEnum,
   BillOfMaterialDetailListItem,
   BillOfMaterialDetailHeader,
 } from '@/constants';
+import { productInfoReduce } from '@/helpers/common';
 import { readsDetailList } from '@/api/billOfMaterial/detail';
 import { toLowerCase } from '@/helpers/common';
 import { BillOfMaterialUserType } from '.';

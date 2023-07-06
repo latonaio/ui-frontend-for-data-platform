@@ -1,20 +1,9 @@
-import { clsx } from 'clsx';
-//エラーが起こって動かなくなるためコメントアウト
-// import {
-//   Column,
-//   SupplyChainRelationshipInfo,
-//   Detail,
-//   SupplyChainRelationshipDetailTop,
-// } from './Detail.style';
-import { generateImageProductUrl, toLowerCase, toUpperCase } from '@/helpers/common';
+
+import { toUpperCase } from '@/helpers/common';
 import React, { useState } from 'react';
-// import { Detail } from '@/components/Content/Detail/Detail';
 import {
-  AuthedUser, EquipmentItem, EquipmentTablesEnum,
-  ProductImage,
   SupplyChainRelationshipTablesEnum,
   texts,
-  UserTypeEnum,
 } from '@/constants';
 import { ProductImageLabel } from '@/components/Label';
 import { rem } from 'polished';
@@ -28,16 +17,9 @@ import {
   ExConfsHeaderWrapper
 } from '@/components/Content/Detail/SupplyChainRelationshipDetailExconfList.style';
 import {
-  List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  ListHeaderInfo,
-  ListHeaderInfoTop,
-  ListHeaderInfoBottom,
-  NoImage,
 } from '@/components/Content/List/List.style';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { summaryHead } from '@/components/Content/List/List';
 import { BlueButton } from '@/components/Button';
@@ -77,10 +59,10 @@ const DeliveryPlantListElement = (
 	  <tr key={indexNumber} className={`record ${item.IsMarkedForDeletion ? 'disabled' : ''}`}>
 		<td>{item.SupplyChainRelationshipDeliveryID}</td>
 		<td>{item.SupplyChainRelationshipDeliveryPlantID}</td>
-		<td>{item.DeliverToParty}</td>
-		<td>{item.DeliverFromParty}</td>
-		<td>{item.DeliverToPlant}</td>
-		<td>{item.DeliverFromPlant}</td>
+		<td>{item.DeliverToPartyName}</td>
+		<td>{item.DeliverFromPartyName}</td>
+		<td>{item.DeliverToPlantName}</td>
+		<td>{item.DeliverFromPlantName}</td>
 		<td>
 		  <div>
 			<BlueButton
@@ -204,15 +186,15 @@ export const SupplyChainRelationshipDetailContent= ({
 }) => {
   const contentDisplayData = {
     images: data &&
-      data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]?.Images,
+      data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]?.Images,
     params: data &&
-      data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]
-        ?.Existences.find(
+      data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]
+        ?.Contents.find(
           (item) => item.Content === toUpperCase(data.content))
         ?.Param,
   }
 
-  const supplyChainRelationshipDetailExconfListHeader = data && data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader];
+  const supplyChainRelationshipDetailHeader = data && data[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader];
 
   const summary = [
     {
@@ -272,13 +254,13 @@ export const SupplyChainRelationshipDetailContent= ({
             className={'flex justify-start items-center'}
           >
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>SCR: {supplyChainRelationshipDetailExconfListHeader?.SupplyChainRelationshipID}</ExConfsHeaderInfoTop>
+              <ExConfsHeaderInfoTop>SCR: {supplyChainRelationshipDetailHeader?.SupplyChainRelationshipID}</ExConfsHeaderInfoTop>
             </ExConfsHeaderInfo>
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>Buyer: {supplyChainRelationshipDetailExconfListHeader?.BuyerName}</ExConfsHeaderInfoTop>
+              <ExConfsHeaderInfoTop>Buyer: {supplyChainRelationshipDetailHeader?.BuyerName}</ExConfsHeaderInfoTop>
             </ExConfsHeaderInfo>
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>Seller: {supplyChainRelationshipDetailExconfListHeader?.SellerName}</ExConfsHeaderInfoTop>
+              <ExConfsHeaderInfoTop>Seller: {supplyChainRelationshipDetailHeader?.SellerName}</ExConfsHeaderInfoTop>
             </ExConfsHeaderInfo>
           </div>
         </ExConfsHeaderWrapper>

@@ -8,18 +8,18 @@ import {
   ListHeaderInfoBottom,
   ListHeaderInfo,
   NoImage,
-} from '../List/List.style';
+} from './List.style';
 import { BillOfMaterialDetailHeader, BillOfMaterialTablesEnum } from '@/constants';
 import { BillOfMaterialDetailListItem } from '@/constants';
-import { clickHandler, summaryHead } from '../List/List';
-import { BackButton, BlueButton } from '@/components/Button';
+import { clickHandler, summaryHead } from './List';
+import { BackButton, BlueButton, GreenButton } from '@/components/Button';
+import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { formData, onUpdateItem } from '@/pages/bill-of-material/detail/list/[userType]/[billOfMaterial]';
+import { formData } from '@/pages/bill-of-material/detail/list/[userType]/[billOfMaterial]';
+import { Template as cancelDialogTemplate } from '@/components/Dialog/Consent/Consent';
 import { texts } from '@/constants/message';
 import { rem } from 'polished';
 import { generateImageProductUrl } from '@/helpers/common';
-import { Template as cancelDialogTemplate } from '@/components/Dialog';
-import { setDialog } from '@/store/slices/dialog';
 
 export interface BillOfMaterialDetailListProps {
   className?: string;
@@ -30,7 +30,6 @@ export interface BillOfMaterialDetailListProps {
     billOfMaterialDetailHeader?: BillOfMaterialDetailHeader;
   };
   formData: formData;
-  onUpdateItem: onUpdateItem;
 }
 
 interface DetailListTableElementProps {
@@ -39,7 +38,6 @@ interface DetailListTableElementProps {
   summary: string[];
   list: BillOfMaterialDetailListItem[];
   formData: formData;
-  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -47,10 +45,8 @@ const DetailListTableElement = ({
                                   billOfMaterial,
                                   summary,
                                   list,
-								  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
-  const listType = BillOfMaterialTablesEnum.billOfMaterialDetailListOwnerProductionPlantBusinessPartnerItem;
   const dispatch = useDispatch();
 
   const renderList = (
@@ -70,46 +66,11 @@ const DetailListTableElement = ({
             <td>{item.ComponentProductBaseUnit}</td>
             <td>{item.ValidityStartDate}</td>
             <td>
-              <div>
+              <div className={'w-full inline-flex justify-evenly items-center'}>
                 <BlueButton
-                  isFinished={item.IsMarkedForDeletion}
                   className={'size-relative'}
-                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    dispatch(setDialog({
-                      type: 'consent',
-                      consent: {
-                        isOpen: true,
-                        children: (
-                          cancelDialogTemplate(
-                            dispatch,
-                            item.IsMarkedForDeletion ?
-                              '部品表の削除を取り消しますか？' : '部品表を削除しますか？',
-                            () => {
-                              onUpdateItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-                                  BillOfMaterial: {
-                                    BillOfMaterial: item.BillOfMaterial,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  },
-                                  accepter: ['Item']
-                                },
-                                listType,
-                                'deletes',
-                              );
-                            },
-                          )
-                        ),
-                      }
-                    }));
-                  }}
-                >
-                  {texts.button.delete}
+                  isFinished={item.IsMarkedForDeletion}
+                >{texts.button.delete}
                 </BlueButton>
               </div>
             </td>
@@ -143,7 +104,6 @@ export const BillOfMaterialDetailList = ({
                                    data,
                                    className,
                                    formData,
-								   onUpdateItem
                                  }: BillOfMaterialDetailListProps) => {
 
   const summary = [
@@ -218,7 +178,6 @@ export const BillOfMaterialDetailList = ({
         billOfMaterial={billOfMaterial}
         list={formData[BillOfMaterialTablesEnum.billOfMaterialDetailList] || []}
         formData={formData}
-		onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

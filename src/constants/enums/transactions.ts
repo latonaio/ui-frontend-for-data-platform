@@ -101,6 +101,8 @@ export enum SupplyChainRelationshipTablesEnum {
   supplyChainRelationshipListSellerItem = 'supplyChainRelationshipListSellerItem',
   supplyChainRelationshipDetailExconfList = 'supplyChainRelationshipDetailExconfList',
   supplyChainRelationshipDetailExconfListHeader = 'supplyChainRelationshipDetailExconfListHeader',
+  supplyChainRelationshipDetail = 'supplyChainRelationshipDetail',
+  supplyChainRelationshipDetailHeader = 'supplyChainRelationshipDetailHeader',
 }
 
 export enum WorkCenterTablesEnum {

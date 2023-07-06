@@ -10,4 +10,3 @@ export * from './PriceMasterDetailList';
 export * from './OperationsDetailList';
 export * from './ProductionVersionDetailList';
 export * from './SupplyChainRelationshipDetailExconfList';
-export * from './BillOfMaterialDetailList';

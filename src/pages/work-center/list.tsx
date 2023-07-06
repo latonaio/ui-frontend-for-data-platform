@@ -21,7 +21,7 @@ import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
 import { updates } from '@/api/deliveryDocument';
-import { deleteEquipment } from '@/api/equipment';
+import { deleteWorkCenter } from '@/api/workCenter';
 
 interface PageProps {
 }
@@ -121,7 +121,7 @@ const WorkCenterList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deleteEquipment({
+      await deleteWorkCenter({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,

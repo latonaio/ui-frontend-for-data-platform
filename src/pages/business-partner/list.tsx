@@ -16,8 +16,9 @@ import { businessPartnerCache } from '@/services/cacheDatabase/businessPartner';
 import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpers/pages';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
-import { cancels, deletes } from '@/api/orders';
+import { deleteBusinessPartner } from '@/api/businessPartner';
 import { TextFieldProps } from '@/components/Form';
+import { updates } from '@/api/deliveryDocument';
 
 interface PageProps {
 }
@@ -83,86 +84,74 @@ const BusinessPartnerList: React.FC<PageProps> = (data) => {
     await setFormDataForPage();
   }
 
-  // const onCancelItem = async (
-  //   value: any,
-  //   updateItemIndex: number,
-  //   updateItemKey: string,
-  //   params: any,
-  //   listType: string,
-  // ) => {
-  //   const {
-  //     language,
-  //     businessPartner,
-  //     emailAddress,
-  //   }: AuthedUser = getLocalStorage('auth');
-  //
-  //   dispatch(setLoading({ isOpen: true }));
-  //
-  //   const accepter = (params: any) => {
-  //     if (!params.hasOwnProperty('accepter')) {
-  //       return {
-  //         ...params,
-  //         accepter: ['Header'],
-  //       };
-  //     }
-  //
-  //     return params;
-  //   }
-  //
-  //   if (updateItemKey === 'IsCancelled') {
-  //     await cancels({
-  //       ...params,
-  //       business_partner: businessPartner,
-  //       accepter: accepter(params).accepter,
-  //     });
-  //   }
-  //
-  //   if (updateItemKey === 'IsMarkedForDeletion') {
-  //     await deletes({
-  //       ...params,
-  //       business_partner: businessPartner,
-  //       accepter: accepter(params).accepter,
-  //     });
-  //   }
-  //
-  //   businessPartnerCache.updateBusinessPartnerList({
-  //     language,
-  //     businessPartner,
-  //     emailAddress,
-  //     userType: toLowerCase(UserTypeEnum.BusinessPartner),
-  //   });
-  //
-  //   const itemIdentification = params.Orders.OrderID;
-  //
-  //   const updateData = {
-  //     ...formData,
-  //     [listType]: [
-  //       ...formData[listType].map((item: any, index: number) => {
-  //         if (item.BusinessPartner === itemIdentification) {
-  //           return {
-  //             ...item,
-  //             [updateItemKey]: value,
-  //           }
-  //         }
-  //         return { ...item }
-  //       })
-  //     ],
-  //     editList: {
-  //       ...formData.editList,
-  //       [listType]: [
-  //         ...formData.editList[listType].map((item: any, index: number) => {
-  //           return {
-  //             isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
-  //           };
-  //         })
-  //       ]
-  //     }
-  //   };
-  //
-  //   setFormData(updateData);
-  //
-  //   dispatch(setLoading({ isOpen: false }));
-  // }
+  const onUpdateItem = async (
+    value: any,
+    updateItemIndex: number,
+    updateItemKey: string,
+    params: any,
+    listType: string,
+    apiType: string = 'update',
+  ) => {
+    const {
+      language,
+      businessPartner,
+      emailAddress,
+    }: AuthedUser = getLocalStorage('auth');
+
+    dispatch(setLoading({ isOpen: true }));
+
+    const accepter = (params: any) => {
+      if (!params.hasOwnProperty('accepter')) {
+        return {
+          ...params,
+          accepter: ['Header'],
+        };
+      }
+
+      return params;
+    }
+
+    if (apiType === 'delete') {
+      await deleteBusinessPartner({
+        ...params,
+        business_partner: businessPartner,
+        accepter: accepter(params).accepter,
+      });
+    } else {
+      await updates({
+        ...params,
+        accepter: accepter(params).accepter,
+      });
+    }
+
+    businessPartnerCache.updateBusinessPartnerList({
+      language,
+      businessPartner,
+      emailAddress,
+      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
+    });
+
+    const itemIdentification = params.BillOfMaterialMaster.BillOfMaterial;
+
+    const updateData = {
+      ...formData,
+      [listType]: [
+        ...formData[listType].map((item: any, index: number) => {
+          if (item.BillOfMaterial === itemIdentification) {
+            return {
+              ...item,
+              [updateItemKey]: value,
+            }
+          }
+          return { ...item }
+        })
+      ],
+    };
+
+    setFormData(updateData);
+
+    dispatch(setLoading({ isOpen: false }));
+  }
 
   useEffect(() => {
     initLoadTabData();
@@ -189,7 +178,7 @@ const BusinessPartnerList: React.FC<PageProps> = (data) => {
               setSearchTextDescription(toggleDisplayEnum);
               setDisplayData(UserTypeEnum.BusinessPartner);
             }}
-            // onCancelItem={onCancelItem}
+            onUpdateItem={onUpdateItem}
           />}
       </Main>
       <Footer></Footer>

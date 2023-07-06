@@ -22,19 +22,19 @@ import {
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
 import { PublicImage } from '@/components/Image';
-import { Checkbox, GreenButton } from '@/components/Button';
+import { Checkbox, GreenButton, BlueButton } from '@/components/Button';
 import { dialogState, setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { Button } from '@material-ui/core';
-import { formData } from '@/pages/production-order/list';
+import { formData, onUpdateItem } from '@/pages/production-order/list';
 import { toLowerCase } from '@/helpers/common';
 import { texts } from '@/constants/message';
-import { rem } from 'polished';
+import { Template as cancelDialogTemplate } from '@/components/Dialog';
 
 interface ListProps {
   className?: string;
   formData: formData;
-  // onCancelItem: onCancelItem;
+  onUpdateItem: onUpdateItem;
 }
 
 interface DetailListTableElementProps {
@@ -42,7 +42,7 @@ interface DetailListTableElementProps {
   type: ProductionOrderTablesEnum;
   display: ProductionOrderTablesEnum;
   list: ProductionOrderItem[];
-  // onCancelItem: onCancelItem;
+  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -50,7 +50,7 @@ const DetailListTableElement = ({
                                   type,
                                   display,
                                   list,
-                                  // onCancelItem,
+                                  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem;
@@ -88,41 +88,82 @@ const DetailListTableElement = ({
               />
             </td>
             <td>
-              <div className={'w-full inline-flex justify-evenly items-center'}>
-                <GreenButton
+              <div>
+			  <GreenButton
                   className={'size-relative'}
                   isFinished={item.IsCancelled}
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     e.preventDefault();
 
-                    if (item.IsCancelled) { return; }
-
-                    // dispatch(setDialog(cancelDialog(dispatch, () => {
-                    //   onCancelItem(
-                    //     true,
-                    //     index,
-                    //     'IsCancelled',
-                    //     {
-                    //       InvoiceDocument: {
-                    //         InvoiceDocument: item.InvoiceDocument,
-                    //         IsCancelled: true,
-                    //       }
-                    //     },
-                    //     listType,
-                    //     'cancel',
-                    //   );
-                    // })));
+                    dispatch(setDialog({
+                      type: 'consent',
+                      consent: {
+                        isOpen: true,
+                        children: (
+                          cancelDialogTemplate(
+                            dispatch,
+                            item.IsCancelled  ?
+                              'オーダーのキャンセルを取り消しますか？' : 'オーダーをキャンセルしますか？',
+                            () => {
+                              onUpdateItem(
+                                !item.IsCancelled,
+                                index,
+                                'IsCancelled',
+                                {
+                                  ProductionOrder: {
+                                    ProductionOrder: item.ProductionOrder,
+                                    IsCancelled: !item.IsCancelled,
+                                  }
+                                },
+                                listType,
+                              );
+                            },
+                          )
+                        ),
+                      }
+                    }));
                   }}
                 >
                   {texts.button.cancel}
                 </GreenButton>
-                {/*<i*/}
-                {/*  className="icon-schedule"*/}
-                {/*  style={{*/}
-                {/*    fontSize: rem(32),*/}
-                {/*  }}*/}
-                {/*/>*/}
+                <BlueButton
+                  className={'size-relative'}
+                  isFinished={item.IsMarkedForDeletion}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    dispatch(setDialog({
+                      type: 'consent',
+                      consent: {
+                        isOpen: true,
+                        children: (
+                          cancelDialogTemplate(
+                            dispatch,
+                            item.IsMarkedForDeletion ? 'オーダーの削除を取り消しますか？' : 'オーダーを削除しますか？',
+                            () => {
+                              onUpdateItem(
+                                !item.IsMarkedForDeletion,
+                                index,
+                                'IsMarkedForDeletion',
+                                {
+                                  ProductionOrder: {
+                                    ProductionOrder: item.ProductionOrder,
+                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                                  }
+                                },
+                                listType,
+                              );
+                            },
+                          )
+                        ),
+                      }
+                    }));
+                  }}
+                >
+                  {texts.button.delete}
+                </BlueButton>
               </div>
             </td>
           </tr>
@@ -153,7 +194,7 @@ const DetailListTableElement = ({
 export const ProductionOrderList = ({
                                       formData,
                                       className,
-                                      // onCancelItem,
+                                      onUpdateItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<ProductionOrderTablesEnum>(
     ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem,
@@ -181,7 +222,7 @@ export const ProductionOrderList = ({
         type={ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem}
         display={display}
         list={formData[ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem] || []}
-        // onCancelItem={onCancelItem}
+        onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

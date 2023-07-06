@@ -16,8 +16,9 @@ import {
   AuthedUser,
   SupplyChainRelationshipDetailExconfListHeader,
   SupplyChainRelationshipDetailExconfList as SupplyChainRelationshipDetailExconfListType,
+  SupplyChainRelationshipDetailList as SupplyChainRelationshipDetailListType,
   UserTypeEnum,
-  SupplyChainRelationshipTablesEnum,
+  SupplyChainRelationshipTablesEnum, SupplyChainRelationshipDetailHeader,
 } from '@/constants';
 import { supplyChainRelationshipCache } from '@/services/cacheDatabase/supplyChainRelationship';
 import { useDispatch } from 'react-redux';
@@ -31,11 +32,11 @@ interface PageProps {
 
 export type DisplayData = {
   content: string;
-  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]: SupplyChainRelationshipDetailExconfListType | null;
-  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]: SupplyChainRelationshipDetailExconfListHeader | null;
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]: SupplyChainRelationshipDetailListType | null;
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]: SupplyChainRelationshipDetailHeader | null;
 } | null;
 
-const SupplyChainRelationshipDetailExconfList: React.FC<PageProps> = (data) => {
+const SupplyChainRelationshipDetail: React.FC<PageProps> = (data) => {
   const [displayData, setDisplayData] = useState<DisplayData>(null);
   const dispatch = useDispatch();
   const setFormDataForPage = async (
@@ -43,14 +44,14 @@ const SupplyChainRelationshipDetailExconfList: React.FC<PageProps> = (data) => {
     content: string,
     userType: string,
   ) => {
-    const detail = await supplyChainRelationshipCache.getSupplyChainRelationshipDetailExconfList(
+    const detail = await supplyChainRelationshipCache.getSupplyChainRelationshipDetail(
       supplyChainRelationshipId,
-      '',
+      data.userType,
     );
 
     if (
-      detail[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList] &&
-      detail[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]
+      detail[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail] &&
+      detail[SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]
     ) {
       setDisplayData({
         ...detail,
@@ -78,12 +79,12 @@ const SupplyChainRelationshipDetailExconfList: React.FC<PageProps> = (data) => {
       userType,
     );
 
-    await supplyChainRelationshipCache.updateSupplyChainRelationshipDetailExconfList({
+    await supplyChainRelationshipCache.updateSupplyChainRelationshipDetail({
       supplyChainRelationshipId,
       language,
       businessPartner,
       emailAddress,
-      userType: toLowerCase(UserTypeEnum.BusinessPartner),
+      userType: toLowerCase(userType),
     });
 
     await setFormDataForPage(
@@ -125,7 +126,7 @@ const SupplyChainRelationshipDetailExconfList: React.FC<PageProps> = (data) => {
           />
         }
       </Main>
-      <Footer hrefPath={`/supply-chain-relationship/detail/exconf/list/${UserTypeEnum.BusinessPartner}/${data.supplyChainRelationshipId}`}></Footer>
+      <Footer hrefPath={`/supply-chain-relationship/detail/exconf/list/${data.userType}/${data.supplyChainRelationshipId}`}></Footer>
     </Wrapper>
   )
 }
@@ -146,4 +147,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default SupplyChainRelationshipDetailExconfList;
+export default SupplyChainRelationshipDetail;

@@ -17,8 +17,7 @@ import { billOfMaterialCache } from '@/services/cacheDatabase/billOfMaterial';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { rem } from 'polished';
-import { updates } from '@/api/deliveryDocument';
-import { deleteBillOfMaterial } from '@/api/billOfMaterial';
+import { deletes, updates } from '@/api/deliveryDocument';
 
 interface PageProps {
   billOfMaterial: number;
@@ -33,15 +32,6 @@ interface SelectProps {
     value: string;
   };
 }
-
-export type onUpdateItem = (
-	value: any,
-	index: number,
-	itemType: string,
-	params: any,
-	listType: string,
-	apiType?: string,
-  ) => void;
 
 export interface formData {
   paymentTerms: SelectProps;
@@ -114,90 +104,6 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
   };
 
   const dispatch = useDispatch();
-
-  const onUpdateItem = async (
-    value: any,
-    updateItemIndex: number,
-    updateItemKey: string,
-    params: any,
-    listType: string,
-    apiType: string = 'update',
-  ) => {
-    const {
-      language,
-      businessPartner,
-      emailAddress,
-    }: AuthedUser = getLocalStorage('auth');
-
-    dispatch(setLoading({ isOpen: true }));
-
-    const accepter = (params: any) => {
-      if (!params.hasOwnProperty('accepter')) {
-        return {
-          ...params,
-          accepter: ['Header'],
-        };
-      }
-
-      return params;
-    }
-
-    if (apiType === 'deletes') {
-      await deleteBillOfMaterial({
-        ...params,
-        business_partner: businessPartner,
-        accepter: accepter(params).accepter,
-      });
-    } else {
-      await updates({
-        ...params,
-        accepter: accepter(params).accepter,
-      });
-    }
-
-    billOfMaterialCache.updateBillOfMaterialList({
-      language,
-      businessPartner,
-      emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
-    });
-
-    const itemIdentification = params.BillOfMaterial.BillOfMaterial;
-
-    const updateData = {
-      ...formData,
-      [listType]: [
-        ...formData[listType].map((item: any, index: number) => {
-          if (item.BillOfMaterial === itemIdentification) {
-            return {
-              ...item,
-              [updateItemKey]: value,
-            }
-          }
-          return { ...item }
-        })
-      ],
-    };
-
-    // if (apiType !== 'cancel') {
-    //   updateData.editList = {
-    //     ...formData.editList,
-    //     [listType]: [
-    //       ...formData.editList[listType].map((item: any, index: number) => {
-    //         return {
-    //           isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
-    //         };
-    //       })
-    //     ]
-    //   }
-    // }
-
-    setFormData(updateData);
-
-    dispatch(setLoading({ isOpen: false }));
-  }
-
-
 
   useEffect(() => {
     initLoadTabData(data.billOfMaterial, data.userType);
@@ -294,7 +200,6 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
             formData={formData}
             userType={data.userType}
             billOfMaterial={data.billOfMaterial}
-			onUpdateItem={onUpdateItem}
           />
         }
       </Main>

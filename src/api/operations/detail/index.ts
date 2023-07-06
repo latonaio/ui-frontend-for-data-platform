@@ -15,7 +15,6 @@ const readsDetailList = async (
     language: params.language,
     businessPartner: params.businessPartner,
     userId: params.userId,
-    operations: params.operations,
   });
   return { ...response.data };
 };

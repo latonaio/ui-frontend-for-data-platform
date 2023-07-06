@@ -9,7 +9,7 @@ import {
   ListHeaderInfoBottom,
   NoImage,
 } from '../List/List.style';
-import { BackButton, GreenButton } from '@/components/Button';
+import { BackButton, BlueButton } from '@/components/Button';
 import {
   ProductionVersionTablesEnum,
   ProductionVersionDetailListItem,
@@ -19,10 +19,12 @@ import {
 import { clickHandler, summaryHead } from '../List/List';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { formData } from '@/pages/production-version/detail/list/[userType]/[productionVersion]';
+import { formData, onUpdateItem } from '@/pages/production-version/detail/list/[userType]/[productionVersion]';
 import { texts } from '@/constants/message';
 import { generateImageProductUrl, toLowerCase } from '@/helpers/common';
 import { rem } from 'polished';
+import { setDialog } from '@/store/slices/dialog';
+import { Template as cancelDialogTemplate } from '@/components/Dialog';
 
 
 export interface ProductionVersionDetailListProps {
@@ -35,6 +37,7 @@ export interface ProductionVersionDetailListProps {
     productionVersionDetailListHeader?: ProductionVersionDetailListHeader;
   };
   formData: formData;
+  onUpdateItem: any;
 }
 
 interface DetailListTableElementProps {
@@ -44,6 +47,7 @@ interface DetailListTableElementProps {
   businessPartner?: number;
   list: ProductionVersionDetailListItem[];
   formData: formData;
+  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -53,8 +57,10 @@ const DetailListTableElement = ({
 								  businessPartner,
                                   list,
                                   formData,
+								  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
+  const listType = ProductionVersionTablesEnum.productionVersionDetailListOwnerBusinessPartnerItem;
   const dispatch = useDispatch();
 
   const renderList = (list: ProductionVersionDetailListItem[]) => {
@@ -79,18 +85,46 @@ const DetailListTableElement = ({
             <td>{item.ValidityStartDate}</td>
             <td>
               <div className={'w-full inline-flex justify-evenly items-center'}>
-                <GreenButton
-                  className={'size-relative'}
+			  <BlueButton
                   isFinished={item.IsMarkedForDeletion}
+                  className={'size-relative'}
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     e.preventDefault();
 
-                    if (item.IsMarkedForDeletion) { return; }
+                    dispatch(setDialog({
+                      type: 'consent',
+                      consent: {
+                        isOpen: true,
+                        children: (
+                          cancelDialogTemplate(
+                            dispatch,
+                            item.IsMarkedForDeletion ?
+                              '品目を削除を取り消しますか？' : '品目を削除しますか？',
+                            () => {
+                              onUpdateItem(
+                                !item.IsMarkedForDeletion,
+                                index,
+                                'IsMarkedForDeletion',
+                                {
+                                  BillOfMaterialMaster: {
+                                    Operations: item.Operations,
+                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                                  },
+                                  accepter: ['General']
+                                },
+                                listType,
+                                'delete',
+                              );
+                            },
+                          )
+                        ),
+                      }
+                    }));
                   }}
                 >
-                  {texts.button.cancel}
-                </GreenButton>
+                  {texts.button.delete}
+                </BlueButton>
                 {/*<i*/}
                 {/*  className="icon-schedule"*/}
                 {/*  style={{*/}
@@ -129,6 +163,7 @@ export const ProductionVersionDetailList = ({
                                             data,
                                             className,
                                             formData,
+											onUpdateItem,
                                           }: ProductionVersionDetailListProps) => {
   const summary = [
     '製造バージョン明細番号',
@@ -191,6 +226,7 @@ export const ProductionVersionDetailList = ({
 		businessPartner={data.businessPartner}
         list={formData[ProductionVersionTablesEnum.productionVersionDetailList] || []}
         formData={formData}
+        onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

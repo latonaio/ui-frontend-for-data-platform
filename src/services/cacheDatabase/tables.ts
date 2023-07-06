@@ -82,6 +82,8 @@ import {
   SupplyChainRelationshipSellerItem,
   SupplyChainRelationshipDetailExconfList,
   SupplyChainRelationshipDetailExconfListHeader,
+  SupplyChainRelationshipDetailList,
+  SupplyChainRelationshipDetailHeader,
   SupplyChainRelationshipTablesEnum,
 
 } from '@/constants';
@@ -148,4 +150,6 @@ export class Tables extends Dexie {
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]!: Table<SupplyChainRelationshipSellerItem>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]!: Table<SupplyChainRelationshipDetailExconfListHeader>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]!: Table<SupplyChainRelationshipDetailExconfList>;
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]!: Table<SupplyChainRelationshipDetailHeader>;
+  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]!: Table<SupplyChainRelationshipDetailList>;
 }

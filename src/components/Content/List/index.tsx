@@ -15,3 +15,4 @@ export * from './PriceMasterList';
 export * from './BillOfMaterialList';
 export * from './OperationsList';
 export * from './WorkCenterList';
+export * from './BillOfMaterialDetailList';
