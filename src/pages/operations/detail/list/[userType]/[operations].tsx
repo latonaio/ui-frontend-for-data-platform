@@ -21,8 +21,7 @@ import { createFormDataForEditingArray, getSearchTextDescription, createFormData
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
-import { updates } from '@/api/deliveryDocument';
-import { deleteOperations } from '@/api/operations';
+import { deletes, updates } from '@/api/operations';
 
 
 
@@ -132,7 +131,7 @@ const OperationsDetailList: React.FC<PageProps> = (data) => {
 		  }
 
 		  if (apiType === 'delete') {
-			await deleteOperations({
+			await deletes({
 			  ...params,
 			  business_partner: businessPartner,
 			  accepter: accepter(params).accepter,

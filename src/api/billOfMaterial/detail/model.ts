@@ -40,6 +40,6 @@ export interface ReadsDetailListParams extends UIKeyGeneral {
 }
 
 export interface ReadsDetailListResponse extends Pagination {
-  billOfMaterialDetailList: BillOfMaterialDetailListItem[];
-  billOfMaterialDetailHeader: BillOfMaterialDetailHeader;
+  Item: BillOfMaterialDetailListItem[];
+  Header: BillOfMaterialDetailHeader;
 }

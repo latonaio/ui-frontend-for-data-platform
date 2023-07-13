@@ -2,14 +2,14 @@ import {
   ReadsDetailListParams,
   ReadsDetailListResponse,
 } from './model';
-import { apiCall } from '@/api/axios';
+import { apiCallReads } from '@/api/axios';
 import { methods } from '@/constants';
 
 const readsDetailList = async (
   params: ReadsDetailListParams,
 ): Promise<ReadsDetailListResponse> => {
   const endpointUrl = `invoice-document/detail/list/${params.userType}`;
-  const response = await apiCall(methods.GET, endpointUrl, {
+  const response = await apiCallReads(methods.GET, endpointUrl, {
     itemPaymentBlockStatus: params.itemPaymentBlockStatus,
     // isCancelled: params.isCancelled,
     language: params.language,

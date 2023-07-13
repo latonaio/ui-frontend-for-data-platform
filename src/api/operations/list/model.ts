@@ -7,5 +7,5 @@ export interface params extends UIKeyGeneral {
 }
 
 export interface response {
-  operationsList: OperationsItem[]
+  Header: OperationsItem[]
 }

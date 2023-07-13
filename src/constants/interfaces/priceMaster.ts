@@ -33,6 +33,7 @@ interface PriceMasterDetailListItem {
   ConditionRateRatioUnit: string;
   ConditionCurrency: string;
   ConditionIsDeleted: boolean;
+  IsMarkedForDeletion: boolean;
 }
 
 interface PriceMasterDetailHeader {

@@ -2,14 +2,14 @@ import {
   params,
   response,
 } from './model';
-import { apiCall } from '@/api/axios';
+import { apiCallReads } from '@/api/axios';
 import { methods } from '@/constants';
 
 const reads = async (
   params: params,
 ): Promise<response> => {
   const endpointUrl = `equipment/list/${params.userType}`;
-  const response = await apiCall(methods.GET, endpointUrl, {
+  const response = await apiCallReads(methods.GET, endpointUrl, {
     // isMarkedForDeletion: params.isMarkedForDeletion,
     language: params.language,
     businessPartner: params.businessPartner,

@@ -11,5 +11,5 @@ export interface ReadsParams extends UIKeyGeneral {
 }
 
 export interface ReadsResponse {
-  supplyChainRelationshipList: SupplyChainRelationshipBuyerItem[] | SupplyChainRelationshipSellerItem[]
+  General: SupplyChainRelationshipBuyerItem[] | SupplyChainRelationshipSellerItem[]
 }

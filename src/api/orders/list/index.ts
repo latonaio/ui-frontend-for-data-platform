@@ -1,4 +1,4 @@
-import { apiCall } from '../../axios';
+import { apiCallReads } from '../../axios';
 import { methods } from '@/constants/enums';
 import {
   ReadsParams,
@@ -9,7 +9,7 @@ const reads = async (
   params: ReadsParams,
 ): Promise<ReadsResponse> => {
   const endpointUrl = `orders/list/${params.userType}`;
-  const response = await apiCall(methods.GET, endpointUrl, {
+  const response = await apiCallReads(methods.GET, endpointUrl, {
     headerCompleteDeliveryIsDefined: params.headerCompleteDeliveryIsDefined,
     headerDeliveryStatus: params.headerDeliveryStatus,
     headerDeliveryBlockStatus: params.headerDeliveryBlockStatus,

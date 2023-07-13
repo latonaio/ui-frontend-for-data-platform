@@ -6,3 +6,11 @@ export interface DeleteParams extends Accepter {
     IsMarkedForDeletion: boolean;
   }
 }
+
+export interface UpdateParams extends Accepter {
+  BillOfMaterial: {
+    BillOfMaterial: number;
+    IsMarkedForDeletion: boolean;
+  }
+}
+

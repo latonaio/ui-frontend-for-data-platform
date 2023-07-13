@@ -81,8 +81,11 @@ export class CacheDatabase extends Tables {
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]: '++id, SupplyChainRelationship, BuyerName, SellerName, DeliveryStatus',
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]: 'SupplyChainRelationshipID',
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]: 'SupplyChainRelationshipID',
+
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]: 'SupplyChainRelationshipID',
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]: 'SupplyChainRelationshipID',
+      [BusinessPartnerTablesEnum.businessPartnerDetailExconfList]: 'BusinessPartner',
+      [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]: 'BusinessPartner',
     });
   }
 

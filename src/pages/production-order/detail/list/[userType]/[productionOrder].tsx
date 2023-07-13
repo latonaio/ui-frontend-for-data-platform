@@ -13,20 +13,16 @@ import {
   ProductionOrderTablesEnum,
   ProductionOrderDetailListItem,
   UserTypeEnum,
-  InvoiceDocumentTablesEnum,
 } from '@/constants';
 import { getLocalStorage, toUpperCase } from '@/helpers/common';
 import {
   createFormDataForSelectObject,
-  createFormDataForEditingArray,
-  createEditFormData,
   getSearchTextDescription,
 } from '@/helpers/pages';
 import { productionOrderCache } from '@/services/cacheDatabase/productionOrder';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
-import { updates } from '@/api/deliveryDocument';
-import { deleteProductionOrder } from '@/api/productionOrder';
+import { deletes, updates } from '@/api/productionOrder';
 import { toLowerCase } from '@/helpers/common';
 interface PageProps {
   productionOrder: number;
@@ -132,7 +128,7 @@ const ProductionOrderDetailList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deleteProductionOrder({
+      await deletes({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,

@@ -7,5 +7,5 @@ export interface params extends UIKeyGeneral {
 }
 
 export interface response {
-  billOfMaterialList: BillOfMaterialListItem[]
+  Header: BillOfMaterialListItem[]
 }

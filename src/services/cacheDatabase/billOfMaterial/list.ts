@@ -40,7 +40,7 @@ export class List extends CacheDatabase {
 
     if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {
       await this.billOfMaterialListOwnerProductionPlantBusinessPartnerItem.clear();
-      await this.billOfMaterialListOwnerProductionPlantBusinessPartnerItem.bulkAdd(response.billOfMaterialList || []);
+      await this.billOfMaterialListOwnerProductionPlantBusinessPartnerItem.bulkAdd(response.Header || []);
     }
   }
 }

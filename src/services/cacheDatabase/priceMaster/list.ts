@@ -45,10 +45,10 @@ export class List extends CacheDatabase {
 
     if (params.userType === toLowerCase(UserTypeEnum.Buyer)) {
       await this.priceMasterListBuyerItem.clear();
-      await this.priceMasterListBuyerItem.bulkAdd(response.priceMasterList || []);
+      await this.priceMasterListBuyerItem.bulkAdd(response.Header || []);
     } else {
       await this.priceMasterListSellerItem.clear();
-      await this.priceMasterListSellerItem.bulkAdd(response.priceMasterList || []);
+      await this.priceMasterListSellerItem.bulkAdd(response.Header || []);
     }
   }
 }

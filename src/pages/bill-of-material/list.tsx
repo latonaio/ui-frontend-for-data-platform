@@ -21,7 +21,7 @@ import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
 import { updates } from '@/api/deliveryDocument';
-import { deleteBillOfMaterial } from '@/api/billOfMaterial';
+import { deletes } from '@/api/billOfMaterial';
 import { rem } from 'polished';
 
 interface PageProps {
@@ -122,7 +122,9 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deleteBillOfMaterial({
+      console.log('deleteBillOfMaterial')
+
+      await deletes({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,
@@ -141,7 +143,7 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
       userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
     });
 
-    const itemIdentification = params.BillOfMaterialMaster.BillOfMaterial;
+    const itemIdentification = params.BillOfMaterial.BillOfMaterial;
 
     const updateData = {
       ...formData,

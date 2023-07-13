@@ -1,10 +1,11 @@
 import { DeleteParams,
 	     params,
-         response, } from './model';
+         response,
+		 UpdateParams, } from './model';
 import { apiCall } from '@/api/axios';
 import { methods } from '@/constants';
 
-const deleteOperations = async (
+const deletes = async (
   params: DeleteParams,
 ): Promise<any> => {
   const endpointUrl = 'DPFM_API_OPERATIONS_SRV/deletes';
@@ -12,6 +13,15 @@ const deleteOperations = async (
   return { ...response.data.message };
 };
 
+const updates = async (
+	params: UpdateParams,
+  ): Promise<any> => {
+	const endpointUrl = 'DPFM_API_OPERATIONS_SRV/updates';
+	const response = await apiCall(methods.POST, endpointUrl, params);
+	return { ...response.data.message };
+  };
+
 export {
-  deleteOperations,
+  deletes,
+  updates
 }

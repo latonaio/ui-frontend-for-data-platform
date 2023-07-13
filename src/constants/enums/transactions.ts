@@ -57,6 +57,8 @@ export enum ProductTablesEnum {
 
 export enum BusinessPartnerTablesEnum {
   businessPartnerListBusinessPartnerItem = 'businessPartnerListBusinessPartnerItem',
+  businessPartnerDetailExconfList = 'businessPartnerDetailExconfList',
+  businessPartnerDetailExconfListHeader = 'businessPartnerDetailExconfListHeader',
 
 }
 

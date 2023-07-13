@@ -8,16 +8,22 @@ import { Header } from '@/components/Header';
 import { ContentsTop } from '@/components/ContentsTop';
 import { Footer } from '@/components/Footer';
 import { BillOfMaterialDetailList as Content } from '@/components/Content';
-import { AuthedUser, BillOfMaterialDetailListItem, BillOfMaterialTablesEnum, UserTypeEnum } from '@/constants';
+import {
+  AuthedUser,
+  BillOfMaterialDetailListItem,
+  BillOfMaterialTablesEnum,
+  UserTypeEnum,
+} from '@/constants';
 import { getLocalStorage, toLowerCase, toUpperCase } from '@/helpers/common';
 import {
+  createFormDataForSelectObject,
   getSearchTextDescription,
 } from '@/helpers/pages';
 import { billOfMaterialCache } from '@/services/cacheDatabase/billOfMaterial';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { rem } from 'polished';
-import { deletes, updates } from '@/api/deliveryDocument';
+import { deletes, updates } from '@/api/billOfMaterial';
 
 interface PageProps {
   billOfMaterial: number;
@@ -33,6 +39,14 @@ interface SelectProps {
   };
 }
 
+export type onUpdateItem =(
+  value: any,
+  updateItemIndex: number,
+  updateItemKey: string,
+  params: any,
+  apiType: string,
+) => void;
+
 export interface formData {
   paymentTerms: SelectProps;
   paymentMethod: SelectProps;
@@ -46,12 +60,17 @@ export interface formData {
 
 const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
   const [displayData, setDisplayData] = useState({});
-  const [formData, setFormData] = useState<formData | any>({});
+  const [formData, setFormData] = useState<formData | any>({
+    editList: {},
+    [BillOfMaterialTablesEnum.billOfMaterialDetailList]: [],
+  });
 
   const setFormDataForPage = async (billOfMaterial: number, userType: string) => {
     const list = await billOfMaterialCache.getBillOfMaterialDetailList(billOfMaterial, userType);
 
     setFormData({
+      ...createFormDataForSelectObject([]),
+      editList: {},
       [BillOfMaterialTablesEnum.billOfMaterialDetailList]: list.billOfMaterialDetailList || [],
     });
 
@@ -76,17 +95,6 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
 
     dispatch(setLoading({ isOpen: true }));
 
-    await Promise.all([
-      (async () => {
-        await billOfMaterialCache.updateBillOfMaterialList({
-          language,
-          businessPartner,
-          emailAddress,
-          userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
-        });
-      })(),
-    ]);
-
     await billOfMaterialCache.updateBillOfMaterialDetailList({
       billOfMaterial,
       userType,
@@ -102,6 +110,87 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
       userType,
     );
   };
+
+  const onUpdateItem = async (
+    value: any,
+    updateItemIndex: number,
+    updateItemKey: string,
+    params: any,
+    apiType: string = 'update',
+  ) => {
+    const {
+      language,
+      businessPartner,
+      emailAddress,
+    }: AuthedUser = getLocalStorage('auth');
+
+    dispatch(setLoading({ isOpen: true }));
+
+    const accepter = (params: any) => {
+      if (!params.hasOwnProperty('accepter')) {
+        return {
+          ...params,
+          accepter: ['Header'],
+        };
+      }
+
+      return params;
+    }
+
+    if (apiType === 'delete') {
+      await deletes({
+        ...params,
+        business_partner: businessPartner,
+        accepter: accepter(params).accepter,
+      });
+    } else {
+      await updates({
+        ...params,
+        accepter: accepter(params).accepter,
+      });
+    }
+
+    await billOfMaterialCache.updateBillOfMaterialDetailList({
+      billOfMaterial: data.billOfMaterial,
+      userType: data.userType,
+      language,
+      businessPartner,
+      emailAddress,
+    });
+
+    const paramsItem = params.BillOfMaterial.Item[0].BillOfMaterialItem;
+
+    const editListKeyName = updateItemKey.replace(/^./g, (g) => g[0].toLowerCase());
+
+    const updateData = {
+      ...formData,
+      [BillOfMaterialTablesEnum.billOfMaterialDetailList]: [
+        ...formData[BillOfMaterialTablesEnum.billOfMaterialDetailList].map((item: any, index: number) => {
+          if (item.BillOfMaterialItem === paramsItem) {
+            return {
+              ...item,
+              [updateItemKey]: value,
+            }
+          }
+          return { ...item }
+        })
+      ],
+      // editList: {
+      //   ...formData.editList,
+      //   [editListKeyName]: [
+      //     ...formData.editList[editListKeyName].map((item: any, index: number) => {
+      //       return {
+      //         isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
+      //       };
+      //     })
+      //   ]
+      // }
+    };
+
+    setFormData(updateData);
+
+    dispatch(setLoading({ isOpen: false }));
+  }
 
   const dispatch = useDispatch();
 
@@ -151,14 +240,6 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
 
                 await Promise.all([
                   (async () => {
-                    await billOfMaterialCache.updateBillOfMaterialList({
-                      language,
-                      businessPartner,
-                      emailAddress,
-                      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
-                    });
-                  })(),
-                  (async () => {
                     await billOfMaterialCache.updateBillOfMaterialDetailList({
                       billOfMaterial: data.billOfMaterial,
                       userType: data.userType,
@@ -167,6 +248,7 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
                       emailAddress,
                     });
                   })(),
+
                 ]);
 
                 dispatch(setLoading({ isOpen: false }));
@@ -200,6 +282,7 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
             formData={formData}
             userType={data.userType}
             billOfMaterial={data.billOfMaterial}
+            onUpdateItem={onUpdateItem}
           />
         }
       </Main>

@@ -109,18 +109,18 @@ const DetailListTableElement = ({
                           cancelDialogTemplate(
                             dispatch,
                             item.IsMarkedForDeletion ?
-                              '品目を削除を取り消しますか？' : '品目を削除しますか？',
+                              '部品表の削除を取り消しますか？' : '部品表を削除しますか？',
                             () => {
                               onUpdateItem(
                                 !item.IsMarkedForDeletion,
                                 index,
                                 'IsMarkedForDeletion',
                                 {
-                                  BillOfMaterialMaster: {
+                                  BillOfMaterial: {
                                     BillOfMaterial: item.BillOfMaterial,
                                     IsMarkedForDeletion: !item.IsMarkedForDeletion,
                                   },
-                                  accepter: ['General']
+                                  accepter: ['Header']
                                 },
                                 listType,
                                 'delete',

@@ -20,8 +20,9 @@ import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpe
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
-import { updates } from '@/api/deliveryDocument';
-import { deleteProduct } from '@/api/product';
+import { deletes, updates } from '@/api/product';
+import { rem } from 'polished';
+import { operationsCache } from '@/services/cacheDatabase/operations';
 
 interface PageProps {
 }
@@ -122,7 +123,7 @@ const ProductList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deleteProduct({
+      await deletes({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,
@@ -195,6 +196,68 @@ const ProductList: React.FC<PageProps> = (data) => {
             }
           )}
         />
+        <div style={{
+          marginBottom: rem(20),
+          textAlign: 'right'
+        }}>
+          <div
+            className={'inline-flex justify-end items-center'}
+            style={{
+              fontSize: rem(13),
+              color: '#48bdd7',
+              cursor: 'pointer',
+            }}
+          >
+            <i
+              className="icon-retweet"
+              style={{
+                fontSize: rem(24),
+              }}
+              onClick={async () => {
+                const {
+                  language,
+                  businessPartner,
+                  emailAddress,
+                }: AuthedUser = getLocalStorage('auth');
+
+                dispatch(setLoading({ isOpen: true }));
+
+                await Promise.all([
+                  (async () => {
+                    await productCache.updateProductList({
+                      language,
+                      businessPartner,
+                      emailAddress,
+                      userType: toLowerCase(UserTypeEnum.BusinessPartner),
+                    });
+                  })(),
+                ]);
+
+                dispatch(setLoading({ isOpen: false }));
+              }}
+            />
+            キャッシュの更新の実行
+          </div>
+          <div
+            className={'inline- justify-end items-center'}
+            style={{
+              fontSize: rem(13),
+              cursor: 'pointer',
+              color: '#4865d7',
+            }}
+          >
+            <i
+              className="icon-refresh"
+              style={{
+                fontSize: rem(24),
+              }}
+              onClick={async () => {
+                await initLoadTabData();
+              }}
+            />
+            描画の実行
+          </div>
+        </div>
         {formData &&
           <Content
             formData={formData}

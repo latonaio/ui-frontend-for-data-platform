@@ -20,8 +20,9 @@ import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpe
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
-import { updates } from '@/api/deliveryDocument';
-import { deleteOperations } from '@/api/operations';
+import { deletes, updates } from '@/api/operations';
+import { rem } from 'polished';
+import { deliveryDocumentCache } from '@/services/cacheDatabase/deliveryDocument';
 
 interface PageProps {
 }
@@ -121,7 +122,7 @@ const OperationsList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deleteOperations({
+      await deletes({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,
@@ -140,7 +141,7 @@ const OperationsList: React.FC<PageProps> = (data) => {
       userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
     });
 
-    const itemIdentification = params.OperationsMaster.Operations;
+    const itemIdentification = params.Operations.Operations;
 
     const updateData = {
       ...formData,
@@ -181,6 +182,68 @@ const OperationsList: React.FC<PageProps> = (data) => {
             }
           )}
         />
+        <div style={{
+          marginBottom: rem(20),
+          textAlign: 'right'
+        }}>
+          <div
+            className={'inline-flex justify-end items-center'}
+            style={{
+              fontSize: rem(13),
+              color: '#48bdd7',
+              cursor: 'pointer',
+            }}
+          >
+            <i
+              className="icon-retweet"
+              style={{
+                fontSize: rem(24),
+              }}
+              onClick={async () => {
+                const {
+                  language,
+                  businessPartner,
+                  emailAddress,
+                }: AuthedUser = getLocalStorage('auth');
+
+                dispatch(setLoading({ isOpen: true }));
+
+                await Promise.all([
+                  (async () => {
+                    await operationsCache.updateOperationsList({
+                      language,
+                      businessPartner,
+                      emailAddress,
+                      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
+                    });
+                  })(),
+                ]);
+
+                dispatch(setLoading({ isOpen: false }));
+              }}
+            />
+            キャッシュの更新の実行
+          </div>
+          <div
+            className={'inline- justify-end items-center'}
+            style={{
+              fontSize: rem(13),
+              cursor: 'pointer',
+              color: '#4865d7',
+            }}
+          >
+            <i
+              className="icon-refresh"
+              style={{
+                fontSize: rem(24),
+              }}
+              onClick={async () => {
+                await initLoadTabData();
+              }}
+            />
+            描画の実行
+          </div>
+        </div>
         {formData &&
           <Content
             formData={formData}

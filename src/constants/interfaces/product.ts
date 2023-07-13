@@ -11,7 +11,7 @@ interface ProductDetailExconfList {
 
 interface ProductItem {
   Product: string;
-  ProductDescription: string;
+  ProductName: string;
   ProductGroup: string;
   ProductGroupName: string;
   BaseUnit: string;

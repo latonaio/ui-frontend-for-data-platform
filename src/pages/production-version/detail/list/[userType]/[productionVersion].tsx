@@ -21,8 +21,7 @@ import { createFormDataForEditingArray, getSearchTextDescription, createFormData
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
-import { updates } from '@/api/deliveryDocument';
-import { deleteProdutionVersion } from '@/api/productionVersion';
+import { deletes, updates } from '@/api/productionVersion';
 import { get } from 'http';
 import { toLowerCase } from '@/helpers/common';
 
@@ -131,7 +130,7 @@ const ProductionVersionDetailList: React.FC<PageProps> = (data) => {
 		  }
 
 		  if (apiType === 'delete') {
-			await deleteProdutionVersion({
+			await deletes({
 			  ...params,
 			  business_partner: businessPartner,
 			  accepter: accepter(params).accepter,

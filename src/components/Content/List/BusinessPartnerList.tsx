@@ -82,7 +82,7 @@ const DetailListTableElement = ({
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     e.preventDefault();
-                  
+
                     dispatch(setDialog({
                       type: 'consent',
                       consent: {
@@ -92,7 +92,7 @@ const DetailListTableElement = ({
                             dispatch,
                             item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
                             () => {
-							onUpdateItem(
+                              onUpdateItem(
                                 !item.IsMarkedForDeletion,
                                 index,
                                 'IsMarkedForDeletion',
@@ -100,14 +100,16 @@ const DetailListTableElement = ({
                                   BusinessPartner: {
                                     BusinessPartner: item.BusinessPartner,
                                     IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  }
+                                  },
+                                  accepter: ['General'],
                                 },
                                 listType,
+                                'delete',
                               );
                             },
                           )
                         ),
-                      }
+                      },
                     }));
                   }}
                 >

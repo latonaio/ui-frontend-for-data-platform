@@ -76,7 +76,7 @@ const DetailListTableElement = ({
                     item.Images?.Product?.BusinessPartnerID ?
                       item.Images?.Product?.BusinessPartnerID.toString() : null, item.Images?.Product || {}
                   )}
-                  alt={`${item.ProductDescription}`}
+                  alt={`${item.ProductName}`}
                 />
               )}
               {!item.Images?.Product && (
@@ -87,8 +87,8 @@ const DetailListTableElement = ({
               )}
             </td>
             <td>{item.Product}</td>
-            <td>{item.ProductDescription}</td>
-            <td>{item.ProductGroupName}</td>
+            <td>{item.ProductName}</td>
+            <td>{item.ProductGroup}</td>
             <td>{item.BaseUnit}</td>
             <td>{item.ValidityStartDate}</td>
             <td>

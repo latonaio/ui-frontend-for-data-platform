@@ -13,11 +13,22 @@ import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
 import { rem } from 'polished';
+import { cancels, deletes, updates } from '@/api/priceMaster';
+
 
 interface PageProps {
   supplyChainRelationshipId: number;
   userType: string;
 }
+
+export type onUpdateItem = (
+	value: any,
+	index: number,
+	itemType: string,
+	params: any,
+	listType: string,
+	apiType?: string,
+  ) => void;
 
 interface SelectProps {
   currentValue?: any;
@@ -117,7 +128,198 @@ const PriceMasterDetailList: React.FC<PageProps> = (data) => {
     );
   };
 
+  const onUpdateItem =async (
+	value: any,
+    updateItemIndex: number,
+    updateItemKey: string,
+    params: any,
+    listType: string,
+	operations: number,
+    apiType: string = 'update',
+	) => {
+		const {
+			language,
+			businessPartner,
+			emailAddress,
+		  }: AuthedUser = getLocalStorage('auth');
+	  
+		  dispatch(setLoading({ isOpen: true }));
+	  
+		  const accepter = (params: any) => {
+			if (!params.hasOwnProperty('accepter')) {
+			  return {
+				...params,
+				accepter: ['Header'],
+			  };
+			}
+	  
+			return params;
+		  }
+
+		  if (apiType === 'delete') {
+			await deletes({
+			  ...params,
+			  business_partner: businessPartner,
+			  accepter: accepter(params).accepter,
+			});
+		  } else {
+			await updates({
+			  ...params,
+			  accepter: accepter(params).accepter,
+			});
+		  }
+
+		  await Promise.all([
+			(async () => {
+			  await priceMasterCache.updatePriceMasterList({
+				language,
+				businessPartner,
+				emailAddress,
+				userType: toLowerCase(UserTypeEnum.Buyer),
+			  });
+			})(),
+			(async () => {
+			  await priceMasterCache.updatePriceMasterList({
+				language,
+				businessPartner,
+				emailAddress,
+				userType: toLowerCase(UserTypeEnum.Seller),
+			  });
+			})(),
+		  ]);
+
+		  const itemIdentification = params.OperationslMaster.Oeratins;
+
+    const updateData = {
+      ...formData,
+      [listType]: [
+        ...formData[listType].map((item: any, index: number) => {
+          if (item.BillOfMaterial === itemIdentification) {
+            return {
+              ...item,
+              [updateItemKey]: value,
+            }
+          }
+          return { ...item }
+        })
+      ],
+    };
+
+    // if (apiType !== 'cancel') {
+    //   updateData.editList = {
+    //     ...formData.editList,
+    //     [listType]: [
+    //       ...formData.editList[listType].map((item: any, index: number) => {
+    //         return {
+    //           isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
+    //         };
+    //       })
+    //     ]
+    //   }
+    // }
+
+    setFormData(updateData);
+
+    dispatch(setLoading({ isOpen: false }));
+  }
+
   const dispatch = useDispatch();
+
+  const onCancelItem = async (
+    value: any,
+    updateItemIndex: number,
+    updateItemKey: string,
+    params: any,
+    listType: string,
+  ) => {
+    const {
+      language,
+      businessPartner,
+      emailAddress,
+    }: AuthedUser = getLocalStorage('auth');
+
+    dispatch(setLoading({ isOpen: true }));
+
+    const accepter = (params: any) => {
+      if (!params.hasOwnProperty('accepter')) {
+        return {
+          ...params,
+          accepter: ['Header'],
+        };
+      }
+
+      return params;
+    }
+
+    if (updateItemKey === 'IsCancelled') {
+      await cancels({
+        ...params,
+        business_partner: businessPartner,
+        accepter: accepter(params).accepter,
+      });
+    }
+
+    if (updateItemKey === 'IsMarkedForDeletion') {
+      await deletes({
+        ...params,
+        business_partner: businessPartner,
+        accepter: accepter(params).accepter,
+      });
+    }
+
+    priceMasterCache.updatePriceMasterList({
+      language,
+      businessPartner,
+      emailAddress,
+      userType: toLowerCase(UserTypeEnum.Buyer),
+    });
+
+    priceMasterCache.updatePriceMasterList({
+      language,
+      businessPartner,
+      emailAddress,
+      userType: toLowerCase(UserTypeEnum.Seller),
+    });
+
+    // priceMasterCache.updatePriceMasterDetailList({
+    //   orderId: params.PriceMaster.OrderID,
+    //   userType: displayData,
+    //   language,
+    //   businessPartner,
+    //   emailAddress,
+    // });
+
+    const itemIdentification = params.PriceMaster.OrderID;
+
+    const updateData = {
+      ...formData,
+      [listType]: [
+        ...formData[listType].map((item: any, index: number) => {
+          if (item.OrderID === itemIdentification) {
+            return {
+              ...item,
+              [updateItemKey]: value,
+            }
+          }
+          return { ...item }
+        })
+      ],
+      editList: {
+        ...formData.editList,
+        [listType]: [
+          ...formData.editList[listType].map((item: any, index: number) => {
+            return {
+              isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
+            };
+          })
+        ]
+      }
+    };
+
+    setFormData(updateData);
+
+    dispatch(setLoading({ isOpen: false }));
+  }
 
   useEffect(() => {
     initLoadTabData(data.supplyChainRelationshipId, data.userType);
@@ -234,6 +436,7 @@ const PriceMasterDetailList: React.FC<PageProps> = (data) => {
             data={displayData}
             formData={formData}
             userType={data.userType}
+			onUpdateItem={onUpdateItem}
           />}
       </Main>
       <Footer hrefPath={`/price-master/list`}></Footer>

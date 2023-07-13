@@ -39,6 +39,8 @@ import {
   // Business Partner
   BusinessPartnerTablesEnum,
   BusinessPartnerItem,
+  BusinessPartnerDetailExconfList,
+  BusinessPartnerDetailExconfListHeader,
 
   // Equipment
   EquipmentTablesEnum,
@@ -152,4 +154,7 @@ export class Tables extends Dexie {
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]!: Table<SupplyChainRelationshipDetailExconfList>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]!: Table<SupplyChainRelationshipDetailHeader>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]!: Table<SupplyChainRelationshipDetailList>;
+
+  [BusinessPartnerTablesEnum.businessPartnerDetailExconfList]!: Table<BusinessPartnerDetailExconfList>;
+  [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]!: Table<BusinessPartnerDetailExconfListHeader>;
 }

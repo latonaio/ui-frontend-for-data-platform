@@ -1,4 +1,4 @@
-import { apiCall } from '../../axios';
+import { apiCallReads } from '../../axios';
 import { methods } from '@/constants/enums';
 import {
   ReadsDetailParams,
@@ -12,7 +12,7 @@ const readsDetail = async (
   params: ReadsDetailParams,
 ): Promise<ReadsDetailResponse> => {
   const endpointUrl = `orders/detail/${params.orderId}/${params.orderItem}/${params.userType}/${params.product}`;
-  const response = await apiCall(methods.GET, endpointUrl, {
+  const response = await apiCallReads(methods.GET, endpointUrl, {
     language: params.language,
     businessPartner: params.businessPartner,
     userId: params.userId,
@@ -24,7 +24,7 @@ const readsPagination = async (
   params: ReadsDetailParams,
 ): Promise<ReadsPaginationResponse> => {
   const endpointUrl = `orders/detail/pagination/${params.orderId}/${params.orderItem}/${params.userType}/${params.product}`;
-  const response = await apiCall(methods.GET, endpointUrl, {
+  const response = await apiCallReads(methods.GET, endpointUrl, {
     language: params.language,
     businessPartner: params.businessPartner,
     userId: params.userId,
@@ -36,7 +36,7 @@ const readsDetailList = async (
   params: ReadsDetailListParams,
 ): Promise<ReadsDetailListResponse> => {
   const endpointUrl = `orders/detail/list/${params.userType}`;
-  const response = await apiCall(methods.GET, endpointUrl, {
+  const response = await apiCallReads(methods.GET, endpointUrl, {
     userType: params.userType,
     orderId: params.orderId,
     itemCompleteDeliveryIsDefined: params.itemCompleteDeliveryIsDefined,

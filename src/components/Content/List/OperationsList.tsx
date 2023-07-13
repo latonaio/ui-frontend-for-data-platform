@@ -65,20 +65,20 @@ const DetailListTableElement = ({
             );
           }}>
             <td>
-              {item.Images?.Operations && (
+              {item.Images?.Product && (
                 <img
                   className={'m-auto'}
                   style={{
                     width: rem(60),
                   }}
                   src={item.Images && generateImageProductUrl(
-                    item.Images?.Operations?.BusinessPartnerID ?
-                      item.Images?.Operations?.BusinessPartnerID.toString() : null, item.Images?.Operations || {}
+                    item.Images?.Product?.BusinessPartnerID ?
+                      item.Images?.Product?.BusinessPartnerID.toString() : null, item.Images?.Product || {}
                   )}
                   alt={`${item.ProductDescription}`}
                 />
               )}
-              {!item.Images?.Operations && (
+              {!item.Images?.Product && (
                 <NoImage>
                   <div>No</div>
                   <div>Image</div>
@@ -107,18 +107,18 @@ const DetailListTableElement = ({
                           cancelDialogTemplate(
                             dispatch,
                             item.IsMarkedForDeletion ?
-                              '作業手順明細を削除を取り消しますか？' : '作業手順明細を削除しますか？',
+                              '作業手順を削除を取り消しますか？' : '作業手順を削除しますか？',
                             () => {
                               onUpdateItem(
                                 !item.IsMarkedForDeletion,
                                 index,
                                 'IsMarkedForDeletion',
                                 {
-                                  OperationsMaster: {
+                                  Operations: {
                                     Operations: item.Operations,
                                     IsMarkedForDeletion: !item.IsMarkedForDeletion,
                                   },
-                                  accepter: ['General']
+                                  accepter: ['Header']
                                 },
                                 listType,
                                 'delete',

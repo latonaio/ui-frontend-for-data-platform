@@ -1,5 +1,5 @@
 
-import { toUpperCase } from '@/helpers/common';
+import { generateImageProductUrl, toLowerCase, toUpperCase } from '@/helpers/common';
 import React, { useState } from 'react';
 import {
   SupplyChainRelationshipTablesEnum,

@@ -2,40 +2,32 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
-  ListHeaderInfo,
-  ListHeaderInfoTop,
-  ListHeaderInfoBottom,
   NoImage,
 } from './List.style';
 import {
-  InvoiceDocumentTablesEnum,
-  InvoiceDocumentListItem,
-  BuyerItem,
-  SellerItem,
-  OrdersTablesEnum,
-  ProductionVersionTablesEnum, ProductionVersionListItem, UserTypeEnum, ProductionOrderTablesEnum,
+  ProductionVersionTablesEnum,
+  ProductionVersionListItem,
+  UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { PublicImage } from '@/components/Image';
-import { BlueButton, Checkbox, GreenButton } from '@/components/Button';
-import { dialogState, setDialog } from '@/store/slices/dialog';
+import { BlueButton } from '@/components/Button';
+import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
-import { formData } from '@/pages/production-version/list';
+import { formData, onUpdateItem } from '@/pages/production-version/list';
 import { generateImageEquipmentUrl, toLowerCase } from '@/helpers/common';
 import { texts } from '@/constants/message';
 import { rem } from 'polished';
+import { Template as cancelDialogTemplate } from '@/components/Dialog';
+
 
 interface ListProps {
   className?: string;
   formData: formData;
   // onCancelItem: onCancelItem;
+  onUpdateItem: onUpdateItem;
 }
 
 interface DetailListTableElementProps {
@@ -44,6 +36,7 @@ interface DetailListTableElementProps {
   display: ProductionVersionTablesEnum;
   list: ProductionVersionListItem[];
   // onCancelItem: onCancelItem;
+  onUpdateItem: onUpdateItem;
 }
 
 
@@ -54,6 +47,7 @@ const DetailListTableElement = ({
                                   display,
                                   list,
                                   // onCancelItem,
+								  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem;
@@ -103,37 +97,37 @@ const DetailListTableElement = ({
               <BlueButton
                   className={'size-relative'}
                   isFinished={item.IsMarkedForDeletion}
-                  // onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                  //   e.stopPropagation();
-                  //   e.preventDefault();
-                  //
-                  //   dispatch(setDialog({
-                  //     type: 'consent',
-                  //     consent: {
-                  //       isOpen: true,
-                  //       children: (
-                  //         cancelDialogTemplate(
-                  //           dispatch,
-                  //           item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
-                  //           () => {
-                  //             onCancelItem(
-                  //               !item.IsMarkedForDeletion,
-                  //               index,
-                  //               'IsMarkedForDeletion',
-                  //               {
-                  //                 BusinessPartner: {
-                  //                   BusinessPartner: item.BusinessPartner,
-                  //                   IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                  //                 }
-                  //               },
-                  //               listType,
-                  //             );
-                  //           },
-                  //         )
-                  //       ),
-                  //     }
-                  //   }));
-                  // }}
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    dispatch(setDialog({
+                      type: 'consent',
+                      consent: {
+                        isOpen: true,
+                        children: (
+                          cancelDialogTemplate(
+                            dispatch,
+                            item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
+                            () => {
+							  onUpdateItem(
+                                !item.IsMarkedForDeletion,
+                                index,
+                                'IsMarkedForDeletion',
+                                {
+									ProductionVersion: {
+                                    ProductionVersion: item.ProductionVersion,
+                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                                  }
+                                },
+                                listType,
+                              );
+                            },
+                          )
+                        ),
+                      }
+                    }));
+                  }}
                 >
                   {texts.button.delete}
                 </BlueButton>
@@ -167,10 +161,11 @@ const DetailListTableElement = ({
   )
 }
 export const ProductionVersionList = ({
-                                      formData,
-                                      className,
-                                      // onCancelItem,
-                                    }: ListProps) => {
+                                        formData,
+                                        className,
+                                        // onCancelItem,
+                                        onUpdateItem,
+                                      }: ListProps) => {
   const [display, setDisplay] = useState<ProductionVersionTablesEnum>(
     ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem,
   );
@@ -196,6 +191,7 @@ export const ProductionVersionList = ({
         display={display}
         list={formData[ProductionVersionTablesEnum.productionVersionListOwnerBusinessPartnerItem] || []}
         // onCancelItem={onCancelItem}
+        onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

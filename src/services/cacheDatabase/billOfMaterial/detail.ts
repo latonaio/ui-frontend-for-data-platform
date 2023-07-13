@@ -39,7 +39,7 @@ export class Detail extends CacheDatabase {
       emailAddress: AuthedUser['emailAddress'];
     },
   ): Promise<void> {
-    const response = await readsDetailList({
+    const response: any = await readsDetailList({
       userType: params.userType,
       billOfMaterial: params.billOfMaterial,
       // isMarkedForDeletion: false,
@@ -48,8 +48,8 @@ export class Detail extends CacheDatabase {
       userId: params.emailAddress,
     });
 
-    if (response.numberOfRecords > 0) {
-      for (const billOfMaterialDetailListItem of response.billOfMaterialDetailList) {
+    if (response.Item.length > 0) {
+      for (const billOfMaterialDetailListItem of response.Item) {
         await this.billOfMaterialDetailListOwnerProductionPlantBusinessPartnerItem.put({
           ...billOfMaterialDetailListItem,
           BillOfMaterial: params.billOfMaterial,
@@ -57,7 +57,7 @@ export class Detail extends CacheDatabase {
       }
 
       await this.billOfMaterialDetailHeader.put({
-        ...response.billOfMaterialDetailHeader,
+        ...response.Header[0],
       });
     } else {
       if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {

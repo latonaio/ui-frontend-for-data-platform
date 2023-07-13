@@ -20,8 +20,7 @@ import { getSearchTextDescription } from '@/helpers/pages';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
-import { deleteProductionOrder} from '@/api/productionOrder';
-import { updates } from '@/api/deliveryDocument';
+import { deletes, updates} from '@/api/productionOrder';
 
 interface PageProps {
 }
@@ -112,7 +111,7 @@ const ProductionOrderList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deleteProductionOrder({
+      await deletes({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,

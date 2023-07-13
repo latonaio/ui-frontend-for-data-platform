@@ -11,7 +11,7 @@ interface OperationsItem {
   ValidityStartDate: string;
   IsMarkedForDeletion: boolean;
   Images: {
-    Operations: OperationsImage;
+    Product: OperationsImage;
   };
   OwnerProductionPlantBusinessPartner: number;
   OwnerProductionPlant: number;

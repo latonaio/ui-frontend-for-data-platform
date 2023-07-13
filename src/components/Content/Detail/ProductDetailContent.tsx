@@ -352,7 +352,7 @@ export const ProductDetailContent = ({
               <ExConfsHeaderInfoBottom>基本数量単位: {productDetailExconfListHeader?.BaseUnit}</ExConfsHeaderInfoBottom>
             </ExConfsHeaderInfo>
             <ExConfsHeaderInfo>
-              <ExConfsHeaderInfoTop>品目名: {productDetailExconfListHeader?.ProductDescription}</ExConfsHeaderInfoTop>
+              <ExConfsHeaderInfoTop>品目名: {productDetailExconfListHeader?.ProductName}</ExConfsHeaderInfoTop>
               <ExConfsHeaderInfoBottom>有効開始日付: {productDetailExconfListHeader?.ValidityStartDate}</ExConfsHeaderInfoBottom>
             </ExConfsHeaderInfo>
             <ExConfsHeaderInfo>
