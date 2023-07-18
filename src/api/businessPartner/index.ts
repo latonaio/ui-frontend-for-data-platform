@@ -1,5 +1,5 @@
 import { DeleteParams, UpdateParams } from './model';
-import { apiCall } from '@/api/axios';
+import { apiCall, apiCallUpdate } from '@/api/axios';
 import { methods } from '@/constants';
 // import {
 //   UpdatesParams,
@@ -17,13 +17,13 @@ const deletes = async (
 	params: UpdateParams,
   ): Promise<any> => {
 	const endpointUrl = 'DPFM_API_BUSINESS_PARTNER_SRV/updates';
-	const response = await apiCall(methods.POST, endpointUrl, params);
+	const response = await apiCallUpdate(methods.POST, endpointUrl, params);
 	return { ...response.data.message };
   };
   
   export {
 	  deletes,
-	updates,
+	  updates,
   }
 
 

@@ -108,6 +108,20 @@ const apiCallReads = (
 	  return instance.request(config);
   };
 
+  const apiCallUpdate = (
+	method: Method,
+	endpointUrl = '',
+	data: Record<string, any> = {},
+	options?: AxiosRequestConfig,
+	overrideBaseUrl?: string,
+  ): AxiosPromise => {
+	const API_URL = `${process.env.DATA_PLATFORM_REQUEST_UPDATE_CACHE_MANAGER_HOST}:` +
+	  `${process.env.DATA_PLATFORM_REQUEST_READS_CACHE_MANAGER_PORT}`;
+
+	  const config = apiConfig(method, endpointUrl, data, options, API_URL);
+
+	  return instance.request(config);
+  };
 //   const apiCallReadsa = (
 // 	method: Method,
 // 	endpointUrl = '',
@@ -154,4 +168,5 @@ export {
   apiCall,
   multiPartFormApiCall,
   apiCallReads,
+  apiCallUpdate,
 };

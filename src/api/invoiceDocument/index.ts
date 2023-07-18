@@ -1,4 +1,4 @@
-import { apiCall } from '../axios';
+import { apiCall, apiCallUpdate } from '../axios';
 import { methods } from '@/constants/enums';
 import {
   CancelsParams,
@@ -16,7 +16,7 @@ const updates = async (
   params: any,
 ): Promise<any> => {
   const endpointUrl = 'DPFM_API_INVOICE_DOCUMENT_SRV/updates';
-  const response = await apiCall(methods.POST, endpointUrl, params);
+  const response = await apiCallUpdate(methods.POST, endpointUrl, params);
   return { ...response.data.message };
 };
 

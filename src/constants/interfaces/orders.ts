@@ -4,7 +4,7 @@ interface OrdersItem {
   Seller: number;
   BuyerName: string;
   Buyer: number;
-  DeliveryStatus: string;
+  HeaderDeliveryStatus: string;
   OrderDate: string;
   PaymentTerms: string;
   PaymentTermsName: string;

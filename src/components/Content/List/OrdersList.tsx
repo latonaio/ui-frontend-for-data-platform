@@ -73,7 +73,7 @@ const DetailListTableElement = ({
             <td>{item.OrderID}</td>
             <td>{item.BuyerName}</td>
             <td>{item.SellerName}</td>
-            <td>{item.DeliveryStatus}</td>
+            <td>{item.HeaderDeliveryStatus}</td>
             {/*<td className={'text-center'}>{item.invoiceStatus}</td>*/}
             {/*<td className={'text-center'}>{item.deliveryDate}</td>*/}
             <td>
