@@ -14,6 +14,7 @@ import {
   SupplyChainRelationshipTablesEnum,
   WorkCenterTablesEnum,
   ProductionVersionTablesEnum,
+  QuotationsTablesEnum,
 } from '@/constants';
 
 export class CacheDatabase extends Tables {
@@ -54,6 +55,8 @@ export class CacheDatabase extends Tables {
       [EquipmentTablesEnum.equipmentListBusinessPartnerItem]: 'Equipment, EquipmentDescription, EquipmentGroup, BaseUnit, ValidityStartDate',
 
       [BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem]: '++id, BusinessPartner',
+	  [BusinessPartnerTablesEnum.businessPartnerDetailExconfList]: 'BusinessPartner',
+      [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]: 'BusinessPartner',
 
       [PriceMasterTablesEnum.priceMasterListBuyerItem]: '++id',
       [PriceMasterTablesEnum.priceMasterListSellerItem]: '++id',
@@ -84,8 +87,13 @@ export class CacheDatabase extends Tables {
 
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]: 'SupplyChainRelationshipID',
       [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]: 'SupplyChainRelationshipID',
+
       [BusinessPartnerTablesEnum.businessPartnerDetailExconfList]: 'BusinessPartner',
       [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]: 'BusinessPartner',
+
+      [QuotationsTablesEnum.quotationsListBuyerItem]: '++id',
+      [QuotationsTablesEnum.quotationsListSellerItem]: '++id',
+
     });
   }
 

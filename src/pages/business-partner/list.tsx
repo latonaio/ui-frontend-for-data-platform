@@ -19,7 +19,6 @@ import { setLoading } from '@/store/slices/loadging';
 import { deletes, updates } from '@/api/businessPartner';
 import { TextFieldProps } from '@/components/Form';
 import { rem } from 'polished';
-import { billOfMaterialCache } from '@/services/cacheDatabase/billOfMaterial';
 
 interface PageProps {
 }

@@ -11,6 +11,9 @@ interface TextFieldInternalProps {
   currentValue: any;
   onChange?: (value: any) => void;
   onClose?: () => void;
+  inputProps?: any;
+  type?: string;
+  checkInvalid?: (value: any) => void;
 }
 
 export interface TextFieldProps {
@@ -22,8 +25,11 @@ export const TextField = ({
                             className,
                             isEditing,
                             currentValue,
+                            type,
                             onChange,
                             onClose,
+                            inputProps,
+                            checkInvalid,
                           }: TextFieldInternalProps) => {
   const [value, setValue] = React.useState('');
   const [typing, setTyping] = React.useState(false);
@@ -44,11 +50,20 @@ export const TextField = ({
       <div className={`${!isEditing ? 'hidden' : ''}`}>
         <TextFieldMaterial
           value={value}
+          type={type}
+          inputProps={{
+            // inputMode: "numeric",
+            // pattern: "[0-9]*"
+          }}
           onCompositionStart={() => setTyping(true)}
           onCompositionEnd={() => setTyping(false)}
           onChange={(e) => {
             const target = e.target as HTMLInputElement;
             setValue(target.value);
+
+            console.log(target.value)
+
+            checkInvalid && checkInvalid(target.value);
           }}
           onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
             if (
@@ -58,7 +73,12 @@ export const TextField = ({
 
             if (e.code === 'Enter') {
               const target = e.target as HTMLInputElement;
-              onChange && onChange(target.value);
+
+              if (type === 'number') {
+                onChange && onChange(Number(target.value));
+              } else {
+                onChange && onChange(target.value);
+              }
             }
 
             if (e.code === 'Escape') {

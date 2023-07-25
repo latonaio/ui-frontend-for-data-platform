@@ -5,7 +5,7 @@ export const Button = styled.button`
   padding: ${rem(10)} ${rem(16)};
   background-color: #253962;
   border-radius: ${rem(4)};
-  
+
   &.whiteInfo {
     border: 1px solid #000;
     background-color: #fff;
@@ -23,7 +23,7 @@ export const GreenButton = styled.button`
   background-color: #A7D08C;
   color: #fff;
   font-size: ${rem(13)};
-  
+
   &.deep {
     background-color: #538135;
   }
@@ -46,4 +46,13 @@ export const WhiteButton = styled.button`
   border: 2px solid #000;
   padding: ${rem(0)} ${rem(16)};
   border-radius: ${rem(6)};
+`;
+
+export const OtherButton = styled.button`
+border: 1px solid #000;
+background-color: #fff;
+font-weight: normal !important;
+color: #000 !important;
+padding: 0.625rem 1rem;
+border-radius: 0.25rem;
 `;

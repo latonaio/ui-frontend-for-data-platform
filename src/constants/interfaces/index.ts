@@ -14,3 +14,4 @@ export * from './biiOfMaterial';
 export * from './operations';
 export * from './supplyChainRelationship';
 export * from './workCenter';
+export * from './quotations';

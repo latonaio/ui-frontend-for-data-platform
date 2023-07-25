@@ -7,17 +7,14 @@ import {
   ListHeaderInfoTop,
   ListHeaderInfoBottom,
   ListHeaderInfo,
-  IcnOutside,
-  IcnInvoice,
 } from './List.style';
 import {
   InvoiceDocumentDetailHeader,
   InvoiceDocumentDetailListItem,
   InvoiceDocumentTablesEnum,
 } from '@/constants';
-import { clickHandler, summaryHead } from './List';
+import { summaryHead } from './List';
 import { BackButton, Checkbox, GreenButton } from '@/components/Button';
-import { PublicImage } from '@/components/Image';
 import { userTypeHandling } from '@/helpers/common';
 import React from 'react';
 import { setDialog } from '@/store/slices/dialog';

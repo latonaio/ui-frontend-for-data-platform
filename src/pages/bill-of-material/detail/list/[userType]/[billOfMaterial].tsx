@@ -1,84 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
-import {
-  Main,
-  Wrapper,
-} from '@/styles/global/globals.style'
+import { Main, Wrapper } from '@/styles/global/globals.style';
 import { Header } from '@/components/Header';
 import { ContentsTop } from '@/components/ContentsTop';
 import { Footer } from '@/components/Footer';
 import { BillOfMaterialDetailList as Content } from '@/components/Content';
-import {
-  AuthedUser,
-  BillOfMaterialDetailListItem,
+import { AuthedUser,
   BillOfMaterialTablesEnum,
   UserTypeEnum,
 } from '@/constants';
-import { getLocalStorage, toLowerCase, toUpperCase } from '@/helpers/common';
-import {
-  createFormDataForSelectObject,
-  getSearchTextDescription,
-} from '@/helpers/pages';
+import { getLocalStorage, toUpperCase } from '@/helpers/common';
+import { getSearchTextDescription } from '@/helpers/pages';
 import { billOfMaterialCache } from '@/services/cacheDatabase/billOfMaterial';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { rem } from 'polished';
-import { deletes, updates } from '@/api/billOfMaterial';
+import { useAppDispatch } from '@/store/hooks';
+import { initializeUpdate } from '@/store/slices/bill-of-material/detail-list';
 
 interface PageProps {
   billOfMaterial: number;
   userType: string;
 }
 
-interface SelectProps {
-  currentValue?: any;
-  select: {
-    data: any[];
-    label: string;
-    value: string;
-  };
-}
-
-export type onUpdateItem =(
-  value: any,
-  updateItemIndex: number,
-  updateItemKey: string,
-  params: any,
-  apiType: string,
-) => void;
-
-export interface formData {
-  paymentTerms: SelectProps;
-  paymentMethod: SelectProps;
-  transactionCurrency: SelectProps;
-  billOfMaterialDate: {
-    currentValue: string,
-  }
-  quantityUnit: SelectProps;
-  [BillOfMaterialTablesEnum.billOfMaterialDetailList]: BillOfMaterialDetailListItem[];
-}
-
 const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
-  const [displayData, setDisplayData] = useState({});
-  const [formData, setFormData] = useState<formData | any>({
-    editList: {},
-    [BillOfMaterialTablesEnum.billOfMaterialDetailList]: [],
-  });
+  const dispatch = useDispatch();
+  const appDispatch = useAppDispatch();
 
   const setFormDataForPage = async (billOfMaterial: number, userType: string) => {
     const list = await billOfMaterialCache.getBillOfMaterialDetailList(billOfMaterial, userType);
 
-    setFormData({
-      ...createFormDataForSelectObject([]),
-      editList: {},
-      [BillOfMaterialTablesEnum.billOfMaterialDetailList]: list.billOfMaterialDetailList || [],
-    });
-
-    setDisplayData({
-      userType,
-      [BillOfMaterialTablesEnum.billOfMaterialDetailList]: list.billOfMaterialDetailList || [],
-      [BillOfMaterialTablesEnum.billOfMaterialDetailHeader]: list.billOfMaterialDetailHeader || {},
-    });
+    appDispatch(initializeUpdate({
+      [BillOfMaterialTablesEnum.billOfMaterialDetailList]: list[BillOfMaterialTablesEnum.billOfMaterialDetailList],
+      [BillOfMaterialTablesEnum.billOfMaterialDetailHeader]:
+        list[BillOfMaterialTablesEnum.billOfMaterialDetailHeader] ?
+          list[BillOfMaterialTablesEnum.billOfMaterialDetailHeader] : {},
+    }));
   }
 
   const initLoadTabData = async (billOfMaterial: number, userType: string) => {
@@ -110,89 +67,6 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
       userType,
     );
   };
-
-  const onUpdateItem = async (
-    value: any,
-    updateItemIndex: number,
-    updateItemKey: string,
-    params: any,
-    apiType: string = 'update',
-  ) => {
-    const {
-      language,
-      businessPartner,
-      emailAddress,
-    }: AuthedUser = getLocalStorage('auth');
-
-    dispatch(setLoading({ isOpen: true }));
-
-    const accepter = (params: any) => {
-      if (!params.hasOwnProperty('accepter')) {
-        return {
-          ...params,
-          accepter: ['Header'],
-        };
-      }
-
-      return params;
-    }
-
-    if (apiType === 'delete') {
-      await deletes({
-        ...params,
-        business_partner: businessPartner,
-        accepter: accepter(params).accepter,
-      });
-    } else {
-      await updates({
-        ...params,
-        accepter: accepter(params).accepter,
-      });
-    }
-
-    await billOfMaterialCache.updateBillOfMaterialDetailList({
-      billOfMaterial: data.billOfMaterial,
-      userType: data.userType,
-      language,
-      businessPartner,
-      emailAddress,
-    });
-
-    const paramsItem = params.BillOfMaterial.Item[0].BillOfMaterialItem;
-
-    const editListKeyName = updateItemKey.replace(/^./g, (g) => g[0].toLowerCase());
-
-    const updateData = {
-      ...formData,
-      [BillOfMaterialTablesEnum.billOfMaterialDetailList]: [
-        ...formData[BillOfMaterialTablesEnum.billOfMaterialDetailList].map((item: any, index: number) => {
-          if (item.BillOfMaterialItem === paramsItem) {
-            return {
-              ...item,
-              [updateItemKey]: value,
-            }
-          }
-          return { ...item }
-        })
-      ],
-      // editList: {
-      //   ...formData.editList,
-      //   [editListKeyName]: [
-      //     ...formData.editList[editListKeyName].map((item: any, index: number) => {
-      //       return {
-      //         isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
-      //       };
-      //     })
-      //   ]
-      // }
-    };
-
-    setFormData(updateData);
-
-    dispatch(setLoading({ isOpen: false }));
-  }
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     initLoadTabData(data.billOfMaterial, data.userType);
@@ -276,15 +150,10 @@ const BillOfMaterialDetailList: React.FC<PageProps> = (data) => {
             描画の実行
           </div>
         </div>
-        {displayData && formData &&
-          <Content
-            data={displayData}
-            formData={formData}
-            userType={data.userType}
-            billOfMaterial={data.billOfMaterial}
-            onUpdateItem={onUpdateItem}
-          />
-        }
+        <Content
+          userType={data.userType}
+          billOfMaterial={data.billOfMaterial}
+        />
       </Main>
       <Footer hrefPath={`/bill-of-material/list`}></Footer>
     </Wrapper>

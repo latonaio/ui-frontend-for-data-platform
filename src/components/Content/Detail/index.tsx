@@ -11,3 +11,5 @@ export * from './OperationsDetailList';
 export * from './ProductionVersionDetailList';
 export * from './SupplyChainRelationshipDetailExconfList';
 export * from './BusinessPartnerDetailExconfList';
+export * from './BillOfMaterialDetailList';
+export * from './QuotationsDetailList';

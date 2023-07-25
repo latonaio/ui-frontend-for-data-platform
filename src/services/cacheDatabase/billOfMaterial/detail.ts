@@ -57,7 +57,7 @@ export class Detail extends CacheDatabase {
       }
 
       await this.billOfMaterialDetailHeader.put({
-        ...response.Header[0],
+        ...response.HeaderWithItem[0],
       });
     } else {
       if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {

@@ -5,7 +5,14 @@ import { Header } from '@/components/Header';
 import { ContentsTop } from '@/components/ContentsTop';
 import { Footer } from '@/components/Footer';
 import { OrdersList as Content } from '@/components/Content';
-import { AuthedUser, BuyerItem, OrdersTablesEnum, SellerItem, UserTypeEnum } from '@/constants';
+import {
+  AuthedUser,
+  BillOfMaterialTablesEnum,
+  BuyerItem,
+  OrdersTablesEnum,
+  SellerItem,
+  UserTypeEnum,
+} from '@/constants';
 import { getLocalStorage, toLowerCase } from '@/helpers/common';
 import { ordersCache } from '@/services/cacheDatabase/orders';
 import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpers/pages';
@@ -14,6 +21,8 @@ import { setLoading } from '@/store/slices/loadging';
 import { cancels, deletes } from '@/api/orders';
 import { TextFieldProps } from '@/components/Form';
 import { rem } from 'polished';
+import { useAppDispatch } from '@/store/hooks';
+import { initializeUpdate } from '@/store/slices/orders/list';
 
 interface PageProps {
 }
@@ -31,32 +40,20 @@ export interface formData {
 
 const OrdersList: React.FC<PageProps> = (data) => {
   const [searchTextDescription, setSearchTextDescription] = useState(OrdersTablesEnum.ordersListBuyerItem);
-  const [formData, setFormData] = useState<formData | any>({});
   const [displayData, setDisplayData] = useState(UserTypeEnum.Buyer);
 
   const dispatch = useDispatch();
+  const appDispatch = useAppDispatch();
 
   const setFormDataForPage = async () => {
     const list = await ordersCache.getOrdersList();
 
-    setFormData({
-      editList: {
-        ...createFormDataForEditingArray(
-          list[OrdersTablesEnum.ordersListBuyerItem],
-          [
-            { keyName: OrdersTablesEnum.ordersListBuyerItem },
-          ]
-        ),
-        ...createFormDataForEditingArray(
-          list[OrdersTablesEnum.ordersListSellerItem],
-          [
-            { keyName: OrdersTablesEnum.ordersListSellerItem },
-          ]
-        ),
-      },
-      [OrdersTablesEnum.ordersListBuyerItem]: list[OrdersTablesEnum.ordersListBuyerItem],
-      [OrdersTablesEnum.ordersListSellerItem]: list[OrdersTablesEnum.ordersListSellerItem],
-    });
+    appDispatch(initializeUpdate({
+      [OrdersTablesEnum.ordersListBuyerItem]:
+        list[OrdersTablesEnum.ordersListBuyerItem],
+      [OrdersTablesEnum.ordersListSellerItem]:
+        list[OrdersTablesEnum.ordersListSellerItem],
+    }));
   }
 
   const initLoadTabData = async () => {
@@ -92,102 +89,6 @@ const OrdersList: React.FC<PageProps> = (data) => {
     dispatch(setLoading({ isOpen: false }));
 
     await setFormDataForPage();
-  }
-
-  const onCancelItem = async (
-    value: any,
-    updateItemIndex: number,
-    updateItemKey: string,
-    params: any,
-    listType: string,
-  ) => {
-    const {
-      language,
-      businessPartner,
-      emailAddress,
-    }: AuthedUser = getLocalStorage('auth');
-
-    dispatch(setLoading({ isOpen: true }));
-
-    const accepter = (params: any) => {
-      if (!params.hasOwnProperty('accepter')) {
-        return {
-          ...params,
-          accepter: ['Header'],
-        };
-      }
-
-      return params;
-    }
-
-    if (updateItemKey === 'IsCancelled') {
-      await cancels({
-        ...params,
-        business_partner: businessPartner,
-        accepter: accepter(params).accepter,
-      });
-    }
-
-    if (updateItemKey === 'IsMarkedForDeletion') {
-      await deletes({
-        ...params,
-        business_partner: businessPartner,
-        accepter: accepter(params).accepter,
-      });
-    }
-
-    ordersCache.updateOrdersList({
-      language,
-      businessPartner,
-      emailAddress,
-      userType: toLowerCase(UserTypeEnum.Buyer),
-    });
-
-    ordersCache.updateOrdersList({
-      language,
-      businessPartner,
-      emailAddress,
-      userType: toLowerCase(UserTypeEnum.Seller),
-    });
-
-    ordersCache.updateOrdersDetailList({
-      orderId: params.Orders.OrderID,
-      userType: displayData,
-      language,
-      businessPartner,
-      emailAddress,
-    });
-
-    const itemIdentification = params.Orders.OrderID;
-
-    const updateData = {
-      ...formData,
-      [listType]: [
-        ...formData[listType].map((item: any, index: number) => {
-          if (item.OrderID === itemIdentification) {
-            return {
-              ...item,
-              [updateItemKey]: value,
-            }
-          }
-          return { ...item }
-        })
-      ],
-      editList: {
-        ...formData.editList,
-        [listType]: [
-          ...formData.editList[listType].map((item: any, index: number) => {
-            return {
-              isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
-            };
-          })
-        ]
-      }
-    };
-
-    setFormData(updateData);
-
-    dispatch(setLoading({ isOpen: false }));
   }
 
   useEffect(() => {
@@ -279,16 +180,13 @@ const OrdersList: React.FC<PageProps> = (data) => {
             描画の実行
           </div>
         </div>
-        {formData &&
-          <Content
-            formData={formData}
-            onClickHandler={(toggleDisplayEnum: OrdersTablesEnum) => {
-              setSearchTextDescription(toggleDisplayEnum);
-              toggleDisplayEnum === OrdersTablesEnum.ordersListBuyerItem ?
-                setDisplayData(UserTypeEnum.Buyer) : setDisplayData(UserTypeEnum.Seller);
-            }}
-            onCancelItem={onCancelItem}
-          />}
+        <Content
+          onClickHandler={(toggleDisplayEnum: OrdersTablesEnum) => {
+            setSearchTextDescription(toggleDisplayEnum);
+            toggleDisplayEnum === OrdersTablesEnum.ordersListBuyerItem ?
+              setDisplayData(UserTypeEnum.Buyer) : setDisplayData(UserTypeEnum.Seller);
+          }}
+        />
       </Main>
       <Footer></Footer>
     </Wrapper>

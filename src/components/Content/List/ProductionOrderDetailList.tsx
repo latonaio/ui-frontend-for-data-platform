@@ -15,14 +15,12 @@ import {
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { BackButton, Checkbox, GreenButton, BlueButton } from '@/components/Button';
-import { Icon } from '@/components/Image';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   formData, onUpdateItem,
 } from '@/pages/production-order/detail/list/[userType]/[productionOrder]';
 import { texts } from '@/constants/message';
-import { rem } from 'polished';
 import { setDialog } from '@/store/slices/dialog';
 import { Template as cancelDialogTemplate } from '@/components/Dialog';
 

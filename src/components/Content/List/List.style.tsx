@@ -119,6 +119,10 @@ export const DetailListTable = styled.table`
           }
         }
       }
+
+      &.invalid {
+        background-color: #ff7676;
+      }
     }
 
     .edit {

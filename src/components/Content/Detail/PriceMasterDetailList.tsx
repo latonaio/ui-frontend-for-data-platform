@@ -5,13 +5,12 @@ import {
   DetailList,
   DetailListTable,
   ListHeaderInfoTop,
-  ListHeaderInfoBottom,
   ListHeaderInfo,
 } from '../List/List.style';
 import { UserTypeEnum, PriceMasterTablesEnum } from '@/constants';
 import { PriceMasterDetailListItem, PriceMasterDetailHeader } from '@/constants';
 import { clickHandler, summaryHead } from '../List/List';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { formData, onUpdateItem } from '@/pages/price-master/detail/list/[userType]/[supplyChainRelationshipId]';
 import { toLowerCase } from '@/helpers/common';
@@ -93,7 +92,7 @@ const DetailListTableElement = ({
                           cancelDialogTemplate(
                             dispatch,
                             item.IsMarkedForDeletion ?
-                              '部品表の削除を取り消しますか？' : '部品表を削除しますか？',
+                              '価格マスターの削除を取り消しますか？' : '価格マスターを削除しますか？',
                             () => {
                               onUpdateItem(
                                 !item.IsMarkedForDeletion,
@@ -157,7 +156,7 @@ export const PriceMasterDetailList = ({
   const summary = [
     '品目',
     '品目テキスト',
-	  '条件タイプ',
+	'条件タイプ',
     '条件レート値',
     '条件レート値単位',
     '条件スケール数量',

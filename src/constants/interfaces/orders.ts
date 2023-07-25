@@ -83,6 +83,7 @@ interface QuantityUnit {
 }
 
 export type {
+  OrdersItem,
   BuyerItem,
   SellerItem,
   OrdersDetailListItem,

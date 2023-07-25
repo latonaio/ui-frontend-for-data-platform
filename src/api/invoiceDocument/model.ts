@@ -1,4 +1,4 @@
-import { Accepter, AuthedUser, InvoiceDocumentListItem } from '@/constants';
+import { Accepter } from '@/constants';
 
 export interface CancelsParams extends Accepter {
   InvoiceDocument: {

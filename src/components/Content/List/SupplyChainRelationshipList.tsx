@@ -6,20 +6,16 @@ import {
   HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
 } from './List.style';
 import { BlueButton } from '@/components/Button';
 import { SupplyChainRelationshipBuyerItem, SupplyChainRelationshipSellerItem } from '@/constants';
 import { SupplyChainRelationshipTablesEnum } from '@/constants';
 import { clickHandler, summaryHead } from './List';
-import { PublicImage } from '@/components/Image';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { formData } from '@/pages/supply-chain-relationship/list';
 import { Template as cancelDialogTemplate } from '@/components/Dialog/Consent';
 import { texts } from '@/constants/message';
-import { rem } from 'polished';
 
 interface onCancelItem {
   (

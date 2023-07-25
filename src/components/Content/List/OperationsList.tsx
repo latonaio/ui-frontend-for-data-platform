@@ -2,14 +2,8 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
-  ListHeaderInfo,
-  ListHeaderInfoTop,
-  ListHeaderInfoBottom,
   NoImage,
 } from './List.style';
 import {
@@ -19,11 +13,9 @@ import {
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { PublicImage } from '@/components/Image';
-import { Checkbox, BlueButton } from '@/components/Button';
-import { dialogState, setDialog } from '@/store/slices/dialog';
+import { BlueButton } from '@/components/Button';
+import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
 import { formData, onUpdateItem } from '@/pages/operations/list';
 import { generateImageProductUrl, toLowerCase } from '@/helpers/common';
 import { rem } from 'polished';

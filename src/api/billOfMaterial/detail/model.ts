@@ -4,10 +4,6 @@ import {
   UIKeyGeneral,
   BillOfMaterialDetailProps,
   Pagination,
-  PaymentTerms,
-  PaymentMethod,
-  Currency,
-  QuantityUnit,
 } from '@/constants';
 
 export interface ReadsDetailParams extends UIKeyGeneral {
@@ -41,5 +37,5 @@ export interface ReadsDetailListParams extends UIKeyGeneral {
 
 export interface ReadsDetailListResponse extends Pagination {
   Item: BillOfMaterialDetailListItem[];
-  Header: BillOfMaterialDetailHeader;
+  Header: BillOfMaterialDetailHeader[];
 }

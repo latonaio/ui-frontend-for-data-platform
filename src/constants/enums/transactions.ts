@@ -110,3 +110,10 @@ export enum SupplyChainRelationshipTablesEnum {
 export enum WorkCenterTablesEnum {
 	workCenterListBusinessPartnerItem = 'workCenterListBusinessPartnerItem',
 }
+
+export enum QuotationsTablesEnum{
+	quotationsListBuyerItem = 'quotationsListBuyerItem',
+	quotationsListSellerItem = 'quotationsListSellerItem',
+	quotationsListDetailListItem = 'quotationsListDetailListItem',
+	quotationsListDetailListHeader = 'quotationsListDetailListHeader',
+}

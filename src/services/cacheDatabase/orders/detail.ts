@@ -62,6 +62,8 @@ export class Detail extends CacheDatabase {
     params: {
       orderId: number;
       userType: OrdersUserType[keyof OrdersUserType];
+      buyer: number | null;
+      seller: number | null;
       language: AuthedUser['language'];
       businessPartner: AuthedUser['businessPartner'];
       emailAddress: AuthedUser['emailAddress'];
@@ -72,6 +74,8 @@ export class Detail extends CacheDatabase {
       orderId: params.orderId,
       itemCompleteDeliveryIsDefined: false,
       itemDeliveryBlockStatus: false,
+      buyer: params.buyer,
+      seller: params.seller,
       // isCancelled: false,
       // isMarkedForDeletion: false,
       // itemDeliveryStatus: false,
@@ -80,8 +84,8 @@ export class Detail extends CacheDatabase {
       userId: params.emailAddress,
     });
 
-    if (response.numberOfRecords > 0) {
-      for (const ordersDetailListItem of response.ordersDetailList) {
+    if (response?.Item?.length || [].length > 0) {
+      for (const ordersDetailListItem of response.Item) {
         if (params.userType === toLowerCase(UserTypeEnum.Buyer)) {
           await this.ordersDetailListBuyerItem.put({
             ...ordersDetailListItem,
@@ -96,7 +100,7 @@ export class Detail extends CacheDatabase {
       }
 
       await this.ordersDetailHeader.put({
-        ...response.ordersDetailHeader,
+        ...response.HeaderWithItem[0],
         PaymentTermsList: response.paymentTerms,
         PaymentMethodList: response.paymentMethod,
         CurrencyList: response.currency,

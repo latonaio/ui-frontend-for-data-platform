@@ -62,8 +62,8 @@ export const BusinessPartnerDetailExconfList = ({
             if (!foundContent) {
               return;
             }
-
-            return (
+			
+			return (
               <ExConfsContentListLi
                 key={index}
                 className={

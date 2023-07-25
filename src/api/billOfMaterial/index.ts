@@ -14,9 +14,20 @@ const deletes = async (
 };
 
 const updates = async (
-  params: UpdateParams,
+  // params: UpdateParams,
+  params: any,
+  type: string,
 ): Promise<any> => {
-  const endpointUrl = 'DPFM_API_BILL_OF_MATERIAL_SRV/updates';
+  let endpointUrl = 'header';
+
+  if (type === 'header') {
+    endpointUrl = 'bill-of-material/header/updates';
+  }
+
+  if (type === 'item') {
+    endpointUrl = 'bill-of-material/item/updates';
+  }
+
   const response = await apiCallUpdate(methods.POST, endpointUrl, params);
   return { ...response.data.message };
 };

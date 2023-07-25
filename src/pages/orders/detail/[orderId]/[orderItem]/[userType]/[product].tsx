@@ -10,14 +10,11 @@ import { Footer } from '@/components/Footer';
 import { OrdersDetail as Content } from '@/components/Content';
 import { getLocalStorage, paginationArrow, toUpperCase } from '@/helpers/common';
 import {
-  AuthedUser, DeliverFromPartyItem, DeliverToPartyItem, DeliveryDocumentTablesEnum,
+  AuthedUser,
   OrdersProductDetailProps,
   UserTypeEnum,
 } from '@/constants';
 import { ordersCache } from '@/services/cacheDatabase/orders';
-import { setPagination } from '@/store/slices/orders/pagination';
-import { updateOrdersDetailState } from '@/store/slices/orders/detail';
-import { store } from '@/store/store';
 import { useDispatch } from 'react-redux';
 import { readsPagination } from '@/api/orders/detail';
 import { getSearchTextDescription } from '@/helpers/pages';

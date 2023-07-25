@@ -13,8 +13,6 @@ import {
   Tag,
   Allergen,
   Calendar,
-  LocationWrapper,
-  Location,
   QuantityInfo,
 } from './Detail.style';
 import { BorderSolidPanel } from './BorderSolidPanel/BorderSolidPanel';
@@ -23,9 +21,8 @@ import { generateImageProductUrl, generateBarcodeImageUrl } from '@/helpers/comm
 import { GreenInfoPanel } from './GreenInfoPanel/GreenInfoPanel';
 import { WhiteButton } from '@/components/Button';
 import { PublicImage } from '@/components/Image';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Detail } from '@/components/Content/Detail/Detail';
-import Link from 'next/link';
 
 import {
   Allergen as AllergenProps,

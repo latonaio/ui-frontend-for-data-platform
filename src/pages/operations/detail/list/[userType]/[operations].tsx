@@ -13,14 +13,12 @@ import {
   OperationsDetailListItem,
   UserTypeEnum,
   OperationsTablesEnum,
-  OperationsDetailHeader,
 } from '@/constants';
 import { getLocalStorage, toUpperCase, toLowerCase } from '@/helpers/common';
 import { operationsCache } from '@/services/cacheDatabase/operations';
-import { createFormDataForEditingArray, getSearchTextDescription, createFormDataForSelectObject} from '@/helpers/pages';
+import { getSearchTextDescription, createFormDataForSelectObject} from '@/helpers/pages';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
-import { TextFieldProps } from '@/components/Form';
 import { deletes, updates } from '@/api/operations';
 
 

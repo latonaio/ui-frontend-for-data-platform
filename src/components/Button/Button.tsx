@@ -4,6 +4,7 @@ import {
   GreenButton as GreenButtonElement,
   WhiteButton as WhiteButtonElement,
   BlueButton as BlueButtonElement,
+  OtherButton as OtherButtonElement,
 } from './Button.style';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
@@ -20,6 +21,11 @@ interface GreenButtonProps extends ButtonProps {
 }
 
 interface WhiteButtonProps extends ButtonProps {
+}
+
+interface OtherButtonButtonProps extends ButtonProps {
+  closedPopup?: boolean;
+  setClosedPopup: (closedPopup: boolean) => void;
 }
 
 export const BackButton = (
@@ -101,4 +107,25 @@ export const WhiteButton = (
   );
 }
 
+export const OtherButton = (
+  {
+    children,
+    className,
+    closedPopup,
+    setClosedPopup,
+  }: OtherButtonButtonProps
+) => {
+  return (
+    <OtherButtonElement className={clsx(
+      '',
+      className,
+    )}
+    onClick={() => {
+      setClosedPopup(!closedPopup);
+    }}
+    >
+      {children}
+    </OtherButtonElement>
+  );
+}
 

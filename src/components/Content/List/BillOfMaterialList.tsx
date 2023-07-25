@@ -2,38 +2,28 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
-  ListHeaderInfo,
-  ListHeaderInfoTop,
-  ListHeaderInfoBottom,
   NoImage,
 } from './List.style';
 import {
   BillOfMaterialTablesEnum,
   BillOfMaterialListItem,
-  UserTypeEnum, DeliveryDocumentTablesEnum,
+  UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { PublicImage } from '@/components/Image';
-import { Checkbox, BlueButton } from '@/components/Button';
-import { dialogState, setDialog } from '@/store/slices/dialog';
+import { BlueButton } from '@/components/Button';
+import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
-import { formData, onUpdateItem } from '@/pages/bill-of-material/list';
-import { generateImageEquipmentUrl, generateImageProductUrl, toLowerCase } from '@/helpers/common';
+import { generateImageProductUrl, toLowerCase } from '@/helpers/common';
 import { rem } from 'polished';
 import { Template as cancelDialogTemplate } from '@/components/Dialog';
 import { texts } from '@/constants/message';
+import { useAppSelector } from '@/store/hooks';
 
 interface ListProps {
   className?: string;
-  formData: formData;
-  onUpdateItem: onUpdateItem;
 }
 
 interface DetailListTableElementProps {
@@ -42,7 +32,6 @@ interface DetailListTableElementProps {
   display: BillOfMaterialTablesEnum;
   list: BillOfMaterialListItem[];
   userType: UserTypeEnum;
-  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -51,7 +40,6 @@ const DetailListTableElement = ({
                                   display,
                                   list,
                                   userType,
-                                  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem;
@@ -111,20 +99,20 @@ const DetailListTableElement = ({
                             item.IsMarkedForDeletion ?
                               '部品表の削除を取り消しますか？' : '部品表を削除しますか？',
                             () => {
-                              onUpdateItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-                                  BillOfMaterial: {
-                                    BillOfMaterial: item.BillOfMaterial,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  },
-                                  accepter: ['Header']
-                                },
-                                listType,
-                                'delete',
-                              );
+                              // onUpdateItem(
+                              //   !item.IsMarkedForDeletion,
+                              //   index,
+                              //   'IsMarkedForDeletion',
+                              //   {
+                              //     BillOfMaterial: {
+                              //       BillOfMaterial: item.BillOfMaterial,
+                              //       IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                              //     },
+                              //     accepter: ['Header']
+                              //   },
+                              //   listType,
+                              //   'delete',
+                              // );
                             },
                           )
                         ),
@@ -162,9 +150,7 @@ const DetailListTableElement = ({
   )
 }
 export const BillOfMaterialList = ({
-                                      formData,
                                       className,
-                                      onUpdateItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<BillOfMaterialTablesEnum>(
     BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem
@@ -179,6 +165,10 @@ export const BillOfMaterialList = ({
     '',
   ];
 
+  const list  = useAppSelector(state => state.billOfMaterialList) as {
+    [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: BillOfMaterialListItem[],
+  };
+
   return (
     <ListElement className={clsx(
       `List`,
@@ -189,8 +179,7 @@ export const BillOfMaterialList = ({
         type={BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem}
         display={display}
         userType={UserTypeEnum.OwnerProductionPlantBusinessPartner}
-        list={formData[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem] || []}
-        onUpdateItem={onUpdateItem}
+        list={list[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem] || []}
       />
     </ListElement>
   );

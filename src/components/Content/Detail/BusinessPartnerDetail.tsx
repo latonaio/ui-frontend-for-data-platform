@@ -6,7 +6,6 @@ import {
   ProductDetailTop,
   ProductDetailInternalCapacityListTable,
 } from './Detail.style';
-import React, { useState } from 'react';
 import { Detail } from '@/components/Content/Detail/Detail';
 import {
   BusinessPartnerTablesEnum,
@@ -25,11 +24,11 @@ interface BasicInfoElement {
   [key: string]: any;
 }
 
-interface ProductDetailTopElement {
+interface BusinessPartnerDetailTopElement {
   [key: string]: any;
 }
 
-interface BisunessPartnerDetailBottomElement {
+interface BusinessPartnerDetailBottomElement {
 }
 const BasicInfoElement = (data: Partial<BasicInfoElement>) => {
   return (
@@ -48,10 +47,10 @@ const BasicInfoElement = (data: Partial<BasicInfoElement>) => {
   )
 }
 
-const BisunessPartnerDetailTopElement = ({
+const BusinessPartnerDetailTopElement = ({
                                    params,
                                    content,
-                                 }: Partial<ProductDetailTopElement>) => {
+                                 }: Partial<BusinessPartnerDetailTopElement>) => {
   return (
     <>
       <ProductDetailTop className={'mb-4'}>
@@ -162,7 +161,7 @@ const BisunessPartnerDetailTopElement = ({
     </>
   )
 }
-const BisunessPartnerDetailBottomElement = ({}: Partial<BisunessPartnerDetailBottomElement>) => {
+const BusinessPartnerDetailBottomElement = ({}: Partial<BusinessPartnerDetailBottomElement>) => {
   return (
     <div>
     </div>
@@ -222,11 +221,11 @@ export const BusinessPartnerDetailContent = ({
         </Column>
         <Column className={'Column2'}>
           <ProductDetail>
-            <BisunessPartnerDetailTopElement
+            <BusinessPartnerDetailTopElement
               params={contentDisplayData.params}
               content={data && data.content}
             />
-            <BisunessPartnerDetailBottomElement
+            <BusinessPartnerDetailBottomElement
             />
           </ProductDetail>
         </Column>

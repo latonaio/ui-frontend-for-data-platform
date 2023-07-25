@@ -17,10 +17,8 @@ import {
 } from '@/constants';
 import { productionOrderCache } from '@/services/cacheDatabase/productionOrder';
 import { useDispatch } from 'react-redux';
-import { store } from '@/store/store';
 import { getSearchTextDescription } from '@/helpers/pages';
 import { readsPagination } from '@/api/productionOrder/detail';
-import { setPagination } from '@/store/slices/production-order/pagination';
 import { setLoading } from '@/store/slices/loadging';
 
 interface PageProps {

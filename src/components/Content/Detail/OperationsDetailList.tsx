@@ -7,14 +7,12 @@ import {
   ListHeaderInfo,
   ListHeaderInfoTop,
   ListHeaderInfoBottom,
-  NoImage,
 } from '../List/List.style';
 import { BackButton, BlueButton } from '@/components/Button';
 import {
   OperationsTablesEnum,
   OperationsDetailListItem,
   OperationsDetailHeader,
-  UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from '../List/List';
 import { useRouter } from 'next/router';

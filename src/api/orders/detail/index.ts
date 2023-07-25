@@ -39,6 +39,8 @@ const readsDetailList = async (
   const response = await apiCallReads(methods.GET, endpointUrl, {
     userType: params.userType,
     orderId: params.orderId,
+    buyer: params.buyer,
+    seller: params.seller,
     itemCompleteDeliveryIsDefined: params.itemCompleteDeliveryIsDefined,
     // itemDeliveryStatus: params.itemDeliveryStatus,
     itemDeliveryBlockStatus: params.itemDeliveryBlockStatus,

@@ -7,10 +7,8 @@ import {
   ProductDetailInternalCapacityListTable,
 } from './Detail.style';
 import { generateImageProductUrl } from '@/helpers/common';
-import React, { useState } from 'react';
 import { Detail } from '@/components/Content/Detail/Detail';
 import {
-  AuthedUser,
   ProductImage,
   ProductTablesEnum,
 } from '@/constants';
@@ -289,6 +287,73 @@ const ProductDetailTopElement = ({
                 </div>
               </li>
             </ProductDetailInternalCapacityListTable>
+          </div>
+        )}
+
+		{/* Storage Location */}
+        {content === 'Storage Location' && (
+          <div>
+            <div
+              className={'flex justify-start items-center'}
+              style={{
+                marginLeft: rem(10),
+                marginBottom: rem(26),
+              }}
+            >
+              <div style={{
+                fontSize: rem(18),
+              }}>ビジネスパートナ: </div>
+              <ProductImageLabel
+                className={'blue small'}
+                style={{
+                  marginLeft: rem(20),
+                  width: rem(300),
+                }}
+              >{params.BusinessPartner}</ProductImageLabel>
+            </div>
+            <div
+              className={'flex justify-start items-center'}
+              style={{
+                marginLeft: rem(10),
+                marginBottom: rem(26),
+              }}
+            >
+              <div style={{
+                fontSize: rem(18),
+              }}>プラント: </div>
+              <ProductImageLabel
+                className={'brown small'}
+                style={{
+                  marginLeft: rem(92),
+                  width: rem(300),
+                }}
+              >{params.Plant}</ProductImageLabel>
+            </div>
+			<div>保管場所 : {params.StorageLocation}</div>
+            <div>
+              <ProductDetailInternalCapacityListTable>
+                <li>
+                  <div className={'flex justify-start items-center'}>
+                    <div className={'w-2/4'}>ブロックステータス: {params.BlockStatus}</div>
+                  </div>
+                </li>
+                <li>
+                  <div className={'flex justify-start items-center'}>
+                    <div className={'w-2/4'}>登録日付: {params.CreationDate}</div>
+                  </div>
+                </li>
+                <li>
+                  <div className={'flex justify-start items-center'}>
+                    <div className={'w-2/4'}>最終更新日付: {params.LastCangeDate}</div>
+                  </div>
+                </li>
+                <li>
+                  <div className={'flex justify-start items-center'}>
+                    <div className={'w-2/4'}>削除フラグ: {params.IsMarkedForDeletion}</div>
+                  </div>
+                </li>
+              </ProductDetailInternalCapacityListTable>
+            </div>
           </div>
         )}
       </ProductDetailTop>

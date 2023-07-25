@@ -26,9 +26,20 @@ const creates = async (
 };
 
 const updates = async (
-  params: UpdatesParams,
+  // params: UpdatesParams,
+  params: any,
+  type: string,
 ): Promise<any> => {
-  const endpointUrl = 'DPFM_API_ORDERS_SRV/updates';
+  let endpointUrl = 'header';
+
+  if (type === 'header') {
+    endpointUrl = 'orders/header/updates';
+  }
+
+  if (type === 'item') {
+    endpointUrl = 'orders/item/updates';
+  }
+
   const response = await apiCallUpdate(methods.POST, endpointUrl, params);
   return { ...response.data.message };
 };

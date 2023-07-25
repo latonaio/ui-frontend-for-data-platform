@@ -6,20 +6,17 @@ import {
   HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
 } from './List.style';
 import { GreenButton, BlueButton } from '@/components/Button';
 import { BuyerItem, SellerItem } from '@/constants';
 import { OrdersTablesEnum } from '@/constants';
 import { clickHandler, summaryHead } from './List';
-import { PublicImage } from '@/components/Image';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { formData } from '@/pages/orders/list';
 import { Template as cancelDialogTemplate } from '@/components/Dialog/Consent';
 import { texts } from '@/constants/message';
-import { rem } from 'polished';
+import { useAppSelector } from '@/store/hooks';
+import { OrdersListItem } from '@/store/slices/orders/list';
 
 interface onCancelItem {
   (
@@ -34,9 +31,7 @@ interface onCancelItem {
 
 interface ListProps {
   className?: string;
-  formData: formData;
   onClickHandler: (type: OrdersTablesEnum) => void;
-  onCancelItem: onCancelItem;
 }
 
 interface DetailListTableElementProps {
@@ -44,7 +39,6 @@ interface DetailListTableElementProps {
   type: OrdersTablesEnum;
   display: OrdersTablesEnum;
   list: SellerItem[] | BuyerItem[];
-  onCancelItem: onCancelItem;
 }
 
 const DetailListTableElement = ({
@@ -52,7 +46,6 @@ const DetailListTableElement = ({
                                   type,
                                   display,
                                   list,
-                                  onCancelItem,
 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = display === OrdersTablesEnum.ordersListBuyerItem ?
@@ -74,8 +67,6 @@ const DetailListTableElement = ({
             <td>{item.BuyerName}</td>
             <td>{item.SellerName}</td>
             <td>{item.HeaderDeliveryStatus}</td>
-            {/*<td className={'text-center'}>{item.invoiceStatus}</td>*/}
-            {/*<td className={'text-center'}>{item.deliveryDate}</td>*/}
             <td>
               <div className={'w-full inline-flex justify-evenly items-center'}>
                 <GreenButton
@@ -95,18 +86,18 @@ const DetailListTableElement = ({
                             item.IsCancelled  ?
                               'オーダーのキャンセルを取り消しますか？' : 'オーダーをキャンセルしますか？',
                             () => {
-                              onCancelItem(
-                                !item.IsCancelled,
-                                index,
-                                'IsCancelled',
-                                {
-                                  Orders: {
-                                    OrderID: item.OrderID,
-                                    IsCancelled: !item.IsCancelled,
-                                  }
-                                },
-                                listType,
-                              );
+                              // onCancelItem(
+                              //   !item.IsCancelled,
+                              //   index,
+                              //   'IsCancelled',
+                              //   {
+                              //     Orders: {
+                              //       OrderID: item.OrderID,
+                              //       IsCancelled: !item.IsCancelled,
+                              //     }
+                              //   },
+                              //   listType,
+                              // );
                             },
                           )
                         ),
@@ -132,18 +123,18 @@ const DetailListTableElement = ({
                             dispatch,
                             item.IsMarkedForDeletion ? 'オーダーの削除を取り消しますか？' : 'オーダーを削除しますか？',
                             () => {
-                              onCancelItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-                                  Orders: {
-                                    OrderID: item.OrderID,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  }
-                                },
-                                listType,
-                              );
+                              // onCancelItem(
+                              //   !item.IsMarkedForDeletion,
+                              //   index,
+                              //   'IsMarkedForDeletion',
+                              //   {
+                              //     Orders: {
+                              //       OrderID: item.OrderID,
+                              //       IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                              //     }
+                              //   },
+                              //   listType,
+                              // );
                             },
                           )
                         ),
@@ -153,18 +144,6 @@ const DetailListTableElement = ({
                 >
                   {texts.button.delete}
                 </BlueButton>
-                {/*<i*/}
-                {/*  className="icon-truck"*/}
-                {/*  style={{*/}
-                {/*    fontSize: rem(32),*/}
-                {/*  }}*/}
-                {/*/>*/}
-                {/*<i*/}
-                {/*  className="icon-invoice"*/}
-                {/*  style={{*/}
-                {/*    fontSize: rem(32),*/}
-                {/*  }}*/}
-                {/*/>*/}
               </div>
             </td>
           </tr>
@@ -194,10 +173,8 @@ const DetailListTableElement = ({
 }
 
 export const OrdersList = ({
-                             formData,
                              onClickHandler,
                              className,
-                             onCancelItem,
                            }: ListProps) => {
   const summaryData = {
     [OrdersTablesEnum.ordersListBuyerItem]: ['オーダー番号', 'Buyer', 'Seller', '入出荷ステータス', ''],
@@ -210,6 +187,11 @@ export const OrdersList = ({
     setDisplay(type);
     onClickHandler(type);
   }
+
+  const list  = useAppSelector(state => state.ordersList) as {
+    [OrdersTablesEnum.ordersListBuyerItem]: OrdersListItem[],
+    [OrdersTablesEnum.ordersListSellerItem]: OrdersListItem[],
+  };
 
   useEffect(() => {
     setSummary(summaryData[
@@ -241,15 +223,13 @@ export const OrdersList = ({
         summary={summary}
         type={OrdersTablesEnum.ordersListBuyerItem}
         display={display}
-        list={formData[OrdersTablesEnum.ordersListBuyerItem] || []}
-        onCancelItem={onCancelItem}
+        list={list[OrdersTablesEnum.ordersListBuyerItem] || []}
       />
       <DetailListTableElement
         summary={summary}
         type={OrdersTablesEnum.ordersListSellerItem}
         display={display}
-        list={formData[OrdersTablesEnum.ordersListSellerItem] || []}
-        onCancelItem={onCancelItem}
+        list={list[OrdersTablesEnum.ordersListSellerItem] || []}
       />
     </ListElement>
   );

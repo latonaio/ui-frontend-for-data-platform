@@ -39,6 +39,7 @@ interface BarcodeImage {
 
 interface Accepter {
   accepter: string[];
+  api_type: string;
 }
 
 interface ProductInfo {

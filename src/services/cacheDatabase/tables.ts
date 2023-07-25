@@ -88,6 +88,12 @@ import {
   SupplyChainRelationshipDetailHeader,
   SupplyChainRelationshipTablesEnum,
 
+  QuotationsTablesEnum,
+  QuotationsBuyerItem,
+  QuotationsSellerItem,
+  QuotationsDetailListItem,
+  QuotationsDetailListHeader,
+
 } from '@/constants';
 
 export class Tables extends Dexie {
@@ -157,4 +163,9 @@ export class Tables extends Dexie {
 
   [BusinessPartnerTablesEnum.businessPartnerDetailExconfList]!: Table<BusinessPartnerDetailExconfList>;
   [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]!: Table<BusinessPartnerDetailExconfListHeader>;
+
+  [QuotationsTablesEnum.quotationsListBuyerItem]!: Table<QuotationsBuyerItem>;
+  [QuotationsTablesEnum.quotationsListSellerItem]!: Table<QuotationsSellerItem>;
+  [QuotationsTablesEnum.quotationsListDetailListItem]!: Table<QuotationsDetailListItem>;
+  [QuotationsTablesEnum.quotationsListDetailListHeader]!: Table<QuotationsDetailListHeader>;
 }

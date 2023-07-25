@@ -2,30 +2,17 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
-  ListHeaderInfo,
-  ListHeaderInfoTop,
-  ListHeaderInfoBottom,
 } from './List.style';
 import {
-  InvoiceDocumentTablesEnum,
-  InvoiceDocumentListItem,
-  BuyerItem,
-  SellerItem,
-  OrdersTablesEnum,
   ProductionOrderTablesEnum, ProductionOrderItem, UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { PublicImage } from '@/components/Image';
 import { Checkbox, GreenButton, BlueButton } from '@/components/Button';
-import { dialogState, setDialog } from '@/store/slices/dialog';
+import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { Button } from '@material-ui/core';
 import { formData, onUpdateItem } from '@/pages/production-order/list';
 import { toLowerCase } from '@/helpers/common';
 import { texts } from '@/constants/message';

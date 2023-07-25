@@ -5,58 +5,65 @@ export const Popup = styled.div`
 `;
 
 export const PopupTranslucentStyle = styled.div`
-  width: 80%;
+  width: 100%;
   padding: ${rem(20)};
   color: #fff;
   background: rgba(0, 0, 0, 0.7);
   position: absolute;
-  top: ${rem(10)};
-  left: ${rem(40)};
-  
+  top: 350px;
+  left: 0;
+  right: 0;
+  max-width: 1200px;
+  margin: auto;
   .content {
     li {
       margin-bottom: ${rem(3)};
     }
   }
-  
   .leftColumn,
   .rightColumn {
     width: 50%;
   }
-  
+
   .title {
     margin-bottom: ${rem(10)};
     padding-left: ${rem(10)};
-    
+
     i {
       font-size: ${rem(36)};
     }
-    
+
     span {
       padding-left: ${rem(20)};
       line-height: ${rem(36)};
     }
   }
-  
+
   .listTitle {
     font-size: ${rem(14)};
     line-height: ${rem(20)};
   }
-  
+
   .listContent {
     font-family: 'AgencyB', serif;
     padding-left: ${rem(10)};
     font-size: ${rem(20)};
     line-height: ${rem(20)};
   }
-  
+
+  .listContent2 {
+    padding-left: ${rem(10)};
+    font-size: ${rem(20)};
+    line-height: ${rem(20)};
+  }
+
   &.compositionTable {
     width: ${rem(450)};
     padding: 0;
     border: 1px solid #000;
     top: ${rem(250)};
     right: ${rem(0)};
-    
+
     li {
       .name,
       .value {
@@ -65,7 +72,7 @@ export const PopupTranslucentStyle = styled.div`
         padding: ${rem(10)};
         border-bottom: 1px solid #000;
       }
-      
+
       .value {
         border-left: 1px solid #000;
       }
@@ -73,7 +80,7 @@ export const PopupTranslucentStyle = styled.div`
       &:last-child {
         .name,
         .value {
-          border-bottom: none;  
+          border-bottom: none;
         }
       }
     }

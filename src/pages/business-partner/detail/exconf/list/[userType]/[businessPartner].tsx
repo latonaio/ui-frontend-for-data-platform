@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
 		businessPartner: Number(businessPartner),
-      userType,
+		userType,
     },
   };
 }

@@ -3,25 +3,20 @@ import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import {
   List as ListElement,
-  HeadTab,
   DetailList,
   DetailListTable,
-  IcnOutside,
-  IcnInvoice,
 } from './List.style';
 import {
   UserTypeEnum,
 } from '@/constants';
-import { GreenButton, BlueButton } from '@/components/Button';
-import { BusinessPartnerTablesEnum, BuyerItem, SellerItem, BusinessPartnerItem } from '@/constants';
+import { BlueButton } from '@/components/Button';
+import { BusinessPartnerTablesEnum, BusinessPartnerItem } from '@/constants';
 import { clickHandler, summaryHead } from './List';
-import { PublicImage } from '@/components/Image';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { formData } from '@/pages/business-partner/list';
 import { Template as cancelDialogTemplate } from '@/components/Dialog/Consent';
 import { texts } from '@/constants/message';
-import { rem } from 'polished';
 import { toLowerCase } from '@/helpers/common';
 
 export type onUpdateItem = (

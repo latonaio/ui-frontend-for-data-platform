@@ -35,7 +35,7 @@ export type DisplayData = {
   [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]: BusinessPartnerDetailExconfListHeader | null;
 } | null;
 
-const BusinessPartnerDetailExconfList: React.FC<PageProps> = (data) => {
+const BusinessPartnerDetail: React.FC<PageProps> = (data) => {
   const [displayData, setDisplayData] = useState<DisplayData>(null);
   const dispatch = useDispatch();
   const setFormDataForPage = async (
@@ -142,4 +142,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 }
 
-export default BusinessPartnerDetailExconfList;
+export default BusinessPartnerDetail;

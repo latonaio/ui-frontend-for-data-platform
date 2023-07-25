@@ -36,6 +36,8 @@ export interface ReadsPaginationResponse {
 export interface ReadsDetailListParams extends UIKeyGeneral {
   userType: string;
   orderId: number;
+  buyer: number | null;
+  seller: number | null;
   itemCompleteDeliveryIsDefined: boolean;
   // itemDeliveryStatus: boolean;
   itemDeliveryBlockStatus: boolean;
@@ -44,8 +46,11 @@ export interface ReadsDetailListParams extends UIKeyGeneral {
 }
 
 export interface ReadsDetailListResponse extends Pagination {
-  ordersDetailList: OrdersDetailListItem[];
-  ordersDetailHeader: OrdersDetailHeader;
+  Header: OrdersDetailHeader;
+  HeaderWithItem: OrdersDetailHeader[];
+  Item: OrdersDetailListItem[];
+  // ordersDetailList: OrdersDetailListItem[];
+  // ordersDetailHeader: OrdersDetailHeader;
   paymentTerms: PaymentTerms[];
   paymentMethod: PaymentMethod[];
   currency: Currency[];

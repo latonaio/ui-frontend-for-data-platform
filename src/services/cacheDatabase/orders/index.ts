@@ -36,6 +36,8 @@ class OrdersCache extends CacheDatabase implements List, Detail {
     params: {
       orderId: number;
       userType: OrdersUserType[keyof OrdersUserType];
+      buyer: number | null;
+      seller: number | null;
       language: string;
       businessPartner: number;
       emailAddress: string;
