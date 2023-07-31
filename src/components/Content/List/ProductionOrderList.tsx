@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import {
   List as ListElement,
   DetailList,
-  DetailListTable,
+  DetailListTable, NoImage,
 } from './List.style';
 import {
   ProductionOrderTablesEnum, ProductionOrderItem, UserTypeEnum,
@@ -14,9 +14,10 @@ import { Checkbox, GreenButton, BlueButton } from '@/components/Button';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { formData, onUpdateItem } from '@/pages/production-order/list';
-import { toLowerCase } from '@/helpers/common';
+import { generateImageEquipmentUrl, toLowerCase } from '@/helpers/common';
 import { texts } from '@/constants/message';
 import { Template as cancelDialogTemplate } from '@/components/Dialog';
+import { rem } from 'polished';
 
 interface ListProps {
   className?: string;
@@ -53,6 +54,27 @@ const DetailListTableElement = ({
               router,
             );
           }}>
+            <td>
+              {item.Images?.Product && (
+                <img
+                  className={'m-auto'}
+                  style={{
+                    width: rem(60),
+                  }}
+                  src={item.Images && generateImageEquipmentUrl(
+                    item.Images?.Product ?
+                      item.Images?.Product.BusinessPartnerID.toString() : null, item.Images?.Product || {}
+                  )}
+                  alt={`${item.Product}`}
+                />
+              )}
+              {!item.Images?.Product && (
+                <NoImage>
+                  <div>No</div>
+                  <div>Image</div>
+                </NoImage>
+              )}
+            </td>
             <td>{item.ProductionOrder}</td>
             <td>{item.MRPArea}</td>
             <td>{item.Product}/{item.ProductName}</td>
@@ -76,7 +98,7 @@ const DetailListTableElement = ({
             </td>
             <td>
               <div>
-			  <GreenButton
+                <GreenButton
                   className={'size-relative'}
                   isFinished={item.IsCancelled}
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -90,7 +112,7 @@ const DetailListTableElement = ({
                         children: (
                           cancelDialogTemplate(
                             dispatch,
-                            item.IsCancelled  ?
+                            item.IsCancelled ?
                               'オーダーのキャンセルを取り消しますか？' : 'オーダーをキャンセルしますか？',
                             () => {
                               onUpdateItem(
@@ -101,14 +123,14 @@ const DetailListTableElement = ({
                                   ProductionOrder: {
                                     ProductionOrder: item.ProductionOrder,
                                     IsCancelled: !item.IsCancelled,
-                                  }
+                                  },
                                 },
                                 listType,
                               );
                             },
                           )
                         ),
-                      }
+                      },
                     }));
                   }}
                 >
@@ -138,14 +160,14 @@ const DetailListTableElement = ({
                                   ProductionOrder: {
                                     ProductionOrder: item.ProductionOrder,
                                     IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  }
+                                  },
                                 },
                                 listType,
                               );
                             },
                           )
                         ),
-                      }
+                      },
                     }));
                   }}
                 >
@@ -187,6 +209,7 @@ export const ProductionOrderList = ({
     ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem,
   );
   const summary = [
+    '品目画像',
     '製造指図番号',
     'MRPエリア',
     '品目コード/品目名称',

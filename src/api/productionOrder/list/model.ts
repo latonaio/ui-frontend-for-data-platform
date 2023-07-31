@@ -1,4 +1,4 @@
-import { UIKeyGeneral } from '@/constants';
+import { ProductionOrderDetailListItem, UIKeyGeneral } from '@/constants';
 import { ProductionOrderItem } from '@/constants';
 
 export interface params extends UIKeyGeneral {
@@ -7,5 +7,6 @@ export interface params extends UIKeyGeneral {
 }
 
 export interface response {
-  productionOrderList: ProductionOrderItem[]
+  Header: ProductionOrderItem[];
+  Item: ProductionOrderDetailListItem[];
 }
