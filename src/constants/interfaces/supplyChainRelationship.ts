@@ -1,10 +1,5 @@
 import { ProductImage } from '@/constants';
 
-interface SupplyChainRelationshipDetailItem {
-  Content: string;
-  Param: unknown[];
-}
-
 interface SupplyChainRelationshipExconfListItem {
   Content: string;
   Exist: boolean;
@@ -16,15 +11,7 @@ interface SupplyChainRelationshipDetailExconfList {
   Existences: SupplyChainRelationshipExconfListItem[];
 }
 
-interface SupplyChainRelationshipDetailList {
-  SupplyChainRelationshipID: number;
-  Contents: SupplyChainRelationshipDetailItem[];
-}
-
 interface SupplyChainRelationshipDetailExconfListHeader extends SupplyChainRelationshipItem {
-}
-
-interface SupplyChainRelationshipDetailHeader extends SupplyChainRelationshipItem {
 }
 
 interface SupplyChainRelationshipItem {
@@ -39,6 +26,9 @@ interface SupplyChainRelationshipItem {
   IsMarkedForDeletion: boolean;
 }
 
+interface SupplyChainRelationshipContentListHeaderItem extends SupplyChainRelationshipItem {
+
+}
 interface SupplyChainRelationshipContentListItem extends SupplyChainRelationshipItem {
 	SupplyChainRelationshipDeliveryID: number;
 	DeliverToParty: number;
@@ -66,7 +56,5 @@ export type{
   SupplyChainRelationshipBuyerItem,
   SupplyChainRelationshipSellerItem,
   SupplyChainRelationshipContentListItem,
-  SupplyChainRelationshipDetailItem,
-  SupplyChainRelationshipDetailHeader,
-  SupplyChainRelationshipDetailList,
+  SupplyChainRelationshipContentListHeaderItem
 }

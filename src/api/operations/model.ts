@@ -8,12 +8,6 @@ export interface DeleteParams extends Accepter {
     IsMarkedForDeletion: boolean;
   }
 }
-export interface UpdateParams extends Accepter {
-  Operations: {
-    Operations: number;
-    IsMarkedForDeletion: boolean;
-  }
-}
 
 export interface params extends UIKeyGeneral {
   headerIsMarkedForDeletion: boolean;

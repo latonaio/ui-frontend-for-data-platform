@@ -1,5 +1,3 @@
-import { ProductionVersionImage } from '@/constants';
-
 interface ProductionOrderItem {
   ProductionOrder: number;
   MRPArea: number;
@@ -13,14 +11,6 @@ interface ProductionOrderItem {
   HeaderIsReleased: boolean;
   IsCancelled: boolean;
   IsMarkedForDeletion: boolean;
-  Images: {
-    DocID: {};
-    Product: {
-      BusinessPartnerID: number;
-      DocID: string;
-      FileExtension: string;
-    };
-  };
 }
 
 interface ProductionOrderDetailListItem {

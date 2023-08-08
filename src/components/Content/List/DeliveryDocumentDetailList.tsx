@@ -15,6 +15,8 @@ import {
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { BackButton, GreenButton, BlueButton } from '@/components/Button';
+import { PublicImage } from '@/components/Image';
+import React from 'react';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { formData, onUpdateItem } from '@/pages/delivery-document/detail/list/[userType]/[deliveryDocument]';

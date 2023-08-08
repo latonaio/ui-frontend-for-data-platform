@@ -9,5 +9,5 @@ export interface params extends UIKeyGeneral {
 }
 
 export interface response {
-  General: BusinessPartnerItem[];
+  BusinessPartners: BusinessPartnerItem[];
 }

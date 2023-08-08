@@ -1,14 +1,13 @@
 import { CacheDatabase } from '..';
 import {
   AuthedUser,
-  SupplyChainRelationshipDetailExconfList,
-  SupplyChainRelationshipDetailExconfListHeader,
-  SupplyChainRelationshipDetailHeader,
-  SupplyChainRelationshipDetailList,
-  SupplyChainRelationshipTablesEnum,
+  SupplyChainRelationshipDetailExconfList, SupplyChainRelationshipDetailExconfListHeader,
 } from '@/constants';
 import { List } from './list';
 import { Detail } from './detail';
+import {
+	SupplyChainRelationshipTablesEnum,
+  } from '@/constants';
 
 export interface SupplyChainRelationshipUserType {
   buyer: string;
@@ -61,28 +60,6 @@ class SupplyChainRelationshipCache extends CacheDatabase implements List {
     },
   ): Promise<void> {
     return await this.detail.updateSupplyChainRelationshipDetailExconfList(params);
-  }
-
-  async getSupplyChainRelationshipDetail(
-    supplyChainRelationshipId: number,
-    userType: SupplyChainRelationshipUserType[keyof SupplyChainRelationshipUserType],
-  ): Promise<{
-    [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]: SupplyChainRelationshipDetailList | null;
-    [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]: SupplyChainRelationshipDetailHeader | null;
-  }> {
-    return await this.detail.getSupplyChainRelationshipDetail(supplyChainRelationshipId, userType);
-  }
-
-  async updateSupplyChainRelationshipDetail(
-    params: {
-      supplyChainRelationshipId: number;
-      language: AuthedUser['language'];
-      businessPartner: AuthedUser['businessPartner'];
-      emailAddress: AuthedUser['emailAddress'];
-      userType: SupplyChainRelationshipUserType[keyof SupplyChainRelationshipUserType];
-    },
-  ): Promise<void> {
-    return await this.detail.updateSupplyChainRelationshipDetail(params);
   }
 }
 

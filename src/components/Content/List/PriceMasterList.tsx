@@ -124,12 +124,12 @@ export const PriceMasterList = ({
           <li
             className={`${display === PriceMasterTablesEnum.priceMasterListBuyerItem ? 'active' : ''}`}
             onClick={() => tabClickHandler(PriceMasterTablesEnum.priceMasterListBuyerItem)}
-          >User = Buyer
+          >User ＝ Buyer
           </li>
           <li
             className={`${display === PriceMasterTablesEnum.priceMasterListSellerItem ? 'active' : ''}`}
             onClick={() => tabClickHandler(PriceMasterTablesEnum.priceMasterListSellerItem)}
-          >User = Seller
+          >User ＝ Seller
           </li>
         </HeadTab>
       </div>

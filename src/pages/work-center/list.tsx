@@ -20,7 +20,8 @@ import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpe
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
-import { deletes, updates} from '@/api/workCenter';
+import { updates } from '@/api/deliveryDocument';
+import { deleteEquipment } from '@/api/equipment';
 
 interface PageProps {
 }
@@ -120,7 +121,7 @@ const WorkCenterList: React.FC<PageProps> = (data) => {
     }
 
     if (apiType === 'delete') {
-      await deletes({
+      await deleteEquipment({
         ...params,
         business_partner: businessPartner,
         accepter: accepter(params).accepter,

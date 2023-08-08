@@ -5,6 +5,11 @@ import {
   HeadTab,
   DetailList,
   DetailListTable,
+  IcnOutside,
+  IcnInvoice,
+  ListHeaderInfo,
+  ListHeaderInfoTop,
+  ListHeaderInfoBottom,
 } from './List.style';
 import {
   InvoiceDocumentTablesEnum,
@@ -12,12 +17,14 @@ import {
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
+import { PublicImage } from '@/components/Image';
 import { Checkbox, GreenButton } from '@/components/Button';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { formData, onUpdateItem } from '@/pages/invoice-document/list';
 import { Template as cancelDialogTemplate } from '@/components/Dialog/Consent';
 import { texts } from '@/constants/message';
+import { rem } from 'polished';
 
 interface ListProps {
   className?: string;

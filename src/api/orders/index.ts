@@ -1,4 +1,4 @@
-import { apiCall, multiPartFormApiCall, apiCallUpdate } from '../axios';
+import { apiCall, multiPartFormApiCall } from '../axios';
 import { methods } from '@/constants/enums';
 import {
   UpdatesParams,
@@ -26,21 +26,10 @@ const creates = async (
 };
 
 const updates = async (
-  // params: UpdatesParams,
-  params: any,
-  type: string,
+  params: UpdatesParams,
 ): Promise<any> => {
-  let endpointUrl = 'header';
-
-  if (type === 'header') {
-    endpointUrl = 'orders/header/updates';
-  }
-
-  if (type === 'item') {
-    endpointUrl = 'orders/item/updates';
-  }
-
-  const response = await apiCallUpdate(methods.POST, endpointUrl, params);
+  const endpointUrl = 'DPFM_API_ORDERS_SRV/updates';
+  const response = await apiCall(methods.POST, endpointUrl, params);
   return { ...response.data.message };
 };
 

@@ -1,4 +1,4 @@
-import { OrdersDetailListItem, UIKeyGeneral } from '@/constants';
+import { UIKeyGeneral } from '@/constants';
 import { BuyerItem, SellerItem } from '@/constants';
 
 export interface ReadsParams extends UIKeyGeneral {
@@ -11,7 +11,5 @@ export interface ReadsParams extends UIKeyGeneral {
 }
 
 export interface ReadsResponse {
-  Header: BuyerItem[] | SellerItem[]
-  HeaderWithItem: OrdersDetailListItem[];
-  Item: OrdersDetailListItem[];
+  ordersList: BuyerItem[] | SellerItem[]
 }

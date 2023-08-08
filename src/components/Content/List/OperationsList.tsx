@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
+  HeadTab,
   DetailList,
   DetailListTable,
+  IcnOutside,
+  IcnInvoice,
+  ListHeaderInfo,
+  ListHeaderInfoTop,
+  ListHeaderInfoBottom,
   NoImage,
 } from './List.style';
 import {
@@ -13,9 +19,11 @@ import {
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { BlueButton } from '@/components/Button';
-import { setDialog } from '@/store/slices/dialog';
+import { PublicImage } from '@/components/Image';
+import { Checkbox, BlueButton } from '@/components/Button';
+import { dialogState, setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
+import { Button } from '@material-ui/core';
 import { formData, onUpdateItem } from '@/pages/operations/list';
 import { generateImageProductUrl, toLowerCase } from '@/helpers/common';
 import { rem } from 'polished';
@@ -57,20 +65,20 @@ const DetailListTableElement = ({
             );
           }}>
             <td>
-              {item.Images?.Product && (
+              {item.Images?.Operations && (
                 <img
                   className={'m-auto'}
                   style={{
                     width: rem(60),
                   }}
                   src={item.Images && generateImageProductUrl(
-                    item.Images?.Product?.BusinessPartnerID ?
-                      item.Images?.Product?.BusinessPartnerID.toString() : null, item.Images?.Product || {}
+                    item.Images?.Operations?.BusinessPartnerID ?
+                      item.Images?.Operations?.BusinessPartnerID.toString() : null, item.Images?.Operations || {}
                   )}
                   alt={`${item.ProductDescription}`}
                 />
               )}
-              {!item.Images?.Product && (
+              {!item.Images?.Operations && (
                 <NoImage>
                   <div>No</div>
                   <div>Image</div>
@@ -99,18 +107,18 @@ const DetailListTableElement = ({
                           cancelDialogTemplate(
                             dispatch,
                             item.IsMarkedForDeletion ?
-                              '作業手順を削除を取り消しますか？' : '作業手順を削除しますか？',
+                              '作業手順明細を削除を取り消しますか？' : '作業手順明細を削除しますか？',
                             () => {
                               onUpdateItem(
                                 !item.IsMarkedForDeletion,
                                 index,
                                 'IsMarkedForDeletion',
                                 {
-                                  Operations: {
+                                  OperationsMaster: {
                                     Operations: item.Operations,
                                     IsMarkedForDeletion: !item.IsMarkedForDeletion,
                                   },
-                                  accepter: ['Header']
+                                  accepter: ['General']
                                 },
                                 listType,
                                 'delete',

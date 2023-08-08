@@ -7,5 +7,5 @@ export interface ReadsParams extends UIKeyGeneral {
 }
 
 export interface ReadsResponse {
-  Header: PriceMasterBuyerItem[] | PriceMasterSellerItem[]
+  priceMasterList: PriceMasterBuyerItem[] | PriceMasterSellerItem[]
 }

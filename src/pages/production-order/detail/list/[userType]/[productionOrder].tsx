@@ -13,30 +13,23 @@ import {
   ProductionOrderTablesEnum,
   ProductionOrderDetailListItem,
   UserTypeEnum,
+  InvoiceDocumentTablesEnum,
 } from '@/constants';
 import { getLocalStorage, toUpperCase } from '@/helpers/common';
 import {
   createFormDataForSelectObject,
+  createFormDataForEditingArray,
+  createEditFormData,
   getSearchTextDescription,
 } from '@/helpers/pages';
 import { productionOrderCache } from '@/services/cacheDatabase/productionOrder';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
-import { deletes, updates } from '@/api/productionOrder';
-import { toLowerCase } from '@/helpers/common';
+
 interface PageProps {
   productionOrder: number;
   userType: string;
 }
-
-export type onUpdateItem = (
-	value: any,
-	index: number,
-	itemType: string,
-	params: any,
-	listType: string,
-	apiType?: string,
-  ) => void;
 
 export interface editList {
 }
@@ -49,7 +42,7 @@ export interface formData {
 
 const ProductionOrderDetailList: React.FC<PageProps> = (data) => {
   const [displayData, setDisplayData] = useState({});
-  const [formData, setFormData] = useState<formData | any>({
+  const [formData, setFormData] = useState<formData>({
     editList: {},
     [ProductionOrderTablesEnum.productionOrderDetailList]: [],
   });
@@ -100,87 +93,6 @@ const ProductionOrderDetailList: React.FC<PageProps> = (data) => {
     dispatch(setLoading({ isOpen: false }));
 
   };
-  const onUpdateItem = async (
-    value: any,
-    updateItemIndex: number,
-    updateItemKey: string,
-    params: any,
-    listType: string,
-    apiType: string = 'update',
-  ) => {
-    const {
-      language,
-      businessPartner,
-      emailAddress,
-    }: AuthedUser = getLocalStorage('auth');
-
-    dispatch(setLoading({ isOpen: true }));
-
-    const accepter = (params: any) => {
-      if (!params.hasOwnProperty('accepter')) {
-        return {
-          ...params,
-          accepter: ['Header'],
-        };
-      }
-
-      return params;
-    }
-
-    if (apiType === 'delete') {
-      await deletes({
-        ...params,
-        business_partner: businessPartner,
-        accepter: accepter(params).accepter,
-      });
-    } else {
-      await updates({
-        ...params,
-        accepter: accepter(params).accepter,
-      });
-    }
-
-    productionOrderCache.updateProductionOrderList({
-      language,
-      businessPartner,
-      emailAddress,
-      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
-    });
-
-    const itemIdentification = params.ProductionOrderMaster.ProductionOrder;
-
-    const updateData = {
-      ...formData,
-      [listType]: [
-        ...formData[listType].map((item: any, index: number) => {
-          if (item.BillOfMaterial === itemIdentification) {
-            return {
-              ...item,
-              [updateItemKey]: value,
-            }
-          }
-          return { ...item }
-        })
-      ],
-    };
-
-    if (apiType !== 'cancel') {
-      updateData.editList = {
-        ...formData.editList,
-        [listType]: [
-          ...formData.editList[listType].map((item: any, index: number) => {
-            return {
-              isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
-            };
-          })
-        ]
-      }
-    }
-
-    setFormData(updateData);
-
-    dispatch(setLoading({ isOpen: false }));
-  }
 
 
   useEffect(() => {
@@ -208,7 +120,6 @@ const ProductionOrderDetailList: React.FC<PageProps> = (data) => {
             formData={formData}
             userType={data.userType}
             productionOrder={data.productionOrder}
-            onUpdateItem={onUpdateItem}
           />
         }
       </Main>

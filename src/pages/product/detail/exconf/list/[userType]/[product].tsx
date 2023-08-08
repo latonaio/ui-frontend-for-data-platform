@@ -13,7 +13,7 @@ import { getLocalStorage, toLowerCase, toUpperCase } from '@/helpers/common';
 import {
   AuthedUser,
   ProductDetailExconfListHeader,
-//   ProductDetailExconfListItem,
+  ProductDetailExconfListItem,
   ProductDetailExconfList as ProductDetailExconfListType,
   ProductTablesEnum,
   UserTypeEnum,

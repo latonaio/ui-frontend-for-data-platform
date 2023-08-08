@@ -3,37 +3,43 @@ import { clsx } from 'clsx';
 import { useRouter } from 'next/router';
 import {
   List as ListElement,
+  HeadTab,
   DetailList,
   DetailListTable,
+  IcnOutside,
+  IcnInvoice,
 } from './List.style';
 import {
   UserTypeEnum,
 } from '@/constants';
-import { BlueButton } from '@/components/Button';
-import { BusinessPartnerTablesEnum, BusinessPartnerItem } from '@/constants';
+import { GreenButton, BlueButton } from '@/components/Button';
+import { BusinessPartnerTablesEnum, BuyerItem, SellerItem, BusinessPartnerItem } from '@/constants';
 import { clickHandler, summaryHead } from './List';
+import { PublicImage } from '@/components/Image';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
 import { formData } from '@/pages/business-partner/list';
 import { Template as cancelDialogTemplate } from '@/components/Dialog/Consent';
 import { texts } from '@/constants/message';
+import { rem } from 'polished';
 import { toLowerCase } from '@/helpers/common';
 
-export type onUpdateItem = (
-	value: any,
-	index: number,
-	itemType: string,
-	params: any,
-	listType: string,
-	apiType?: string,
-  ) => void;
+interface onCancelItem {
+  (
+    value: any,
+    index: number,
+    itemType: string,
+    params: any,
+    listType: string,
+  ): void;
+}
 
 
 interface ListProps {
   className?: string;
   formData: formData;
   onClickHandler: (type: BusinessPartnerTablesEnum) => void;
-  onUpdateItem: onUpdateItem;
+  // onCancelItem: onCancelItem;
 }
 
 interface DetailListTableElementProps {
@@ -41,7 +47,7 @@ interface DetailListTableElementProps {
   type: BusinessPartnerTablesEnum;
   display: BusinessPartnerTablesEnum;
   list: BusinessPartnerItem[];
-  onUpdateItem: onUpdateItem;
+  // onCancelItem: onCancelItem;
 }
 
 const DetailListTableElement = ({
@@ -49,7 +55,7 @@ const DetailListTableElement = ({
                                   type,
                                   display,
                                   list,
-                                  onUpdateItem,
+                                  // onCancelItem,
 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem;
@@ -74,39 +80,37 @@ const DetailListTableElement = ({
                 <BlueButton
                   className={'size-relative'}
                   isFinished={item.IsMarkedForDeletion}
-                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    dispatch(setDialog({
-                      type: 'consent',
-                      consent: {
-                        isOpen: true,
-                        children: (
-                          cancelDialogTemplate(
-                            dispatch,
-                            item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
-                            () => {
-                              onUpdateItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-                                  BusinessPartner: {
-                                    BusinessPartner: item.BusinessPartner,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  },
-                                  accepter: ['General'],
-                                },
-                                listType,
-                                'delete',
-                              );
-                            },
-                          )
-                        ),
-                      },
-                    }));
-                  }}
+                  // onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  //   e.stopPropagation();
+                  //   e.preventDefault();
+                  //
+                  //   dispatch(setDialog({
+                  //     type: 'consent',
+                  //     consent: {
+                  //       isOpen: true,
+                  //       children: (
+                  //         cancelDialogTemplate(
+                  //           dispatch,
+                  //           item.IsMarkedForDeletion ? 'ビジネスパートナーの削除を取り消しますか？' : 'ビジネスパートナーを削除しますか？',
+                  //           () => {
+                  //             onCancelItem(
+                  //               !item.IsMarkedForDeletion,
+                  //               index,
+                  //               'IsMarkedForDeletion',
+                  //               {
+                  //                 BusinessPartner: {
+                  //                   BusinessPartner: item.BusinessPartner,
+                  //                   IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                  //                 }
+                  //               },
+                  //               listType,
+                  //             );
+                  //           },
+                  //         )
+                  //       ),
+                  //     }
+                  //   }));
+                  // }}
                 >
                   {texts.button.delete}
                 </BlueButton>
@@ -142,7 +146,7 @@ export const BusinessPartnerList = ({
                              formData,
                              onClickHandler,
                              className,
-                             onUpdateItem,
+                             // onCancelItem,
                            }: ListProps) => {
   const summaryData = {
     [BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem]: [
@@ -176,7 +180,7 @@ export const BusinessPartnerList = ({
         type={BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem}
         display={display}
         list={formData[BusinessPartnerTablesEnum.businessPartnerListBusinessPartnerItem] || []}
-        onUpdateItem={onUpdateItem}
+        // onCancelItem={onCancelItem}
       />
     </ListElement>
   );

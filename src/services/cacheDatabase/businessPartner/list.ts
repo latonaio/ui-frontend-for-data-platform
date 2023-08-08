@@ -37,6 +37,6 @@ export class List extends CacheDatabase {
     });
 
     await this.businessPartnerListBusinessPartnerItem.clear();
-    await this.businessPartnerListBusinessPartnerItem.bulkAdd(response.General || []);
+    await this.businessPartnerListBusinessPartnerItem.bulkAdd(response.BusinessPartners || []);
   }
 }

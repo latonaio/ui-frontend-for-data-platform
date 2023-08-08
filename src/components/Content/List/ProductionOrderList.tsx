@@ -2,27 +2,39 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
+  HeadTab,
   DetailList,
-  DetailListTable, NoImage,
+  DetailListTable,
+  IcnOutside,
+  IcnInvoice,
+  ListHeaderInfo,
+  ListHeaderInfoTop,
+  ListHeaderInfoBottom,
 } from './List.style';
 import {
+  InvoiceDocumentTablesEnum,
+  InvoiceDocumentListItem,
+  BuyerItem,
+  SellerItem,
+  OrdersTablesEnum,
   ProductionOrderTablesEnum, ProductionOrderItem, UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { Checkbox, GreenButton, BlueButton } from '@/components/Button';
-import { setDialog } from '@/store/slices/dialog';
+import { PublicImage } from '@/components/Image';
+import { Checkbox, GreenButton } from '@/components/Button';
+import { dialogState, setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { formData, onUpdateItem } from '@/pages/production-order/list';
-import { generateImageEquipmentUrl, toLowerCase } from '@/helpers/common';
+import { Button } from '@material-ui/core';
+import { formData } from '@/pages/production-order/list';
+import { toLowerCase } from '@/helpers/common';
 import { texts } from '@/constants/message';
-import { Template as cancelDialogTemplate } from '@/components/Dialog';
 import { rem } from 'polished';
 
 interface ListProps {
   className?: string;
   formData: formData;
-  onUpdateItem: onUpdateItem;
+  // onCancelItem: onCancelItem;
 }
 
 interface DetailListTableElementProps {
@@ -30,7 +42,7 @@ interface DetailListTableElementProps {
   type: ProductionOrderTablesEnum;
   display: ProductionOrderTablesEnum;
   list: ProductionOrderItem[];
-  onUpdateItem: onUpdateItem;
+  // onCancelItem: onCancelItem;
 }
 
 const DetailListTableElement = ({
@@ -38,7 +50,7 @@ const DetailListTableElement = ({
                                   type,
                                   display,
                                   list,
-                                  onUpdateItem,
+                                  // onCancelItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem;
@@ -54,27 +66,6 @@ const DetailListTableElement = ({
               router,
             );
           }}>
-            <td>
-              {item.Images?.Product && (
-                <img
-                  className={'m-auto'}
-                  style={{
-                    width: rem(60),
-                  }}
-                  src={item.Images && generateImageEquipmentUrl(
-                    item.Images?.Product ?
-                      item.Images?.Product.BusinessPartnerID.toString() : null, item.Images?.Product || {}
-                  )}
-                  alt={`${item.Product}`}
-                />
-              )}
-              {!item.Images?.Product && (
-                <NoImage>
-                  <div>No</div>
-                  <div>Image</div>
-                </NoImage>
-              )}
-            </td>
             <td>{item.ProductionOrder}</td>
             <td>{item.MRPArea}</td>
             <td>{item.Product}/{item.ProductName}</td>
@@ -97,7 +88,7 @@ const DetailListTableElement = ({
               />
             </td>
             <td>
-              <div>
+              <div className={'w-full inline-flex justify-evenly items-center'}>
                 <GreenButton
                   className={'size-relative'}
                   isFinished={item.IsCancelled}
@@ -105,74 +96,33 @@ const DetailListTableElement = ({
                     e.stopPropagation();
                     e.preventDefault();
 
-                    dispatch(setDialog({
-                      type: 'consent',
-                      consent: {
-                        isOpen: true,
-                        children: (
-                          cancelDialogTemplate(
-                            dispatch,
-                            item.IsCancelled ?
-                              'オーダーのキャンセルを取り消しますか？' : 'オーダーをキャンセルしますか？',
-                            () => {
-                              onUpdateItem(
-                                !item.IsCancelled,
-                                index,
-                                'IsCancelled',
-                                {
-                                  ProductionOrder: {
-                                    ProductionOrder: item.ProductionOrder,
-                                    IsCancelled: !item.IsCancelled,
-                                  },
-                                },
-                                listType,
-                              );
-                            },
-                          )
-                        ),
-                      },
-                    }));
+                    if (item.IsCancelled) { return; }
+
+                    // dispatch(setDialog(cancelDialog(dispatch, () => {
+                    //   onCancelItem(
+                    //     true,
+                    //     index,
+                    //     'IsCancelled',
+                    //     {
+                    //       InvoiceDocument: {
+                    //         InvoiceDocument: item.InvoiceDocument,
+                    //         IsCancelled: true,
+                    //       }
+                    //     },
+                    //     listType,
+                    //     'cancel',
+                    //   );
+                    // })));
                   }}
                 >
                   {texts.button.cancel}
                 </GreenButton>
-                <BlueButton
-                  className={'size-relative'}
-                  isFinished={item.IsMarkedForDeletion}
-                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    dispatch(setDialog({
-                      type: 'consent',
-                      consent: {
-                        isOpen: true,
-                        children: (
-                          cancelDialogTemplate(
-                            dispatch,
-                            item.IsMarkedForDeletion ? 'オーダーの削除を取り消しますか？' : 'オーダーを削除しますか？',
-                            () => {
-                              onUpdateItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-                                  ProductionOrder: {
-                                    ProductionOrder: item.ProductionOrder,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  },
-                                },
-                                listType,
-                              );
-                            },
-                          )
-                        ),
-                      },
-                    }));
-                  }}
-                >
-                  {texts.button.delete}
-                </BlueButton>
+                {/*<i*/}
+                {/*  className="icon-schedule"*/}
+                {/*  style={{*/}
+                {/*    fontSize: rem(32),*/}
+                {/*  }}*/}
+                {/*/>*/}
               </div>
             </td>
           </tr>
@@ -203,13 +153,12 @@ const DetailListTableElement = ({
 export const ProductionOrderList = ({
                                       formData,
                                       className,
-                                      onUpdateItem,
+                                      // onCancelItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<ProductionOrderTablesEnum>(
     ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem,
   );
   const summary = [
-    '品目画像',
     '製造指図番号',
     'MRPエリア',
     '品目コード/品目名称',
@@ -232,7 +181,7 @@ export const ProductionOrderList = ({
         type={ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem}
         display={display}
         list={formData[ProductionOrderTablesEnum.productionOrderListOwnerProductionPlantBusinessPartnerItem] || []}
-        onUpdateItem={onUpdateItem}
+        // onCancelItem={onCancelItem}
       />
     </ListElement>
   );

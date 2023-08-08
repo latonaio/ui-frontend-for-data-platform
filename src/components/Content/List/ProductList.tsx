@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import { clsx } from 'clsx';
 import {
   List as ListElement,
+  HeadTab,
   DetailList,
   DetailListTable,
+  IcnOutside,
+  IcnInvoice,
+  ListHeaderInfo,
+  ListHeaderInfoTop,
+  ListHeaderInfoBottom,
   NoImage,
 } from './List.style';
 import {
@@ -13,9 +19,11 @@ import {
 } from '@/constants';
 import { clickHandler, summaryHead } from './List';
 import { useRouter } from 'next/router';
-import { BlueButton } from '@/components/Button';
-import { setDialog } from '@/store/slices/dialog';
+import { PublicImage } from '@/components/Image';
+import { Checkbox, BlueButton } from '@/components/Button';
+import { dialogState, setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
+import { Button } from '@material-ui/core';
 import { formData, onUpdateItem } from '@/pages/product/list';
 import { generateImageProductUrl, toLowerCase } from '@/helpers/common';
 import { rem } from 'polished';
@@ -68,7 +76,7 @@ const DetailListTableElement = ({
                     item.Images?.Product?.BusinessPartnerID ?
                       item.Images?.Product?.BusinessPartnerID.toString() : null, item.Images?.Product || {}
                   )}
-                  alt={`${item.ProductName}`}
+                  alt={`${item.ProductDescription}`}
                 />
               )}
               {!item.Images?.Product && (
@@ -79,8 +87,8 @@ const DetailListTableElement = ({
               )}
             </td>
             <td>{item.Product}</td>
-            <td>{item.ProductName}</td>
-            <td>{item.ProductGroup}</td>
+            <td>{item.ProductDescription}</td>
+            <td>{item.ProductGroupName}</td>
             <td>{item.BaseUnit}</td>
             <td>{item.ValidityStartDate}</td>
             <td>

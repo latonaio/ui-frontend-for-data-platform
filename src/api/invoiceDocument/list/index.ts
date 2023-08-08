@@ -1,4 +1,4 @@
-import { apiCallReads } from '../../axios';
+import { apiCall } from '../../axios';
 import { methods } from '@/constants/enums';
 import {
   ReadsListParams,
@@ -9,7 +9,7 @@ const readsList = async (
   params: ReadsListParams,
 ): Promise<ReadsListResponse> => {
   const endpointUrl = `invoice-document/list/${params.userType}`;
-  const response = await apiCallReads(methods.GET, endpointUrl, {
+  const response = await apiCall(methods.GET, endpointUrl, {
     language: params.language,
     businessPartner: params.businessPartner,
     userId: params.userId,

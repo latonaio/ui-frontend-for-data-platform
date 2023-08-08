@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { BackButton, GreenButton } from './Button';
+import { BackButton } from './Button';
 
 export default {
   title: 'components/Button',
@@ -11,16 +11,9 @@ export default {
   },
 } as ComponentMeta<typeof BackButton>;
 
-const Template: ComponentStory<typeof BackButton> = (args) =>
-  <BackButton {...args}>テスト</BackButton>;
+const Template: ComponentStory<typeof BackButton> = (args) => <BackButton {...args} />;
 
-const Template1: ComponentStory<typeof BackButton> = (args) =>
-  <GreenButton {...args}>テスト</GreenButton>;
-
-const BackButtonElm = Template.bind({});
-const GreenButtonElm = Template1.bind({});
-
-export {
-  BackButtonElm,
-  GreenButtonElm,
+export const Normal = Template.bind({});
+Normal.args = {
+  className: '',
 };

@@ -11,7 +11,7 @@ interface ProductDetailExconfList {
 
 interface ProductItem {
   Product: string;
-  ProductName: string;
+  ProductDescription: string;
   ProductGroup: string;
   ProductGroupName: string;
   BaseUnit: string;
@@ -39,7 +39,6 @@ interface BarcodeImage {
 
 interface Accepter {
   accepter: string[];
-  api_type: string;
 }
 
 interface ProductInfo {

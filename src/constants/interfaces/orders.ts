@@ -4,7 +4,7 @@ interface OrdersItem {
   Seller: number;
   BuyerName: string;
   Buyer: number;
-  HeaderDeliveryStatus: string;
+  DeliveryStatus: string;
   OrderDate: string;
   PaymentTerms: string;
   PaymentTermsName: string;
@@ -83,7 +83,6 @@ interface QuantityUnit {
 }
 
 export type {
-  OrdersItem,
   BuyerItem,
   SellerItem,
   OrdersDetailListItem,

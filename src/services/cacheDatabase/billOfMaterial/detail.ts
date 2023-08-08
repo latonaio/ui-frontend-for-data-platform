@@ -1,13 +1,11 @@
 import { CacheDatabase } from '..';
 import {
   AuthedUser,
-  BillOfMaterialDetailProps,
   BillOfMaterialTablesEnum,
   UserTypeEnum,
   BillOfMaterialDetailListItem,
   BillOfMaterialDetailHeader,
 } from '@/constants';
-import { productInfoReduce } from '@/helpers/common';
 import { readsDetailList } from '@/api/billOfMaterial/detail';
 import { toLowerCase } from '@/helpers/common';
 import { BillOfMaterialUserType } from '.';
@@ -39,7 +37,7 @@ export class Detail extends CacheDatabase {
       emailAddress: AuthedUser['emailAddress'];
     },
   ): Promise<void> {
-    const response: any = await readsDetailList({
+    const response = await readsDetailList({
       userType: params.userType,
       billOfMaterial: params.billOfMaterial,
       // isMarkedForDeletion: false,
@@ -48,8 +46,8 @@ export class Detail extends CacheDatabase {
       userId: params.emailAddress,
     });
 
-    if (response.Item.length > 0) {
-      for (const billOfMaterialDetailListItem of response.Item) {
+    if (response.numberOfRecords > 0) {
+      for (const billOfMaterialDetailListItem of response.billOfMaterialDetailList) {
         await this.billOfMaterialDetailListOwnerProductionPlantBusinessPartnerItem.put({
           ...billOfMaterialDetailListItem,
           BillOfMaterial: params.billOfMaterial,
@@ -57,7 +55,7 @@ export class Detail extends CacheDatabase {
       }
 
       await this.billOfMaterialDetailHeader.put({
-        ...response.HeaderWithItem[0],
+        ...response.billOfMaterialDetailHeader,
       });
     } else {
       if (params.userType === toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner)) {

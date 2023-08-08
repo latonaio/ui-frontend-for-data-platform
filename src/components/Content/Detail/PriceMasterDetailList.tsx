@@ -5,19 +5,16 @@ import {
   DetailList,
   DetailListTable,
   ListHeaderInfoTop,
+  ListHeaderInfoBottom,
   ListHeaderInfo,
 } from '../List/List.style';
 import { UserTypeEnum, PriceMasterTablesEnum } from '@/constants';
 import { PriceMasterDetailListItem, PriceMasterDetailHeader } from '@/constants';
 import { clickHandler, summaryHead } from '../List/List';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { formData, onUpdateItem } from '@/pages/price-master/detail/list/[userType]/[supplyChainRelationshipId]';
+import { formData } from '@/pages/price-master/detail/list/[userType]/[supplyChainRelationshipId]';
 import { toLowerCase } from '@/helpers/common';
-import { BlueButton } from '@/components/Button';
-import { setDialog } from '@/store/slices/dialog';
-import { Template as cancelDialogTemplate } from '@/components/Dialog';
-import { texts } from '@/constants/message';
 
 export interface PriceMasterDetailListProps {
   className?: string;
@@ -27,7 +24,6 @@ export interface PriceMasterDetailListProps {
     priceMasterDetailHeader?: PriceMasterDetailHeader;
   };
   formData: formData;
-  onUpdateItem: any;
 }
 
 interface DetailListTableElementProps {
@@ -35,7 +31,6 @@ interface DetailListTableElementProps {
   summary: string[];
   list: PriceMasterDetailListItem[];
   formData: formData;
-  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -43,11 +38,9 @@ const DetailListTableElement = ({
   summary,
   list,
   formData,
-  onUpdateItem,
 }: DetailListTableElementProps) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const listType = PriceMasterTablesEnum.priceMasterDetailListItem;
 
   const renderList = (list: PriceMasterDetailListItem[]) => {
     if (list && list.length > 0) {
@@ -76,48 +69,6 @@ const DetailListTableElement = ({
             <td>{item.ConditionSequentialNumber}</td>
             {/* <td>{ボタン}</td> */}
             <td>
-              <div>
-                <BlueButton
-                  isFinished={item.IsMarkedForDeletion}
-                  className={'size-relative'}
-                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    dispatch(setDialog({
-                      type: 'consent',
-                      consent: {
-                        isOpen: true,
-                        children: (
-                          cancelDialogTemplate(
-                            dispatch,
-                            item.IsMarkedForDeletion ?
-                              '価格マスターの削除を取り消しますか？' : '価格マスターを削除しますか？',
-                            () => {
-                              onUpdateItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-									SupplyChainRelationshipID: {
-                                    SupplyChainRelationshipID: item.SupplyChainRelationshipID,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  },
-                                  accepter: ['Header']
-                                },
-                                listType,
-                                'delete',
-                              );
-                            },
-                          )
-                        ),
-                      }
-                    }));
-                  }}
-                >
-                  {texts.button.delete}
-                </BlueButton>
-              </div>
             </td>
           </tr>
         );
@@ -148,7 +99,6 @@ export const PriceMasterDetailList = ({
                                         data,
                                         className,
                                         formData,
-										onUpdateItem,
                                       }: PriceMasterDetailListProps) => {
   //   const [paymentTermsEdit, setPaymentTermsEdit] = useState(false);
   const [transactionCurrencyEdit, setTransactionCurrencyEdit] = useState(false);
@@ -156,7 +106,7 @@ export const PriceMasterDetailList = ({
   const summary = [
     '品目',
     '品目テキスト',
-	'条件タイプ',
+	  '条件タイプ',
     '条件レート値',
     '条件レート値単位',
     '条件スケール数量',
@@ -192,7 +142,6 @@ export const PriceMasterDetailList = ({
         summary={summary}
         list={formData[PriceMasterTablesEnum.priceMasterDetailList] || []}
         formData={formData}
-		onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

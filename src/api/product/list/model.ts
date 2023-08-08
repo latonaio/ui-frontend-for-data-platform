@@ -7,5 +7,5 @@ export interface params extends UIKeyGeneral {
 }
 
 export interface response {
-  General: ProductItem[]
+  productList: ProductItem[]
 }

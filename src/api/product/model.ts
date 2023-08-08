@@ -6,9 +6,3 @@ export interface DeleteParams extends Accepter {
     IsMarkedForDeletion: boolean;
   }
 }
-export interface UpdateParams extends Accepter {
-  Product: {
-    Product: number;
-    IsMarkedForDeletion: boolean;
-  }
-}

@@ -4,12 +4,9 @@ import {
   AuthedUser,
   SupplyChainRelationshipTablesEnum,
   SupplyChainRelationshipDetailExconfList,
-  SupplyChainRelationshipDetailExconfListHeader,
-  SupplyChainRelationshipDetailList,
-  SupplyChainRelationshipDetailHeader,
+  SupplyChainRelationshipDetailExconfListHeader, ProductTablesEnum,
 } from '@/constants';
-import { reads as exconfReads } from '@/api/supplyChainRelationship/exconf';
-import { reads as detailReads } from '@/api/supplyChainRelationship/detail';
+import { reads } from '@/api/supplyChainRelationship/exconf';
 
 export class Detail extends CacheDatabase {
   async getSupplyChainRelationshipDetailExconfList(
@@ -36,7 +33,7 @@ export class Detail extends CacheDatabase {
       emailAddress: AuthedUser['emailAddress'];
     },
   ): Promise<void> {
-    const response = await exconfReads({
+    const response = await reads({
       supplyChainRelationshipId: params.supplyChainRelationshipId,
       language: params.language,
       businessPartner: params.businessPartner,
@@ -47,46 +44,63 @@ export class Detail extends CacheDatabase {
     await this.supplyChainRelationshipDetailExconfList.clear();
     await this.supplyChainRelationshipDetailExconfListHeader.clear();
 
-    await this.supplyChainRelationshipDetailExconfList.put(response.supplyChainRelationshipDetailExconfList);
-    await this.supplyChainRelationshipDetailExconfListHeader.put(response.supplyChainRelationshipDetailExconfListHeader);
-  }
+    // await this.supplyChainRelationshipDetailExconfList.put(response.supplyChainRelationshipDetailExconfList);
+    // await this.supplyChainRelationshipDetailExconfListHeader.put(response.supplyChainRelationshipDetailExconfListHeader);
 
-  async getSupplyChainRelationshipDetail(
-    supplyChainRelationshipId: number,
-    userType: SupplyChainRelationshipUserType[keyof SupplyChainRelationshipUserType],
-  ): Promise<{
-    [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]: SupplyChainRelationshipDetailList | null;
-    [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]: SupplyChainRelationshipDetailHeader | null;
-  }> {
-    return {
-      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]:
-      await this.supplyChainRelationshipDetail.get({ SupplyChainRelationshipID: supplyChainRelationshipId }) || null,
-      [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]:
-      await this.supplyChainRelationshipDetailHeader.get({ SupplyChainRelationshipID: supplyChainRelationshipId }) || null,
-    };
-  }
-
-  async updateSupplyChainRelationshipDetail(
-    params: {
-      supplyChainRelationshipId: number;
-      userType: SupplyChainRelationshipUserType[keyof SupplyChainRelationshipUserType],
-      language: AuthedUser['language'];
-      businessPartner: AuthedUser['businessPartner'];
-      emailAddress: AuthedUser['emailAddress'];
-    },
-  ): Promise<void> {
-    const response = await detailReads({
-      supplyChainRelationshipId: params.supplyChainRelationshipId,
-      language: params.language,
-      businessPartner: params.businessPartner,
-      userId: params.emailAddress,
-      userType: params.userType,
+    await this.supplyChainRelationshipDetailExconfList.put(
+      {
+        SupplyChainRelationshipID: params.supplyChainRelationshipId,
+        Existences: [
+          {
+            Content: 'General',
+            Exist: true,
+            Param: [],
+          },
+          {
+            Content: 'Delivery',
+            Exist: true,
+            Param: [{
+              SupplyChainRelationshipDeliveryID: 110000000,
+              DeliverToParty: 201,
+              DeliverToPartyName: 'A',
+              DeliverFromParty: 201,
+              DeliverFromPartyName: 'B',
+            }],
+          },
+          {
+            Content: 'DeliveryPlant',
+            Exist: true,
+            Param: [{
+              SupplyChainRelationshipDeliveryID: 110000000,
+              SupplyChainRelationshipDeliveryPlantID: 222,
+              DeliverToParty: 'A',
+              DeliverFromParty: '201',
+              DeliverToPlant: 'B',
+              DeliverFromPlant: 'B',
+            }],
+          },
+          {
+            Content: 'Billing',
+            Exist: true,
+            Param: [{
+              SupplyChainRelationshipBillingID: 110000000,
+              BlllToParty: 'A',
+              BillFromParty: 'A',
+            }],
+          },
+          {
+            Content: 'Payment',
+            Exist: true,
+            Param: [{
+              SupplyChainRelationshipPaymentID: 110000000,
+              Payer: 'G',
+              Payee: 'H',
+            }],
+          },
+        ],
+      });
+    await this.supplyChainRelationshipDetailExconfListHeader.put({
+      SupplyChainRelationshipID: params.supplyChainRelationshipId,
     });
-
-    await this.supplyChainRelationshipDetail.clear();
-    await this.supplyChainRelationshipDetailHeader.clear();
-
-    await this.supplyChainRelationshipDetail.put(response.supplyChainRelationshipContents);
-    await this.supplyChainRelationshipDetailHeader.put(response.supplyChainRelationshipDetailHeader);
   }
 }

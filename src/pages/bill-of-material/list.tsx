@@ -16,13 +16,13 @@ import {
 } from '@/constants';
 import { getLocalStorage, toLowerCase } from '@/helpers/common';
 import { billOfMaterialCache } from '@/services/cacheDatabase/billOfMaterial';
-import { getSearchTextDescription } from '@/helpers/pages';
+import { createFormDataForEditingArray, getSearchTextDescription } from '@/helpers/pages';
 import { useDispatch } from 'react-redux';
 import { setLoading } from '@/store/slices/loadging';
 import { TextFieldProps } from '@/components/Form';
+import { updates } from '@/api/deliveryDocument';
+import { deleteBillOfMaterial } from '@/api/billOfMaterial';
 import { rem } from 'polished';
-import { initializeUpdate } from '@/store/slices/bill-of-material/list';
-import { useAppDispatch } from '@/store/hooks';
 
 interface PageProps {
 }
@@ -52,15 +52,23 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
   const [formData, setFormData] = useState<formData | any>({});
 
   const dispatch = useDispatch();
-  const appDispatch = useAppDispatch();
 
   const setFormDataForPage = async () => {
     const list = await billOfMaterialCache.getBillOfMaterialList();
 
-    appDispatch(initializeUpdate({
+    setFormData({
+      editList: {
+        ...createFormDataForEditingArray(
+          list[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem],
+          [
+            { keyName: BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem },
+          ]
+        ),
+      },
+
       [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]:
         list[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem],
-    }));
+    });
   }
 
   const initLoadTabData = async () => {
@@ -81,6 +89,89 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
     });
 
     await setFormDataForPage();
+
+    dispatch(setLoading({ isOpen: false }));
+
+  }
+
+  const onUpdateItem = async (
+    value: any,
+    updateItemIndex: number,
+    updateItemKey: string,
+    params: any,
+    listType: string,
+    apiType: string = 'update',
+  ) => {
+    const {
+      language,
+      businessPartner,
+      emailAddress,
+    }: AuthedUser = getLocalStorage('auth');
+
+    dispatch(setLoading({ isOpen: true }));
+
+    const accepter = (params: any) => {
+      if (!params.hasOwnProperty('accepter')) {
+        return {
+          ...params,
+          accepter: ['Header'],
+        };
+      }
+
+      return params;
+    }
+
+    if (apiType === 'delete') {
+      await deleteBillOfMaterial({
+        ...params,
+        business_partner: businessPartner,
+        accepter: accepter(params).accepter,
+      });
+    } else {
+      await updates({
+        ...params,
+        accepter: accepter(params).accepter,
+      });
+    }
+
+    billOfMaterialCache.updateBillOfMaterialList({
+      language,
+      businessPartner,
+      emailAddress,
+      userType: toLowerCase(UserTypeEnum.OwnerProductionPlantBusinessPartner),
+    });
+
+    const itemIdentification = params.BillOfMaterialMaster.BillOfMaterial;
+
+    const updateData = {
+      ...formData,
+      [listType]: [
+        ...formData[listType].map((item: any, index: number) => {
+          if (item.BillOfMaterial === itemIdentification) {
+            return {
+              ...item,
+              [updateItemKey]: value,
+            }
+          }
+          return { ...item }
+        })
+      ],
+    };
+
+    // if (apiType !== 'cancel') {
+    //   updateData.editList = {
+    //     ...formData.editList,
+    //     [listType]: [
+    //       ...formData.editList[listType].map((item: any, index: number) => {
+    //         return {
+    //           isEditing: index === updateItemIndex ? !item.isEditing : item.isEditing,
+    //         };
+    //       })
+    //     ]
+    //   }
+    // }
+
+    setFormData(updateData);
 
     dispatch(setLoading({ isOpen: false }));
   }
@@ -166,7 +257,12 @@ const BillOfMaterialList: React.FC<PageProps> = (data) => {
             描画の実行
           </div>
         </div>
-        <Content />
+        {formData &&
+          <Content
+            formData={formData}
+            onUpdateItem={onUpdateItem}
+          />
+        }
       </Main>
       <Footer></Footer>
     </Wrapper>

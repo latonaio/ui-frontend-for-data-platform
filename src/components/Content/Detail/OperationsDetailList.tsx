@@ -7,20 +7,20 @@ import {
   ListHeaderInfo,
   ListHeaderInfoTop,
   ListHeaderInfoBottom,
+  NoImage,
 } from '../List/List.style';
-import { BackButton, BlueButton } from '@/components/Button';
+import { BackButton, GreenButton } from '@/components/Button';
 import {
   OperationsTablesEnum,
   OperationsDetailListItem,
   OperationsDetailHeader,
+  UserTypeEnum,
 } from '@/constants';
 import { clickHandler, summaryHead } from '../List/List';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { formData, onUpdateItem } from '@/pages/operations/detail/list/[userType]/[operations]';
+import { formData } from '@/pages/operations/detail/list/[userType]/[operations]';
 import { texts } from '@/constants/message';
-import { setDialog } from '@/store/slices/dialog';
-import { Template as cancelDialogTemplate } from '@/components/Dialog';
 
 
 export interface OperationsDetailListProps {
@@ -33,7 +33,6 @@ export interface OperationsDetailListProps {
     operationsDetailHeader?: OperationsDetailHeader;
   };
   formData: formData;
-  onUpdateItem: any;
 }
 
 interface DetailListTableElementProps {
@@ -43,7 +42,6 @@ interface DetailListTableElementProps {
   businessPartner?: number;
   list: OperationsDetailListItem[];
   formData: formData;
-  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -53,10 +51,8 @@ const DetailListTableElement = ({
                                   businessPartner,
                                   list,
                                   formData,
-								  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
-  const listType = OperationsTablesEnum.operationsDetailListOwnerProductionPlantBusinessPartnerItem;
   const dispatch = useDispatch();
 
   const renderList = (list: OperationsDetailListItem[]) => {
@@ -80,46 +76,18 @@ const DetailListTableElement = ({
             <td>{item.IsMarkedForDeletion}</td>
             <td>
               <div className={'w-full inline-flex justify-evenly items-center'}>
-			  <BlueButton
-                  isFinished={item.IsMarkedForDeletion}
+                <GreenButton
                   className={'size-relative'}
+                  isFinished={item.IsMarkedForDeletion}
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     e.preventDefault();
 
-                    dispatch(setDialog({
-                      type: 'consent',
-                      consent: {
-                        isOpen: true,
-                        children: (
-                          cancelDialogTemplate(
-                            dispatch,
-                            item.IsMarkedForDeletion ?
-                              '作業手順明細を削除を取り消しますか？' : '作業手順明細を削除しますか？',
-                            () => {
-                              onUpdateItem(
-                                !item.IsMarkedForDeletion,
-                                index,
-                                'IsMarkedForDeletion',
-                                {
-									OperationsMaster: {
-                                    Operations: item.Operations,
-                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                                  },
-                                  accepter: ['General']
-                                },
-                                listType,
-                                'delete',
-                              );
-                            },
-                          )
-                        ),
-                      }
-                    }));
+                    if (item.IsMarkedForDeletion) { return; }
                   }}
                 >
-                  {texts.button.delete}
-                </BlueButton>
+                  {texts.button.cancel}
+                </GreenButton>
                 {/*<i*/}
                 {/*  className="icon-schedule"*/}
                 {/*  style={{*/}
@@ -158,7 +126,6 @@ export const OperationsDetailList = ({
                                             data,
                                             className,
                                             formData,
-											onUpdateItem,
                                           }: OperationsDetailListProps) => {
   const summary = [
     '作業手順明細番号',
@@ -200,7 +167,6 @@ export const OperationsDetailList = ({
         businessPartner={data.businessPartner}
         list={formData[OperationsTablesEnum.operationsDetailList] || []}
         formData={formData}
-        onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

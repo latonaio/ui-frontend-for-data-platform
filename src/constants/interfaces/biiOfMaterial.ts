@@ -29,14 +29,13 @@ interface BillOfMaterialDetailHeader extends BillOfMaterialListItem {
 	}
 }
 
-interface BillOfMaterialDetailListItem {
-	BillOfMaterial: number;
+interface BillOfMaterialDetailListItem extends BillOfMaterialListItem {
 	BillOfMaterialItem: number;
 	ComponentProduct: string;
 	BillOfMaterialItemText: string;
 	StockConfirmationPlantName: string;
 	StockConfirmationPlant: string;
-	ComponentProductStandardQuantityInBaseUnit: number;
+	ComponentProductStandardQuantityInBaseUnuit: number;
 	ComponentProductBaseUnit: string;
 	ValidityStartDate: string;
 	IsMarkedForDeletion: boolean;

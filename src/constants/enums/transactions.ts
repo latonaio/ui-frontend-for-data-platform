@@ -57,8 +57,6 @@ export enum ProductTablesEnum {
 
 export enum BusinessPartnerTablesEnum {
   businessPartnerListBusinessPartnerItem = 'businessPartnerListBusinessPartnerItem',
-  businessPartnerDetailExconfList = 'businessPartnerDetailExconfList',
-  businessPartnerDetailExconfListHeader = 'businessPartnerDetailExconfListHeader',
 
 }
 
@@ -103,17 +101,8 @@ export enum SupplyChainRelationshipTablesEnum {
   supplyChainRelationshipListSellerItem = 'supplyChainRelationshipListSellerItem',
   supplyChainRelationshipDetailExconfList = 'supplyChainRelationshipDetailExconfList',
   supplyChainRelationshipDetailExconfListHeader = 'supplyChainRelationshipDetailExconfListHeader',
-  supplyChainRelationshipDetail = 'supplyChainRelationshipDetail',
-  supplyChainRelationshipDetailHeader = 'supplyChainRelationshipDetailHeader',
 }
 
 export enum WorkCenterTablesEnum {
 	workCenterListBusinessPartnerItem = 'workCenterListBusinessPartnerItem',
-}
-
-export enum QuotationsTablesEnum{
-	quotationsListBuyerItem = 'quotationsListBuyerItem',
-	quotationsListSellerItem = 'quotationsListSellerItem',
-	quotationsListDetailListItem = 'quotationsListDetailListItem',
-	quotationsListDetailListHeader = 'quotationsListDetailListHeader',
 }

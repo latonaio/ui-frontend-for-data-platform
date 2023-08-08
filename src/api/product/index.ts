@@ -1,8 +1,8 @@
-import { DeleteParams, UpdateParams } from './model';
-import { apiCall, apiCallUpdate } from '@/api/axios';
+import { DeleteParams } from './model';
+import { apiCall } from '@/api/axios';
 import { methods } from '@/constants';
 
-const deletes = async (
+const deleteProduct = async (
   params: DeleteParams,
 ): Promise<any> => {
   const endpointUrl = 'DPFM_API_PRODUCT_MASTER_SRV/deletes';
@@ -10,15 +10,6 @@ const deletes = async (
   return { ...response.data.message };
 };
 
-const updates = async (
-	params: UpdateParams,
-  ): Promise<any> => {
-	const endpointUrl = 'DPFM_API_BILL_OF_MATERIAL_SRV/updates';
-	const response = await apiCallUpdate(methods.POST, endpointUrl, params);
-	return { ...response.data.message };
-  };
-
 export {
-	deletes,
-  updates,
+  deleteProduct,
 }

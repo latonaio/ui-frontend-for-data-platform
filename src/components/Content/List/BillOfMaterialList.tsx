@@ -16,14 +16,16 @@ import { useRouter } from 'next/router';
 import { BlueButton } from '@/components/Button';
 import { setDialog } from '@/store/slices/dialog';
 import { useDispatch } from 'react-redux';
-import { generateImageProductUrl, toLowerCase } from '@/helpers/common';
+import { formData, onUpdateItem } from '@/pages/bill-of-material/list';
+import { generateImageProductUrl } from '@/helpers/common';
 import { rem } from 'polished';
 import { Template as cancelDialogTemplate } from '@/components/Dialog';
 import { texts } from '@/constants/message';
-import { useAppSelector } from '@/store/hooks';
 
 interface ListProps {
   className?: string;
+  formData: formData;
+  onUpdateItem: onUpdateItem;
 }
 
 interface DetailListTableElementProps {
@@ -32,6 +34,7 @@ interface DetailListTableElementProps {
   display: BillOfMaterialTablesEnum;
   list: BillOfMaterialListItem[];
   userType: UserTypeEnum;
+  onUpdateItem: onUpdateItem;
 }
 
 const DetailListTableElement = ({
@@ -40,6 +43,7 @@ const DetailListTableElement = ({
                                   display,
                                   list,
                                   userType,
+                                  onUpdateItem,
                                 }: DetailListTableElementProps) => {
   const router = useRouter();
   const listType = BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem;
@@ -97,22 +101,22 @@ const DetailListTableElement = ({
                           cancelDialogTemplate(
                             dispatch,
                             item.IsMarkedForDeletion ?
-                              '部品表の削除を取り消しますか？' : '部品表を削除しますか？',
+                              '品目を削除を取り消しますか？' : '品目を削除しますか？',
                             () => {
-                              // onUpdateItem(
-                              //   !item.IsMarkedForDeletion,
-                              //   index,
-                              //   'IsMarkedForDeletion',
-                              //   {
-                              //     BillOfMaterial: {
-                              //       BillOfMaterial: item.BillOfMaterial,
-                              //       IsMarkedForDeletion: !item.IsMarkedForDeletion,
-                              //     },
-                              //     accepter: ['Header']
-                              //   },
-                              //   listType,
-                              //   'delete',
-                              // );
+                              onUpdateItem(
+                                !item.IsMarkedForDeletion,
+                                index,
+                                'IsMarkedForDeletion',
+                                {
+                                  BillOfMaterialMaster: {
+                                    BillOfMaterial: item.BillOfMaterial,
+                                    IsMarkedForDeletion: !item.IsMarkedForDeletion,
+                                  },
+                                  accepter: ['General']
+                                },
+                                listType,
+                                'delete',
+                              );
                             },
                           )
                         ),
@@ -150,7 +154,9 @@ const DetailListTableElement = ({
   )
 }
 export const BillOfMaterialList = ({
+                                      formData,
                                       className,
+                                      onUpdateItem,
                                     }: ListProps) => {
   const [display, setDisplay] = useState<BillOfMaterialTablesEnum>(
     BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem
@@ -165,10 +171,6 @@ export const BillOfMaterialList = ({
     '',
   ];
 
-  const list  = useAppSelector(state => state.billOfMaterialList) as {
-    [BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem]: BillOfMaterialListItem[],
-  };
-
   return (
     <ListElement className={clsx(
       `List`,
@@ -179,7 +181,8 @@ export const BillOfMaterialList = ({
         type={BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem}
         display={display}
         userType={UserTypeEnum.OwnerProductionPlantBusinessPartner}
-        list={list[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem] || []}
+        list={formData[BillOfMaterialTablesEnum.billOfMaterialListOwnerProductionPlantBusinessPartnerItem] || []}
+        onUpdateItem={onUpdateItem}
       />
     </ListElement>
   );

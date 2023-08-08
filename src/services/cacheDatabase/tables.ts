@@ -39,8 +39,6 @@ import {
   // Business Partner
   BusinessPartnerTablesEnum,
   BusinessPartnerItem,
-  BusinessPartnerDetailExconfList,
-  BusinessPartnerDetailExconfListHeader,
 
   // Equipment
   EquipmentTablesEnum,
@@ -84,15 +82,7 @@ import {
   SupplyChainRelationshipSellerItem,
   SupplyChainRelationshipDetailExconfList,
   SupplyChainRelationshipDetailExconfListHeader,
-  SupplyChainRelationshipDetailList,
-  SupplyChainRelationshipDetailHeader,
   SupplyChainRelationshipTablesEnum,
-
-  QuotationsTablesEnum,
-  QuotationsBuyerItem,
-  QuotationsSellerItem,
-  QuotationsDetailListItem,
-  QuotationsDetailListHeader,
 
 } from '@/constants';
 
@@ -158,14 +148,4 @@ export class Tables extends Dexie {
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipListSellerItem]!: Table<SupplyChainRelationshipSellerItem>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfListHeader]!: Table<SupplyChainRelationshipDetailExconfListHeader>;
   [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailExconfList]!: Table<SupplyChainRelationshipDetailExconfList>;
-  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetailHeader]!: Table<SupplyChainRelationshipDetailHeader>;
-  [SupplyChainRelationshipTablesEnum.supplyChainRelationshipDetail]!: Table<SupplyChainRelationshipDetailList>;
-
-  [BusinessPartnerTablesEnum.businessPartnerDetailExconfList]!: Table<BusinessPartnerDetailExconfList>;
-  [BusinessPartnerTablesEnum.businessPartnerDetailExconfListHeader]!: Table<BusinessPartnerDetailExconfListHeader>;
-
-  [QuotationsTablesEnum.quotationsListBuyerItem]!: Table<QuotationsBuyerItem>;
-  [QuotationsTablesEnum.quotationsListSellerItem]!: Table<QuotationsSellerItem>;
-  [QuotationsTablesEnum.quotationsListDetailListItem]!: Table<QuotationsDetailListItem>;
-  [QuotationsTablesEnum.quotationsListDetailListHeader]!: Table<QuotationsDetailListHeader>;
 }
